@@ -1,0 +1,589 @@
+---
+title: "Abonos orgánicos en la calidad  del fruto de mango (Mangifera indica L). Var. Kent"
+author: Henry Morocho; Sebastian Casas; Flavio Lozano-Isla
+format:
+  html:
+    toc: true
+    toc-location: left
+    number-sections: true
+    self-contained: true
+    output-file: "ESM_1"
+editor_options: 
+  chunk_output_type: console
+execute: 
+  warning: false
+  echo: true
+---
+
+# Setup
+
+```{r}
+#| label:  setup
+
+library(emmeans)
+library(rstatix)
+library(corrplot)
+library(multcomp)
+library(dlookr)
+source('https://inkaverse.com/setup.r')
+
+session_info()
+```
+
+# Importar datos
+
+```{r}
+url <- "https://docs.google.com/spreadsheets/d/1cjWrS-EVcII85c-l_NuEfTpjhVMI156e8REM9GDVP_w/edit?gid=95386135#gid=95386135"
+
+gs <- url %>% 
+  as_sheets_id()
+
+tratamiento <- gs %>% 
+  range_read("tratamientos") %>% 
+  rename_with(~ tolower(.))
+
+rendimiento <- gs %>% 
+  range_read("rendimiento") %>% 
+  rename_with(~ tolower(.)) 
+
+fisio <- gs %>% 
+  range_read("fisio") %>% 
+  rename_with(~ tolower(.)) %>% 
+  merge(., tratamiento) %>% 
+  select(tratamiento,compost, biol,everything()) %>% 
+  merge(., rendimiento) %>% 
+  mutate(across(tratamiento:biol, ~ as.factor(.)))
+
+consumo <- gs %>% 
+  range_read("consumo") %>% 
+  rename_with(~ tolower(.)) %>% 
+  merge(., tratamiento) %>% 
+  select(tratamiento,compost, biol,everything()) %>%
+  dplyr::full_join(., rendimiento)
+
+glimpse(fisio)
+
+class(fisio)
+
+summary(fisio)
+
+```
+
+# Data summary
+
+```{r}
+sm <- rdt %>% 
+  group_by(year, treat) %>% 
+  summarise(across(height:sproud, ~ sum(!is.na(.))))
+
+sm <- fru %>% 
+  group_by(year, treat) %>% 
+  summarise(across(weigth:diameter_average, ~ sum(!is.na(.))))
+
+sm
+
+diagnose(rdt)
+
+diagnose_outlier(rdt) %>% 
+  filter(outliers_cnt > 0) 
+
+diagnose_outlier(fru) %>% 
+  filter(outliers_cnt > 0)
+
+```
+
+# Objetivos
+
+- Mostrar  el efecto de los abonos orgánicos compost y biol en la calidad del fruto de mango en madurez fisiológica
+
+Fig1: ffmf, cifmf, phfmf.ssfmf, atfmf, msfmf
+
+tab sup1: tabla de suplmentaria: md,dvs,dif sig
+
+Fig2: PCA Variables y tratamientos, rendimiento
+
+- Mostrar  el efecto de los abonos orgánicos compost y biol en la calidad del fruto de mango en madurez comercial
+
+Fig3: pdfmc, ssfmc, atfmc, phfmc
+
+tab sup1: tabla de suplmentaria: md,dvs,dif sig
+
+Fig4: PCA Variables y tratamientos, rendimiento
+
+
+# Objetivo. 1
+
+## Plant height
+
+```{r}
+rdt %>% 
+  identify_outliers(height)
+
+rdt %>%
+  plot_outlier(diagnose_outlier(rdt) %>% 
+                 filter(variables == "height") %>% 
+                 select(variables) %>% 
+                 unlist())
+
+rdt_c <- rdt %>% 
+  outliers_remove(trait = "height"
+                  , model = "0 + (1|block) + stock*edge"
+                  , drop_na = F
+                  ) %>% 
+  pluck(1)
+  
+model <- rdt_c %>% 
+  lm(height  ~ block + stock*edge, .)
+
+plot_diag(model) %>% 
+  plot_grid(plotlist = ., ncol = 2)
+
+rdt_c %>% 
+  plot_raw(x = "stock", y = "height", group = "edge")
+
+anova(model)
+
+# mc <- emmeans(model, ~ treat) %>% 
+#   cld(Letters = letters, reversed = T) %>% 
+#   mutate(across(.group, trimws))
+
+mc <- agricolae::duncan.test(model, trt = c("stock", "edge")) %>% 
+  pluck("groups") %>% 
+  rownames_to_column("treat") %>% 
+  separate(treat, c("stock", "edge"))
+
+p1 <- mc %>% 
+  plot_smr(x = "stock"
+           , y = "height"
+           , group = "edge"
+           , sig = "groups"
+           , ylimits = c(0, 5, 1)
+           , ylab = "Plant height (m)"
+           , xlab = "Stock"
+           , glab = "Edge"
+           , sigsize = 10
+           , color = F
+           ) +
+  theme(axis.title.x = element_text(size = 20),
+       axis.title.y = element_text(size = 20),
+       axis.text = element_text(size = 20),
+       legend.text = element_text(size = 20),
+       legend.title = element_text(size = 20))
+  
+
+p1
+
+```
+
+
+## Plant sproud
+
+```{r}
+rdt %>% 
+  identify_outliers(sproud)
+
+rdt %>%
+  plot_outlier(diagnose_outlier(rdt) %>% 
+                 filter(variables == "sproud") %>% 
+                 select(variables) %>% 
+                 unlist())
+
+rdt_c <- rdt %>% 
+  outliers_remove(trait = "sproud"
+                  , model = "0 + (1|block) + stock*edge"
+                  , drop_na = F
+                  ) %>% 
+  pluck(1)
+
+model <- rdt_c %>% 
+  lm(sproud  ~ block + stock*edge, .)
+
+plot_diag(model) %>% 
+  plot_grid(plotlist = ., ncol = 2)
+
+rdt_c %>% 
+  plot_raw(x = "stock", y = "sproud", group = "edge")
+
+anova(model)
+
+# mc_2 <- emmeans(model, ~ treat) %>% 
+#   cld(Letters = letters, reversed = T) %>% 
+#   mutate(across(.group, trimws))
+
+mc <- agricolae::duncan.test(model, trt = c("stock", "edge")) %>% 
+  pluck("groups") %>% 
+  rownames_to_column("treat")%>% 
+  separate(treat, c("stock", "edge"))
+
+p2 <- mc %>% 
+  plot_smr(x = "stock"
+           , y = "sproud"
+           , group = "edge"
+           , sig = "groups"
+           , ylimits = c(0, 80, 10)
+           , ylab = "Sproud ('%')"
+           , xlab = "Stock"
+           , glab = "Edge"
+           , sigsize = 10
+           , color = F
+           )+
+  theme(axis.title.x = element_text(size = 20),
+       axis.title.y = element_text(size = 20),
+       axis.text = element_text(size = 20),
+       legend.text = element_text(size = 20),
+       legend.title = element_text(size = 20))
+p2
+
+```
+
+## Number of fruits
+
+```{r}
+rdt %>% 
+  identify_outliers(n_fruits)
+
+rdt %>%
+  plot_outlier(diagnose_outlier(rdt) %>% 
+                 filter(variables == "n_fruits") %>% 
+                 select(variables) %>% 
+                 unlist())
+
+rdt_c <- rdt %>% 
+  outliers_remove(trait = "n_fruits"
+                  , model = "0 + (1|block) + treat*year"
+                  , drop_na = F
+                  ) %>% 
+  pluck(1)
+
+model <- rdt_c %>% 
+  lm(n_fruits ~ block + treat + year + treat:year, .)
+
+plot_diag(model) %>% 
+  plot_grid(plotlist = ., ncol = 2)
+
+rdt_c %>% 
+  plot_raw(x = "treat", y = "n_fruits", group = "year")
+
+anova(model)
+
+mc <- agricolae::duncan.test(model, trt = c("treat", "year")) %>% 
+  pluck("groups") %>% 
+  rownames_to_column("treat") %>% 
+  separate(treat, c("treat", "year"))
+
+p3 <- mc %>% 
+  plot_smr(x = "treat", type = "line"
+           , y = "n_fruits"
+           , group = "year"
+           , sig = "groups"
+           , sigsize = 20
+           , ylimits = c(150, 275, 25)
+           , ylab = "Number of fruits (u)"
+           , xlab = "Treatment"
+           , glab = "Year"
+           , color = F
+           ) +
+  theme(axis.title.x = element_text(size = 20),
+       axis.title.y = element_text(size = 20),
+       axis.text = element_text(size = 20),
+       legend.text = element_text(size = 20),
+       legend.title = element_text(size = 20))
+p3
+
+```
+
+## Flowering
+
+```{r}
+rdt %>% 
+  identify_outliers(flowering)
+
+rdt %>%
+  plot_outlier(diagnose_outlier(rdt) %>% 
+                 filter(variables == "flowering") %>% 
+                 select(variables) %>% 
+                 unlist())
+
+rdt_c <- rdt %>% 
+  outliers_remove(trait = "flowering"
+                  , model = "0 + (1|block) + treat*year"
+                  , drop_na = F
+                  ) %>% 
+  pluck(1)
+
+model <- rdt_c %>% 
+  lm(flowering  ~ block + treat + year + treat:year, .)
+
+plot_diag(model) %>% 
+  plot_grid(plotlist = ., ncol = 2)
+
+rdt_c %>% 
+  plot_raw(x = "treat", y = "flowering", group = "year")
+
+anova(model)
+
+mc <- agricolae::duncan.test(model, trt = c("treat", "year")) %>% 
+  pluck("groups") %>% 
+  rownames_to_column("treat") %>% 
+  separate(treat, c("treat", "year"))
+
+p4 <- mc %>% 
+  plot_smr(x = "treat",type = "line"
+           , y = "flowering"
+           , group = "year"
+           , sig = "groups"
+           , ylimits = c(40, 100, 10)
+           , ylab = "Flowering ('%')"
+           , xlab = "Treatment"
+           , glab = "Year"
+           , sigsize = 80
+           , color = F
+           ) +
+  theme(axis.title.x = element_text(size = 20),
+       axis.title.y = element_text(size = 20),
+       axis.text = element_text(size = 20),
+       legend.text = element_text(size = 20),
+       legend.title = element_text(size = 20))
+p4
+
+```
+
+## Figura 1
+
+```{r}
+list(p1, p2, p3, p4) %>% 
+  plot_grid(plotlist = ., ncol = 2
+            , labels = "auto", label_size = 30
+            ) %>% 
+  ggsave(plot = ., "files/Fig-1.jpg", units = "cm"
+         , width = 35, height = 25)
+
+
+```
+
+## Multivariate
+
+```{r}
+mv <- rdt %>% 
+  group_by(treat) %>% 
+  summarise(across(where(is.numeric), ~ mean(., na.rm = T))) %>% 
+   rename(Treat = treat
+         , Height = height
+         , Fruits = n_fruits
+         , Flowering = flowering
+         , Sproud = sproud)
+  
+
+pca <- mv %>% 
+  PCA(scale.unit = T, quali.sup = 1, graph = F) 
+
+
+f2a <- plot.PCA(x = pca, choix = "var")
+f2b <- plot.PCA(x = pca, choix = "ind", habillage = 1)
+
+
+```
+
+# Correlation
+
+```{r}
+
+M <- cor(mv[,-c(1)], method ="pearson")
+
+corrplot(M, method = "number", type = "upper")
+
+
+```
+
+
+## Figura 2
+
+```{r}
+list(f2a, f2b) %>% 
+  plot_grid(plotlist = ., ncol = 2, nrow = 1, labels = "auto"
+              ) %>% 
+  ggsave(plot = ., "files/Fig-2.jpg", units = "cm"
+         , width = 30, height = 15)
+
+
+```
+
+
+# Obj. 2
+
+# Weigth
+
+```{r}
+fru %>% 
+  identify_outliers(weigth)
+
+fru %>%
+  plot_outlier(diagnose_outlier(fru) %>% 
+                 filter(variables == "weigth") %>% 
+                 select(variables) %>% 
+                 unlist())
+
+fru_c <- fru %>% 
+  outliers_remove(trait = "weigth"
+                  , model = "0 + (1|block) + stock*edge"
+                  , drop_na = F
+                  ) %>% 
+  pluck(1)
+
+model <- fru %>% 
+  lm(weigth  ~ block + stock*edge, .)
+
+plot_diag(model) %>% 
+  plot_grid(plotlist = ., ncol = 2)
+
+fru %>% 
+  plot_raw(x = "stock", y = "weigth", group = "edge")
+
+anova(model)
+
+mc <- agricolae::duncan.test(model, trt = c("stock", "edge")) %>% 
+  pluck("groups") %>% 
+  rownames_to_column("treat")%>% 
+  separate(treat, c("stock", "edge"))
+
+p5 <- mc %>% 
+  plot_smr(x = "stock"
+           , y = "weigth"
+           , group = "edge"
+           , sig = "groups"
+           , ylimits = c(0, 600, 100)
+           , ylab = "Fruit weigth (g)"
+           , xlab = "Treatment"
+           )
+
+p5
+
+```
+
+# Long
+
+```{r}
+fru %>% 
+  identify_outliers(long)
+
+model <- fru %>% 
+  lm(long  ~ block + stock*edge, .)
+
+plot_diag(model) %>% 
+  plot_grid(plotlist = ., ncol = 2)
+
+fru %>% 
+  plot_raw(x = "stock", y = "long", group = "edge")
+
+anova(model)
+
+mc <- agricolae::duncan.test(model, trt = c("stock", "edge")) %>% 
+  pluck("groups") %>% 
+  rownames_to_column("treat")%>% 
+  separate(treat, c("stock", "edge"))
+
+
+p6 <- mc %>% 
+  plot_smr(x = "stock"
+           , y = "long"
+           , group = "edge"
+           , sig = "groups"
+           , ylimits = c(0, 120, 20)
+           , ylab = "Fruit long (mm)"
+           , xlab = "Treatment"
+           )
+
+p6
+
+```
+
+# Diameter
+
+```{r}
+fru %>% 
+  identify_outliers(diameter_average)
+
+model <- fru %>% 
+  lm(diameter_average ~ stock*edge, .)
+
+plot_diag(model) %>% 
+  plot_grid(plotlist = ., ncol = 2)
+
+fru %>% 
+  plot_raw(x = "stock", y = "diameter_average", group = "edge")
+
+anova(model)
+
+mc <- agricolae::duncan.test(model, trt = c("stock", "edge")) %>% 
+  pluck("groups") %>% 
+  rownames_to_column("treat")%>% 
+  separate(treat, c("stock", "edge"))
+
+p7 <- mc %>% 
+  plot_smr(x = "stock"
+           , y = "diameter_average"
+           , group = "edge"
+           , sig = "groups"
+           , ylimits = c(0, 100, 20)
+           , ylab = "Fruit diameter (mm)"
+           , xlab = "Treatment"
+           )
+
+p7
+
+```
+
+# Figura 3
+
+```{r}
+list(p5, p6, p7) %>% 
+  plot_grid(plotlist = ., ncol = 2
+            , labels = "auto"
+            ) %>% 
+  ggsave(plot = ., "files/Fig-3.jpg", units = "cm"
+         , width = 25, height = 18)
+```
+
+## Multivariate
+
+```{r}
+mv <- fru %>% 
+  group_by(treat) %>% 
+  summarise(across(where(is.numeric), ~ mean(., na.rm = T))) %>% 
+  dplyr::select(!c(diameter_1, diameter_2))
+  
+pca <- mv %>% 
+  PCA(scale.unit = T, quali.sup = 1, graph = F) 
+
+
+f4a <- plot.PCA(x = pca, choix = "var")
+f4b <- plot.PCA(x = pca, choix = "ind", habillage = 1)
+
+list(f4a, f4b) %>% 
+  plot_grid(plotlist = ., ncol = 2, labels = "auto"
+              ) %>% 
+  ggsave(plot = ., "files/Fig-4.jpg", units = "cm"
+         , width = 30, height = 15)
+
+```
+
+```{r}
+mv %>% 
+  select(where(is.numeric)) %>% 
+  pairs.panels(.
+             , pch = 21
+             , method = "pearson"
+             , stars = T
+             , scale = F
+             , lm = T
+             ) 
+
+M <- cor(mv[,-c(1)], method ="pearson")
+
+corrplot(M, method="color")
+
+corrplot.mixed(M)
+
+corrplot(M, method="number", type="upper")
+
+```
