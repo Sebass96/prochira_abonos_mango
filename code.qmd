@@ -52,42 +52,45 @@ fisio <- gs %>%
   merge(., tratamiento) %>% 
   select(tratamiento,compost, biol,everything()) %>% 
   merge(., rendimiento) %>% 
-  mutate(across(tratamiento:biol, ~ as.factor(.)))
+  mutate(across(tratamiento:nfrutos, ~ as.factor(.))) %>% 
+  rename(treat = tratamiento
+         , repetition = repeticion
+         , composts = compost)
 
 consumo <- gs %>% 
   range_read("consumo") %>% 
-  rename_with(~ tolower(.)) %>% 
+  rename_with(~ tolower(.)) %>%
   merge(., tratamiento) %>% 
-  select(tratamiento,compost, biol,everything()) %>%
-  dplyr::full_join(., rendimiento)
+  select(tratamiento,compost, biol,everything()) %>% 
+  mutate(across(tratamiento:repeticion, ~ as.factor(.))) %>% 
+    rename(treat = tratamiento
+         , repetition = repeticion
+         , composts = compost
+         , n_fruits = nfrutos)
 
 glimpse(fisio)
 
 class(fisio)
-
-summary(fisio)
 
 ```
 
 # Data summary
 
 ```{r}
-sm <- rdt %>% 
-  group_by(year, treat) %>% 
-  summarise(across(height:sproud, ~ sum(!is.na(.))))
+sm <- fisio %>% 
+  group_by(treat) %>% 
+  summarise(across(pcfmf:rpp, ~ sum(!is.na(.))))
 
-sm <- fru %>% 
-  group_by(year, treat) %>% 
-  summarise(across(weigth:diameter_average, ~ sum(!is.na(.))))
+sm <- consumo %>% 
+  group_by(treat) %>% 
+  summarise(across(pdfmc:imf, ~ sum(!is.na(.))))
 
 sm
 
-diagnose(rdt)
-
-diagnose_outlier(rdt) %>% 
+diagnose_outlier(fisio) %>% 
   filter(outliers_cnt > 0) 
 
-diagnose_outlier(fru) %>% 
+diagnose_outlier(consumo) %>% 
   filter(outliers_cnt > 0)
 
 ```
@@ -113,27 +116,14 @@ Fig4: PCA Variables y tratamientos, rendimiento
 
 # Objetivo. 1
 
-## Plant height
+- Mostrar  el efecto de los abonos orgánicos compost y biol en la calidad del fruto de mango en madurez fisiológica
+
+## Firmeza de fruto (ffmf)
 
 ```{r}
-rdt %>% 
-  identify_outliers(height)
 
-rdt %>%
-  plot_outlier(diagnose_outlier(rdt) %>% 
-                 filter(variables == "height") %>% 
-                 select(variables) %>% 
-                 unlist())
-
-rdt_c <- rdt %>% 
-  outliers_remove(trait = "height"
-                  , model = "0 + (1|block) + stock*edge"
-                  , drop_na = F
-                  ) %>% 
-  pluck(1)
-  
-model <- rdt_c %>% 
-  lm(height  ~ block + stock*edge, .)
+model <- fisio %>% 
+  lm(ffmf  ~ block + stock*edge, .)
 
 plot_diag(model) %>% 
   plot_grid(plotlist = ., ncol = 2)
