@@ -26,6 +26,7 @@ library(corrplot)
 library(multcomp)
 library(dlookr)
 library(car)
+library(FSA)
 source('https://inkaverse.com/setup.r')
 
 session_info()
@@ -156,6 +157,26 @@ p1 <- mc %>%
            )
 
 p1
+
+```
+
+## Tabla variable 1 ##
+
+```{r}
+
+sts <- Summarize(ffmf ~ composts*biol, data = fisio, digits = 2, na.rm = TRUE)
+
+tb1 <- sts%>% 
+  merge(., mc) %>% 
+  select(composts, biol, mean, sd, min, max, groups) %>% 
+  mutate(treat = paste(composts,"x", biol)) %>% 
+   select(treat, everything()) %>% 
+  rename(Treat = treat,
+         Compost = composts,
+         Biol = biol,
+         Sig = groups)
+
+# tb1 %>% write_sheet(ss = gs, sheet = "tb1")
 
 ```
 
