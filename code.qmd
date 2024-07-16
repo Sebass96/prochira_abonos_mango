@@ -27,6 +27,7 @@ if (!require("remotes"))
 remotes::install_github("flavjack/inti")
 ```
 
+
 ```{r}
 #| label:  setup
 
@@ -44,7 +45,7 @@ library(FSA)
 session_info()
 ```
 
-# Importar datos
+# Import data
 
 ```{r}
 url <- "https://docs.google.com/spreadsheets/d/1cjWrS-EVcII85c-l_NuEfTpjhVMI156e8REM9GDVP_w/edit?gid=95386135#gid=95386135"
@@ -90,19 +91,17 @@ glimpse(consumo)
 # Data summary
 
 ```{r}
-fisio %>% 
+sm <- fisio %>% 
   group_by(treat) %>% 
   summarise(across(pcfmf:rpp, ~ sum(!is.na(.))))
 
-consumo %>% 
+sm
+
+sm <- consumo %>% 
   group_by(treat) %>% 
   summarise(across(pdfmc:imf, ~ sum(!is.na(.))))
 
-diagnose_outlier(fisio) %>% 
-  filter(outliers_cnt > 0) 
-
-diagnose_outlier(consumo) %>% 
-  filter(outliers_cnt > 0)
+sm
 
 ```
 
@@ -112,15 +111,9 @@ diagnose_outlier(consumo) %>%
 
 - Mostrar  el efecto de los abonos orgánicos compost y biol en la calidad del fruto de mango en madurez comercial
 
-## Objetivo. 1
+## Objetivo Específico 1
 
 > Mostrar  el efecto de los abonos orgánicos compost y biol en la calidad del fruto de mango en madurez fisiológica
-
-Fig1: ffmf, cifmf, phfmf.ssfmf, atfmf, msfmf
-
-tab sup1: tabla de suplmentaria: md,dvs,dif sig
-
-Fig2: PCA Variables y tratamientos, rendimiento
 
 ### Firmeza de fruto (ffmf)
 
@@ -164,27 +157,6 @@ p1a <- mc %>%
 
 p1a
 ```
-
-### Tabla variable 1
-
-```{r}
-sts <- rmout$data$clean %>% 
-  Summarize(lmd, data = ., digits = 2, na.rm = TRUE)
-
-tab <- sts%>% 
-  merge(., mc) %>% 
-  dplyr::select(composts, biol, emmean, sd, min, max, group) %>% 
-  rename(Compost = composts,
-         Biol = biol,
-         sig = group
-         , mean = emmean) %>% 
-  mutate(across(where(is.numeric), ~round(., 2)))
-
-tab
-
-# tb1 %>% write_sheet(ss = gs, sheet = "tb1")
-```
-
 
 ## Color interno del fruto (cifmf)
 
@@ -400,7 +372,7 @@ p1f <- mc %>%
 p1f
 ```
 
-## Figura 1
+## Figure 1
 
 ```{r}
 legend <- cowplot::get_plot_component(p1a, 'guide-box-top', return_all = TRUE)
@@ -463,6 +435,21 @@ f2b <- plot.PCA(x = pca, choix = "ind"
 
 ```
 
+## Figure 2
+
+```{r}
+list(f2a, f2b) %>% 
+  plot_grid(plotlist = ., ncol = 2, nrow = 1
+            , labels = "auto"
+            , rel_widths = c(1, 1.5)
+            ) %>% 
+  ggsave2(plot = ., "files/Fig-2.jpg", units = "cm"
+         , width = 25
+         , height = 10
+         )
+
+```
+
 # Correlation
 
 ```{r}
@@ -481,31 +468,9 @@ list(sf1) %>%
          , width = 15, height = 15)
 ```
 
-## Figura 2
-
-```{r}
-list(f2a, f2b) %>% 
-  plot_grid(plotlist = ., ncol = 2, nrow = 1
-            , labels = "auto"
-            , rel_widths = c(1, 1.5)
-            ) %>% 
-  ggsave2(plot = ., "files/Fig-2.jpg", units = "cm"
-         , width = 25
-         , height = 10
-         )
-
-```
-
-
-### Objetivo 2
+### Objetivo Específico 2
 
 > Mostrar  el efecto de los abonos orgánicos compost y biol en la calidad del fruto de mango en madurez comercial
-
-Fig3: pdfmc, ssfmc, atfmc, phfmc
-
-tab sup1: tabla de suplmentaria: md,dvs,dif sig
-
-Fig4: PCA Variables y tratamientos
 
 # Porcentaje deshidratación del fruto (pdfmc)
 
@@ -761,8 +726,7 @@ p2f <- mc %>%
 p2f
 ```
 
-
-## Figura 3
+## Figure 3
 
 ```{r}
 legend <- cowplot::get_plot_component(p2a, 'guide-box-top', return_all = TRUE)
@@ -825,17 +789,7 @@ f4b <- plot.PCA(x = pca, choix = "ind"
 
 ```
 
-# Correlation
-
-```{r}
-
-M <- cor(mv[,-c(1)], method ="pearson")
-
-corrplot(M, method = "number", type = "upper")
-
-```
-
-## Figura 4
+## Figure 4
 
 ```{r}
 list(f4a, f4b) %>% 
@@ -847,6 +801,25 @@ list(f4a, f4b) %>%
          , width = 25
          , height = 10
          )
+
+```
+
+# Correlation
+
+```{r}
+cor <- mv %>% 
+  dplyr::select(where(is.numeric)) %>% 
+  cor(., method ="pearson")
+
+sf2 <- ~ {
+  
+  corrplot::corrplot(cor, method = "number", type = "upper")
+}
+
+list(sf2) %>% 
+  plot_grid(plotlist = .) %>% 
+  ggsave2(plot = ., "files/FigS2.jpg", units = "cm"
+         , width = 15, height = 15)
 
 ```
 
