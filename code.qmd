@@ -1,6 +1,5 @@
 ---
-title: "Abonos orgánicos en la calidad  del fruto de mango (_Mangifera indica_ L). Var. Kent"
-author: Henry Morocho; Sebastian Casas; Flavio Lozano-Isla
+title: "ABONOS ORGÁNICOS EN LA CALIDAD Y MANEJO POSTCOSECHA DE MANGO (Mangifera indica L). VAR. KENT"
 format:
   html:
     toc: true
@@ -45,7 +44,15 @@ library(FSA)
 session_info()
 ```
 
+# Refrencias
+
+- (PCA) https://www.r-bloggers.com/2017/07/pca-course-using-factominer/
+- (PCA) https://www.youtube.com/watch?v=Uhw-1NilmAk&ab_channel=Fran%C3%A7oisHusson
+- (HCPC) https://youtu.be/EJqYTDTJJug
+
 # Import data
+
+> https://docs.google.com/spreadsheets/d/1cjWrS-EVcII85c-l_NuEfTpjhVMI156e8REM9GDVP_w/edit?gid=95386135#gid=95386135
 
 ```{r}
 url <- "https://docs.google.com/spreadsheets/d/1cjWrS-EVcII85c-l_NuEfTpjhVMI156e8REM9GDVP_w/edit?gid=95386135#gid=95386135"
@@ -143,6 +150,8 @@ mc <- emmeans(model, ~ biol|composts) %>%
   mutate(across(.group, trimws)) %>% 
   rename(group = ".group")
 
+mc %>% kable()
+
 p1a <- mc %>% 
   plot_smr(x = "composts"
            , y = "emmean"
@@ -188,6 +197,8 @@ mc <- emmeans(model, ~ biol|composts) %>%
   mutate(across(.group, trimws)) %>% 
   rename(group = ".group")
 
+mc %>% kable()
+
 p1b <- mc %>% 
   plot_smr(x = "composts"
            , y = "emmean"
@@ -229,6 +240,8 @@ mc <- emmeans(model, ~ biol|composts) %>%
   cld(Letters = letters, reversed = T) %>%
   mutate(across(.group, trimws)) %>% 
   rename(group = ".group")
+
+mc %>% kable()
 
 p1c <- mc %>% 
   plot_smr(x = "composts"
@@ -272,6 +285,8 @@ mc <- emmeans(model, ~ biol|composts) %>%
   mutate(across(.group, trimws)) %>% 
   rename(group = ".group")
 
+mc %>% kable()
+
 p1d <- mc %>% 
   plot_smr(x = "composts"
            , y = "emmean"
@@ -313,6 +328,8 @@ mc <- emmeans(model, ~ biol|composts) %>%
   cld(Letters = letters, reversed = T) %>%
   mutate(across(.group, trimws)) %>% 
   rename(group = ".group")
+
+mc %>% kable()
 
 p1e <- mc %>% 
   plot_smr(x = "composts"
@@ -356,6 +373,8 @@ mc <- emmeans(model, ~ biol|composts) %>%
   cld(Letters = letters, reversed = T) %>%
   mutate(across(.group, trimws)) %>% 
   rename(group = ".group")
+
+mc %>% kable()
 
 p1f <- mc %>% 
   plot_smr(x = "composts"
@@ -407,6 +426,7 @@ plot_grid(legend, p1, ncol = 1, align = 'v', rel_heights = c(0.05, 1)) %>%
          , height = 22
          )
 
+knitr::include_graphics("files/Fig-1.jpg")
 ```
 
 ## Multivariate
@@ -420,6 +440,10 @@ mv <- fisio %>%
   
 pca <- mv %>% 
   PCA(scale.unit = T, quali.sup = 1, graph = F) 
+
+# summary
+
+summary(pca, nbelements = Inf, nb.dec = 2)
 
 
 f2a <- plot.PCA(x = pca, choix = "var"
@@ -448,6 +472,7 @@ list(f2a, f2b) %>%
          , height = 10
          )
 
+knitr::include_graphics("files/Fig-2.jpg")
 ```
 
 # Correlation
@@ -456,6 +481,8 @@ list(f2a, f2b) %>%
 cor <- mv %>% 
   dplyr::select(where(is.numeric)) %>% 
   cor(., method ="pearson")
+
+cor %>% kable()
 
 sf1 <- ~ {
   
@@ -466,6 +493,8 @@ list(sf1) %>%
   plot_grid(plotlist = .) %>% 
   ggsave2(plot = ., "files/FigS1.jpg", units = "cm"
          , width = 15, height = 15)
+
+knitr::include_graphics("files/FigS1.jpg")
 ```
 
 ### Objetivo Específico 2
@@ -499,6 +528,8 @@ mc <- emmeans(model, ~ biol|composts) %>%
   cld(Letters = letters, reversed = T) %>%
   mutate(across(.group, trimws)) %>% 
   rename(group = ".group")
+
+mc %>% kable()
 
 p2a <- mc %>% 
   plot_smr(x = "composts"
@@ -542,6 +573,8 @@ mc <- emmeans(model, ~ biol|composts) %>%
   mutate(across(.group, trimws)) %>% 
   rename(group = ".group")
 
+mc %>% kable()
+
 p2b <- mc %>% 
   plot_smr(x = "composts"
            , y = "emmean"
@@ -583,6 +616,8 @@ mc <- emmeans(model, ~ biol|composts) %>%
   cld(Letters = letters, reversed = T) %>%
   mutate(across(.group, trimws)) %>% 
   rename(group = ".group")
+
+mc %>% kable()
 
 p2c <- mc %>% 
   plot_smr(x = "composts"
@@ -626,6 +661,8 @@ mc <- emmeans(model, ~ biol|composts) %>%
   mutate(across(.group, trimws)) %>% 
   rename(group = ".group")
 
+mc %>% kable()
+
 p2d <- mc %>% 
   plot_smr(x = "composts"
            , y = "emmean"
@@ -667,6 +704,8 @@ mc <- emmeans(model, ~ biol|composts) %>%
   cld(Letters = letters, reversed = T) %>%
   mutate(across(.group, trimws)) %>% 
   rename(group = ".group")
+
+mc %>% kable()
 
 p2e <- mc %>% 
   plot_smr(x = "composts"
@@ -710,6 +749,8 @@ mc <- emmeans(model, ~ biol|composts) %>%
   cld(Letters = letters, reversed = T) %>%
   mutate(across(.group, trimws)) %>% 
   rename(group = ".group")
+
+mc %>% kable()
 
 p2f <- mc %>% 
   plot_smr(x = "composts"
@@ -761,6 +802,7 @@ plot_grid(legend, p2, ncol = 1, align = 'v', rel_heights = c(0.05, 1)) %>%
          , height = 24
          )
 
+knitr::include_graphics("files/Fig-3.jpg")
 ```
 
 ## Multivariate
@@ -774,6 +816,10 @@ mv <- consumo %>%
   
 pca <- mv %>% 
   PCA(scale.unit = T, quali.sup = 1, graph = F) 
+
+# summary
+
+summary(pca, nbelements = Inf, nb.dec = 2)
 
 
 f4a <- plot.PCA(x = pca, choix = "var"
@@ -802,6 +848,7 @@ list(f4a, f4b) %>%
          , height = 10
          )
 
+knitr::include_graphics("files/Fig-4.jpg")
 ```
 
 # Correlation
@@ -810,6 +857,8 @@ list(f4a, f4b) %>%
 cor <- mv %>% 
   dplyr::select(where(is.numeric)) %>% 
   cor(., method ="pearson")
+
+cor %>% kable()
 
 sf2 <- ~ {
   
@@ -821,5 +870,6 @@ list(sf2) %>%
   ggsave2(plot = ., "files/FigS2.jpg", units = "cm"
          , width = 15, height = 15)
 
+knitr::include_graphics("files/FigS2.jpg")
 ```
 
