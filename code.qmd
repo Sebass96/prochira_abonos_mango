@@ -876,9 +876,29 @@ knitr::include_graphics("files/FigS2.jpg")
 # Datos metereológicos
 
 ```{r}
-met <- range_read(ss = gs, sheet = "clima")
+met <- range_read(ss = gs, sheet = "clima") %>% 
+  mutate(date = as_date(Fecha))
 
 str(met)
+names(met)
+
+met %>% 
+  ggplot(aes(x = date)) +
+  geom_line(aes(y = TMax), size=1, color = "red") + 
+  geom_line(aes(y = TMin), size=1, color = "green") +
+  geom_col(aes(y = PP), color = "blue") +
+  scale_x_date(date_breaks = "1 month", date_labels = "%m-%Y") +
+  scale_y_continuous(
+    
+    # Features of the first axis
+    name = "Temperature (Celsius °)",
+    
+    # Add a second axis and specify its features
+    sec.axis = sec_axis(name = "Preicpitation (mm)")
+  ) 
+
+
+
 
 
 ```
