@@ -30,11 +30,11 @@ remotes::install_github("flavjack/inti")
 ```{r}
 #| label:  setup
 
-source('https://inkaverse.com/setup.r')
 library(emmeans)
 library(corrplot)
 library(multcomp)
 library(FSA)
+source('https://inkaverse.com/setup.r')
 
 # library(rstatix)
 # library(dlookr)
@@ -871,5 +871,15 @@ list(sf2) %>%
          , width = 15, height = 15)
 
 knitr::include_graphics("files/FigS2.jpg")
+```
+
+# Datos metereológicos
+
+```{r}
+met <- range_read(ss = gs, sheet = "clima")
+
+str(met)
+
+
 ```
 
