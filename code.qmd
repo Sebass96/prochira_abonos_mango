@@ -882,24 +882,31 @@ met <- range_read(ss = gs, sheet = "clima") %>%
 str(met)
 names(met)
 
-met %>% 
+max(met$PP)
+
+scale <- 3
+
+plot <- met %>% 
   ggplot(aes(x = date)) +
-  geom_line(aes(y = TMax), size=1, color = "red") + 
-  geom_line(aes(y = TMin), size=1, color = "green") +
-  geom_col(aes(y = PP), color = "blue") +
-  scale_x_date(date_breaks = "1 month", date_labels = "%m-%Y") +
-  scale_y_continuous(
-    
-    # Features of the first axis
-    name = "Temperature (Celsius °)",
-    
-    # Add a second axis and specify its features
-    sec.axis = sec_axis(name = "Preicpitation (mm)")
-  ) 
+  geom_line(aes(y = TMax, color = "Tmax (°C)"), size= 0.8) + 
+  geom_line(aes(y = TMin, color = "Tmin (°C)"), size= 0.8) +
+  geom_bar(aes(y = PP/scale)
+            , stat="identity", size=.1, fill="blue", color="black", alpha=.4) +
+  geom_line(aes(y = HR/scale, color = "HR (%)"), size = 0.8) +
+  scale_color_manual("", values = c("skyblue", "red", "blue")) +
+  scale_y_continuous(limits = c(0, 40)
+                     , expand = c(0, 0)
+                     , name = "Temperature (°C)"
+                     , sec.axis = sec_axis(~ . * scale, name = "Precipitation (mm)")
+                     ) +
+  scale_x_date(date_breaks = "1 month", date_labels = "%m-%Y", name = NULL) +
+  theme_minimal_grid() +
+  theme(legend.position = "top")
 
+plot %>% 
+  ggsave2(plot = ., "files/weather.jpg", units = "cm"
+         , width = 25, height = 15)
 
-
-
-
+knitr::include_graphics("files/weather.jpg")
 ```
 
