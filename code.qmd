@@ -400,14 +400,14 @@ p1 <- list(p1a + labs(x = NULL) + theme(legend.position="none"
                                         , axis.title.x=element_blank()
                                         , axis.text.x=element_blank()
                                         , axis.ticks.x=element_blank())
-           , p1b + labs(x = NULL) + theme(legend.position="none"
-                                        , axis.title.x=element_blank()
-                                        , axis.text.x=element_blank()
-                                        , axis.ticks.x=element_blank())
-           , p1c + labs(x = NULL) + theme(legend.position="none"
-                                        , axis.title.x=element_blank()
-                                        , axis.text.x=element_blank()
-                                        , axis.ticks.x=element_blank())
+           # , p1b + labs(x = NULL) + theme(legend.position="none"
+           #                              , axis.title.x=element_blank()
+           #                              , axis.text.x=element_blank()
+           #                              , axis.ticks.x=element_blank())
+           # , p1c + labs(x = NULL) + theme(legend.position="none"
+           #                              , axis.title.x=element_blank()
+           #                              , axis.text.x=element_blank()
+           #                              , axis.ticks.x=element_blank())
            , p1d + labs(x = NULL) + theme(legend.position="none"
                                         , axis.title.x=element_blank()
                                         , axis.text.x=element_blank()
@@ -422,8 +422,8 @@ p1 <- list(p1a + labs(x = NULL) + theme(legend.position="none"
 plot_grid(legend, p1, ncol = 1, align = 'v', rel_heights = c(0.05, 1)) %>% 
   ggsave2(plot = ., "files/Fig-1.jpg"
          , units = "cm"
-         , width = 25
-         , height = 22
+         , width = 20
+         , height = 18
          )
 
 knitr::include_graphics("files/Fig-1.jpg")
