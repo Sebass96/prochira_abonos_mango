@@ -26,7 +26,6 @@ if (!require("remotes"))
 remotes::install_github("flavjack/inti")
 ```
 
-
 ```{r}
 #| label:  setup
 
@@ -34,25 +33,25 @@ library(emmeans)
 library(corrplot)
 library(multcomp)
 library(FSA)
+library(factoextra)
+library(corrplot)
+library(png)
 source('https://inkaverse.com/setup.r')
 
 # library(rstatix)
 # library(dlookr)
 # library(car)
 
-
 session_info()
 ```
 
-# Refrencias
+# References
 
 - (PCA) https://www.r-bloggers.com/2017/07/pca-course-using-factominer/
 - (PCA) https://www.youtube.com/watch?v=Uhw-1NilmAk&ab_channel=Fran%C3%A7oisHusson
 - (HCPC) https://youtu.be/EJqYTDTJJug
 
 # Import data
-
-> https://docs.google.com/spreadsheets/d/1cjWrS-EVcII85c-l_NuEfTpjhVMI156e8REM9GDVP_w/edit?gid=95386135#gid=95386135
 
 ```{r}
 url <- "https://docs.google.com/spreadsheets/d/1cjWrS-EVcII85c-l_NuEfTpjhVMI156e8REM9GDVP_w/edit?gid=95386135#gid=95386135"
@@ -109,7 +108,6 @@ sm <- consumo %>%
   summarise(across(pdfmc:imf, ~ sum(!is.na(.))))
 
 sm
-
 ```
 
 # Objetivos
@@ -122,7 +120,7 @@ sm
 
 > Mostrar  el efecto de los abonos orgánicos compost y biol en la calidad del fruto de mango en madurez fisiológica
 
-### Firmeza de fruto (ffmf)
+### Fruit firmness at physiological maturity (FFPM)
 
 ```{r}
 trait <- "ffmf"
@@ -159,15 +157,16 @@ p1a <- mc %>%
            , sig = "group"
            , error = "SE"
            , color = T
-           , xlab = "compost"
-           , ylab = "Firmeza del fruto (Kgf)"
+           , xlab = "Composts"
+           , ylab = "Fruit firmness at physiological maturity (kgf.cm^{-2})"
+           , glab = "Biol"
            , ylimits = c(0, 16, 4)
            )
 
 p1a
 ```
 
-## Color interno del fruto (cifmf)
+###  Internal fruit color at physiological maturity (IFCPM).
 
 > Excluir esta variable como cuantitativo
 
@@ -206,14 +205,15 @@ p1b <- mc %>%
            , sig = "group"
            , error = "SE"
            , color = T
-           , ylab = "Color interno del fruto"
+           , xlab = "Composts"
+           , ylab = "Internal fruit color at physiological maturity"
            , ylimits = c(0, 3, 1)
            )
 
 p1b
 ```
 
-## Potencia de hidrogeno del fruto (phfmf)
+### Fruit pH at physiological maturity  (FpHPM)
 
 ```{r}
 trait <- "phfmf"
@@ -250,6 +250,7 @@ p1c <- mc %>%
            , sig = "group"
            , error = "SE"
            , color = T
+           , xlab = "Composts"
            , ylab = "pH del Fruto"
            , ylimits = c(0, 4, 1)
            )
@@ -257,7 +258,7 @@ p1c <- mc %>%
 p1c
 ```
 
-## Solidos solubles del fruto (ssfmf)
+### Soluble solids content of the fruit at physiological maturity (SSCFPM)
 
 ```{r}
 trait <- "ssfmf"
@@ -294,14 +295,15 @@ p1d <- mc %>%
            , sig = "group"
            , error = "SE"
            , color = T
-           , ylab = "Solidos solubles del fruto (brix^{o})"
+           , xlab = "Composts"
+           , ylab = "Soluble solids content of the fruit at physiological maturity (brix^{o})"
            , ylimits = c(0, 12, 2)
            )
 
 p1d
 ```
 
-## Acidez titulable del fruto (atfmf)
+### Titratable acidity of the fruit at physiological maturity (TAFPM)
 
 ```{r}
 trait <- "atfmf"
@@ -338,15 +340,15 @@ p1e <- mc %>%
            , sig = "group"
            , error = "SE"
            , color = T
-           , xlab = "compost"
-           , ylab = "Acidez titulable del fruto ('%')"
+           , xlab = "Composts"
+           , ylab = "Titratable acidity of the fruit at physiological maturity ('%')"
            , ylimits = c(0, 2, 1)
            )
 
 p1e
 ```
 
-## Materia seca del fruto (msfmf)
+### Fruit dry matter percentage at physiological maturity (FDMPPM)
 
 ```{r}
 trait <- "msfmf"
@@ -383,15 +385,15 @@ p1f <- mc %>%
            , sig = "group"
            , error = "SE"
            , color = T
-           , xlab = "compost"
-           , ylab = "Materia seca del fruto ('%')"
+           , xlab = "Composts"
+           , ylab = "Fruit dry matter at physiological maturity ('%')"
            , ylimits = c(0, 25, 5)
            )
 
 p1f
 ```
 
-## Figure 1
+### Figure 1
 
 ```{r}
 legend <- cowplot::get_plot_component(p1a, 'guide-box-top', return_all = TRUE)
@@ -419,25 +421,43 @@ p1 <- list(p1a + labs(x = NULL) + theme(legend.position="none"
             , labels = "auto"
             ) 
 
-plot_grid(legend, p1, ncol = 1, align = 'v', rel_heights = c(0.05, 1)) %>% 
+fig <- plot_grid(legend, p1, ncol = 1, align = 'v', rel_heights = c(0.05, 1))
+  
+fig %>% 
   ggsave2(plot = ., "files/Fig-1.jpg"
          , units = "cm"
-         , width = 20
-         , height = 18
+         , width = 25
+         , height = 27
+         )
+
+fig %>% 
+  ggsave2(plot = ., "files/Fig-1.eps"
+         , units = "cm"
+         , width = 25
+         , height = 27
          )
 
 knitr::include_graphics("files/Fig-1.jpg")
 ```
 
-## Multivariate
+### Multivariate
 
 ```{r}
 mv <- fisio %>% 
   group_by(composts, biol) %>% 
   summarise(across(where(is.numeric), ~ mean(., na.rm = T))) %>%   
   unite("treat", composts:biol, sep = "-") %>% 
-  rename(Treat = treat)
-  
+  rename(Treat = treat
+         ,PFCCPM = pcfmf
+         ,FFPM = ffmf
+         ,IFCPM = cifmf
+         ,SSCFPM = ssfmf
+         ,FpHPM = phfmf
+         ,TAFPM = atfmf
+         ,FDMPPM = msfmf
+         ,FPMI = imf
+         ,RPP = rpp)
+   
 pca <- mv %>% 
   PCA(scale.unit = T, quali.sup = 1, graph = F) 
 
@@ -459,15 +479,21 @@ f2b <- plot.PCA(x = pca, choix = "ind"
 
 ```
 
-## Figure 2
+### Figure 2
 
 ```{r}
-list(f2a, f2b) %>% 
+fig <- list(f2a, f2b) %>% 
   plot_grid(plotlist = ., ncol = 2, nrow = 1
             , labels = "auto"
             , rel_widths = c(1, 1.5)
-            ) %>% 
+            )
+fig %>% 
   ggsave2(plot = ., "files/Fig-2.jpg", units = "cm"
+         , width = 25
+         , height = 10
+         )
+fig %>% 
+  ggsave2(plot = ., "files/Fig-2.eps", units = "cm"
          , width = 25
          , height = 10
          )
@@ -475,7 +501,73 @@ list(f2a, f2b) %>%
 knitr::include_graphics("files/Fig-2.jpg")
 ```
 
-# Correlation
+### Principal components
+
+```{r}
+var <- get_pca_var(pca)
+
+tmp <- tempfile(fileext = ".png")
+ppi <- 300
+png(tmp, width=8*ppi, height=10*ppi, res=ppi)
+corrplot(var$cor, 
+         method="number",
+         tl.col="black", 
+         tl.srt=45,)
+graphics.off()
+
+pt1 <- png::readPNG(tmp) %>%
+  grid::rasterGrob(interpolate = TRUE)
+
+pt2 <- fviz_eig(pca, 
+                addlabels=TRUE,
+                hjust = 0.05,
+                barfill="white",
+                barcolor ="darkblue",
+                linecolor ="red") + 
+  ylim(0, 90) + 
+  labs(
+    title = "PCA - percentage of explained variances",
+    y = "Variance (%)") +
+  theme_minimal()
+
+pt3 <- fviz_contrib(pca,
+                     choice = "var", 
+                     axes = 1, 
+                     top = 10,
+                     fill="white",
+                     color ="darkblue",
+                     sort.val = "desc") +
+  ylim(0, 15) + 
+  labs(title = "Dim 1 - variables contribution") 
+
+pt4 <- fviz_contrib(pca,
+                     choice = "var", 
+                     axes = 2, 
+                     top = 10,
+                     fill="white",
+                     color ="darkblue",
+                     sort.val = "desc") +
+  ylim(0, 80) + 
+  labs(title = "Dim 2 - variables contribution") 
+
+plot <- ggdraw(xlim = c(0.0, 1.0), ylim = c(0, 1.0))+
+  draw_plot(pt1,  width = 0.4, height = 0.99, x = 0.62, y = 0.0) +  
+  draw_plot(pt2,  width = 0.6, height = 0.34, x = 0.03, y = 0.66) +
+  draw_plot(pt3, width = 0.6, height = 0.34, x = 0.03, y = 0.33) + 
+  draw_plot(pt4, width = 0.6, height = 0.34, x = 0.03, y = 0.0) +
+        draw_plot_label(
+    label = c("a", "b", "c", "d"),
+    x = c(0.005, 0.005, 0.005, 0.65),
+    y = c(0.999, 0.67, 0.34, 0.999))
+
+ggsave2(plot = plot, "files/FigS1.jpg", height = 25, width = 40, units = "cm")
+
+ggsave2(plot = plot, "files/FigS1.eps", height = 25, width = 40, units = "cm")
+
+knitr::include_graphics("files/FigS1.jpg")
+```
+
+### Correlation
 
 ```{r}
 cor <- mv %>% 
@@ -489,22 +581,28 @@ sf1 <- ~ {
   corrplot::corrplot(cor, method = "number", type = "upper")
 }
 
-list(sf1) %>% 
-  plot_grid(plotlist = .) %>% 
-  ggsave2(plot = ., "files/FigS1.jpg", units = "cm"
+fig <- list(sf1) %>% 
+  plot_grid(plotlist = .)
+
+fig %>% 
+  ggsave2(plot = ., "files/FigSs1.jpg", units = "cm"
          , width = 15, height = 15)
 
-knitr::include_graphics("files/FigS1.jpg")
+fig %>% 
+  ggsave2(plot = ., "files/FigSs1.eps", units = "cm"
+         , width = 15, height = 15)
+
+knitr::include_graphics("files/FigSs1.jpg")
 ```
 
-### Objetivo Específico 2
+## Objetivo Específico 2
 
-> Mostrar  el efecto de los abonos orgánicos compost y biol en la calidad del fruto de mango en madurez comercial
+> Mostrar el efecto de los abonos orgánicos compost y biol en la calidad del fruto de mango en madurez comercial
 
-# Porcentaje deshidratación del fruto (pdfmc)
+### Fruit firmness at commercial maturity (FFCM)
 
 ```{r}
-trait <- "pdfmc"
+trait <- "ffmc"
 cs <- consumo
 
 lmm <- paste({{trait}}, "~ 1 + (1|repetition) + composts*biol") %>% as.formula()
@@ -538,14 +636,16 @@ p2a <- mc %>%
            , sig = "group"
            , error = "SE"
            , color = T
-           , ylab = "Deshidratación del fruto ('%')"
-           , ylimits = c(0, 8, 2)
+           , xlab = "Composts"
+           , ylab = "Fruit firmness at commercial maturity (kgf.cm^{-2})"
+           , glab = "Biol"
+           , ylimits = c(0, 6, 2)
            )
 
 p2a
 ```
 
-# Solidos solubles del fruto (ssfmc)
+### Soluble solids content of the fruit at commercial maturity (SSCFCM)
 
 ```{r}
 trait <- "ssfmc"
@@ -582,14 +682,15 @@ p2b <- mc %>%
            , sig = "group"
            , error = "SE"
            , color = T
-           , ylab = "Solidos solubles del fruto (brix^{o})"
+           , xlab = "Composts"
+           , ylab = "Soluble solids content of the fruit at commercial maturity (brix^{o})"
            , ylimits = c(0, 18, 3)
            )
 
 p2b
 ```
 
-# Acidez titulable del fruto (atfmc)
+### Titratable acidity of the fruit at commercial maturity (TAFCM)
 
 ```{r}
 trait <- "atfmc"
@@ -626,17 +727,18 @@ p2c <- mc %>%
            , sig = "group"
            , error = "SE"
            , color = T
-           , ylab = "Acidez titulable del fruto ('%')"
+           , xlab = "Composts"
+           , ylab = "Titratable acidity of the fruit at commercial maturity ('%')"
            , ylimits = c(0, 0.8, 0.2)
            )
 
 p2c
 ```
 
-# Potencial de hidrógeno del fruto (phfmc)
+### Fruit dehydration percentage at commercial maturity (FDPCM)
 
 ```{r}
-trait <- "phfmc"
+trait <- "pdfmc"
 cs <- consumo
 
 lmm <- paste({{trait}}, "~ 1 + (1|repetition) + composts*biol") %>% as.formula()
@@ -670,17 +772,19 @@ p2d <- mc %>%
            , sig = "group"
            , error = "SE"
            , color = T
-           , ylab = "pH del Fruto"
-           , ylimits = c(0, 6, 2)
+           , xlab = "Composts"
+           , ylab = "Fruit dehydration at commercial maturity ('%')"
+           , glab = "Biol"
+           , ylimits = c(0, 8, 2)
            )
 
 p2d
 ```
 
-# Color interno del fruto (cifmc)
+### Fruit pH at commercial maturity (FpHCM).
 
 ```{r}
-trait <- "cifmc"
+trait <- "phfmc"
 cs <- consumo
 
 lmm <- paste({{trait}}, "~ 1 + (1|repetition) + composts*biol") %>% as.formula()
@@ -714,18 +818,18 @@ p2e <- mc %>%
            , sig = "group"
            , error = "SE"
            , color = T
-           , xlab = "compost"
-           , ylab = "Color interno del fruto"
-           , ylimits = c(0, 5, 1)
+           , xlab = "Composts"
+           , ylab = "Fruit pH at commercial maturity"
+           , ylimits = c(0, 6, 2)
            )
 
 p2e
 ```
 
-# Firmeza del fruto (ffmc)
+### Internal fruit color at commercial maturity (IFCCM).
 
 ```{r}
-trait <- "ffmc"
+trait <- "cifmc"
 cs <- consumo
 
 lmm <- paste({{trait}}, "~ 1 + (1|repetition) + composts*biol") %>% as.formula()
@@ -759,15 +863,15 @@ p2f <- mc %>%
            , sig = "group"
            , error = "SE"
            , color = T
-           , xlab = "compost"
-           , ylab = "Firmeza del fruto (Kgf)"
-           , ylimits = c(0, 6, 2)
+           , xlab = "Composts"
+           , ylab = "Internal fruit color at commercial maturity"
+           , ylimits = c(0, 5, 1)
            )
 
 p2f
 ```
 
-## Figure 3
+### Figure 3
 
 ```{r}
 legend <- cowplot::get_plot_component(p2a, 'guide-box-top', return_all = TRUE)
@@ -780,39 +884,49 @@ p2 <- list(p2a + labs(x = NULL) + theme(legend.position="none"
                                         , axis.title.x=element_blank()
                                         , axis.text.x=element_blank()
                                         , axis.ticks.x=element_blank())
-           , p2c + labs(x = NULL) + theme(legend.position="none"
-                                        , axis.title.x=element_blank()
-                                        , axis.text.x=element_blank()
-                                        , axis.ticks.x=element_blank())
-           , p2d + labs(x = NULL) + theme(legend.position="none"
-                                        , axis.title.x=element_blank()
-                                        , axis.text.x=element_blank()
-                                        , axis.ticks.x=element_blank())
-           , p2e + theme(legend.position="none")
-           , p2f + theme(legend.position="none")
+           , p2c + theme(legend.position="none")
+           , p2d + theme(legend.position="none")
+           # , p2e + theme(legend.position="none")
+           # , p2f + theme(legend.position="none")
            ) %>% 
   plot_grid(plotlist = ., ncol = 2
             , labels = "auto"
             ) 
 
-plot_grid(legend, p2, ncol = 1, align = 'v', rel_heights = c(0.05, 1)) %>% 
+fig <- plot_grid(legend, p2, ncol = 1, align = 'v', rel_heights = c(0.05, 1))
+
+fig %>% 
   ggsave2(plot = ., "files/Fig-3.jpg"
          , units = "cm"
-         , width = 26
-         , height = 24
+         , width = 25
+         , height = 27
+         )
+
+fig %>% 
+  ggsave2(plot = ., "files/Fig-3.eps"
+         , units = "cm"
+         , width = 25
+         , height = 27
          )
 
 knitr::include_graphics("files/Fig-3.jpg")
 ```
 
-## Multivariate
+### Multivariate
 
 ```{r}
 mv <- consumo %>% 
   group_by(composts, biol) %>% 
   summarise(across(where(is.numeric), ~ mean(., na.rm = T))) %>%   
   unite("treat", composts:biol, sep = "-") %>% 
-  rename(Treat = treat)
+  rename(Treat = treat
+         ,FDPCM = pdfmc
+         ,FFCM = ffmc
+         ,IFCCM = cifmc
+         ,SSCFCM = ssfmc
+         ,FpHCM = phfmc
+         ,TAFCM = atfmc
+         ,FCMI = imf)
   
 pca <- mv %>% 
   PCA(scale.unit = T, quali.sup = 1, graph = F) 
@@ -835,15 +949,22 @@ f4b <- plot.PCA(x = pca, choix = "ind"
 
 ```
 
-## Figure 4
+### Figure 4
 
 ```{r}
-list(f4a, f4b) %>% 
+fig <- list(f4a, f4b) %>% 
   plot_grid(plotlist = ., ncol = 2, nrow = 1
             , labels = "auto"
             , rel_widths = c(1, 1.5)
-            ) %>% 
+            )
+fig %>% 
   ggsave2(plot = ., "files/Fig-4.jpg", units = "cm"
+         , width = 25
+         , height = 10
+         )
+
+fig %>% 
+  ggsave2(plot = ., "files/Fig-4.eps", units = "cm"
          , width = 25
          , height = 10
          )
@@ -851,7 +972,73 @@ list(f4a, f4b) %>%
 knitr::include_graphics("files/Fig-4.jpg")
 ```
 
-# Correlation
+### Principal components
+
+```{r}
+var <- get_pca_var(pca)
+
+tmp <- tempfile(fileext = ".png")
+ppi <- 300
+png(tmp, width=8*ppi, height=8*ppi, res=ppi)
+corrplot(var$cor, 
+         method="number",
+         tl.col="black", 
+         tl.srt=45,)
+graphics.off()
+
+pt1 <- png::readPNG(tmp) %>%
+  grid::rasterGrob(interpolate = TRUE)
+
+pt2 <- fviz_eig(pca, 
+                addlabels=TRUE,
+                hjust = 0.05,
+                barfill="white",
+                barcolor ="darkblue",
+                linecolor ="red") + 
+  ylim(0, 100) + 
+  labs(
+    title = "PCA - percentage of explained variances",
+    y = "Variance (%)") +
+  theme_minimal()
+
+pt3 <- fviz_contrib(pca,
+                     choice = "var", 
+                     axes = 1, 
+                     top = 10,
+                     fill="white",
+                     color ="darkblue",
+                     sort.val = "desc") +
+  ylim(0, 20) + 
+  labs(title = "Dim 1 - variables contribution") 
+
+pt4 <- fviz_contrib(pca,
+                     choice = "var", 
+                     axes = 2, 
+                     top = 10,
+                     fill="white",
+                     color ="darkblue",
+                     sort.val = "desc") +
+  ylim(0, 80) + 
+  labs(title = "Dim 2 - variables contribution") 
+
+plot <- ggdraw(xlim = c(0.0, 1.0), ylim = c(0, 1.0))+
+  draw_plot(pt1,  width = 0.4, height = 0.99, x = 0.62, y = 0.0) +  
+  draw_plot(pt2,  width = 0.6, height = 0.34, x = 0.03, y = 0.66) +
+  draw_plot(pt3, width = 0.6, height = 0.34, x = 0.03, y = 0.33) + 
+  draw_plot(pt4, width = 0.6, height = 0.34, x = 0.03, y = 0.0) +
+        draw_plot_label(
+    label = c("a", "b", "c", "d"),
+    x = c(0.005, 0.005, 0.005, 0.65),
+    y = c(0.999, 0.67, 0.34, 0.999))
+
+ggsave2(plot = plot, "files/FigS2.jpg", height = 25, width = 40, units = "cm")
+
+ggsave2(plot = plot, "files/FigS2.eps", height = 25, width = 40, units = "cm")
+
+knitr::include_graphics("files/FigS2.jpg")
+```
+
+### Correlation
 
 ```{r}
 cor <- mv %>% 
@@ -865,12 +1052,18 @@ sf2 <- ~ {
   corrplot::corrplot(cor, method = "number", type = "upper")
 }
 
-list(sf2) %>% 
-  plot_grid(plotlist = .) %>% 
-  ggsave2(plot = ., "files/FigS2.jpg", units = "cm"
+fig <- list(sf2) %>% 
+  plot_grid(plotlist = .)
+
+fig %>% 
+  ggsave2(plot = ., "files/FigSs2.jpg", units = "cm"
          , width = 15, height = 15)
 
-knitr::include_graphics("files/FigS2.jpg")
+fig %>% 
+  ggsave2(plot = ., "files/FigSs2.eps", units = "cm"
+         , width = 15, height = 15)
+
+knitr::include_graphics("files/FigSs2.jpg")
 ```
 
 # Datos metereológicos
