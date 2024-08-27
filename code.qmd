@@ -1,5 +1,7 @@
 ---
-title: "ORGANIC FERTILIZERS IN THE QUALITY AND POST-HARVEST MANAGEMENT OF MANGO (_Mangifera indica_ L). VAR. KENT"
+title: "Impact of organic fertilizers on quality and post-harvest management of Mango ‘Kent’ (_Mangifera indica_ L.)"
+subtitle: "Agronomy - MDPI"
+author: "Henry Morocho-Romero; Ricardo Peña-Castillo; Arturo Morales-Pizarro; Junior Domínguez-Chozo; Sandy Vilchez-Navarro; Sebastian Casas-Niño; Gabriela Cárdenas-Huamán; Nery Tirabante-Terrones; Esdwin-Oberti Nuñez-Ticliahunca; Ana-Gabriela Montañez-Artica; Leslie Velarde-Apaza; Max Ramirez-Rojas; Juancarlos Cruz; Flavio Lozano-Isla."
 format:
   html:
     toc: true
@@ -14,9 +16,9 @@ execute:
   echo: true
 ---
 
-# Setup
+# Porject Setup
 
-Install development version.
+Install *inti* development version.
 
 ```{r}
 #| eval: false
@@ -38,12 +40,13 @@ library(corrplot)
 library(png)
 source('https://inkaverse.com/setup.r')
 
+cat("Project: ", getwd(), "\n")
 session_info()
 ```
 
 # Import data
 
-Data from the variables evaluated in 2023 during the 2022-2023 growing season. The evaluations focused on mango fruits of the ‘Kent’ variety at two stages: physiological maturity and commercial maturity.
+Data was imported from the field book evaluated during the 2022-2023 growing season. The evaluations focused on mango fruits of the ‘Kent’ variety at two stages: physiological maturity and commercial maturity.
 
 ```{r}
 url <- "https://docs.google.com/spreadsheets/d/1cjWrS-EVcII85c-l_NuEfTpjhVMI156e8REM9GDVP_w/edit?gid=95386135#gid=95386135"
@@ -84,6 +87,15 @@ consumo <- gs %>%
          , n_fruits = nfrutos)
 
 glimpse(consumo)
+```
+
+
+```{r}
+rendimiento %>% kable(caption = "Yield related traits")
+
+fisio %>% kable(caption = "Evaluation of fruits at fisiological maturity")
+
+consumo %>% kable(caption = "Evaluation of fruits at commercial maturity")
 ```
 
 # Data summary
@@ -385,7 +397,7 @@ p1f
 
 ### Figure 1
 
-Univariate analysis of the most critical variables for determining the physiological maturity of the fruit at harvest time and for preventing handling damage during commercialization or industrial processes.
+Univariate analysis of the variables for determining the physiological maturity of the fruit at harvest time and for preventing handling damage during commercialization or industrial processes.
 
 ```{r}
 legend <- cowplot::get_plot_component(p1a, 'guide-box-top', return_all = TRUE)
@@ -416,25 +428,25 @@ p1 <- list(p1a + labs(x = NULL) + theme(legend.position="none"
 fig <- plot_grid(legend, p1, ncol = 1, align = 'v', rel_heights = c(0.05, 1))
   
 fig %>% 
-  ggsave2(plot = ., "files/Fig-1.jpg"
+  ggsave2(plot = ., "agronomy/Fig-1.jpg"
          , units = "cm"
-         , width = 25
-         , height = 27
+         , width = 26
+         , height = 26
          )
 
 fig %>% 
-  ggsave2(plot = ., "files/Fig-1.eps"
+  ggsave2(plot = ., "agronomy/Fig-1.eps"
          , units = "cm"
-         , width = 25
-         , height = 27
+         , width = 26
+         , height = 26
          )
 
-knitr::include_graphics("files/Fig-1.jpg")
+knitr::include_graphics("agronomy/Fig-1.jpg")
 ```
 
 ### Multivariate analysis
 
-Principal Component Analysis (PCA) of quality characteristics to correlate with mango fruits at physiological maturity from compost and biol applications.
+Principal Component Analysis (PCA) of quality traits to correlate with mango fruits at physiological maturity from compost and biol applications.
 
 ```{r}
 mv <- fisio %>% 
@@ -461,7 +473,7 @@ summary(pca, nbelements = Inf, nb.dec = 2)
 
 
 f2a <- plot.PCA(x = pca, choix = "var"
-                , cex=0.8
+                , cex=0.5
                 )
 
 f2b <- plot.PCA(x = pca, choix = "ind"
@@ -484,17 +496,17 @@ fig <- list(f2a, f2b) %>%
             , rel_widths = c(1, 1.5)
             )
 fig %>% 
-  ggsave2(plot = ., "files/Fig-2.jpg", units = "cm"
+  ggsave2(plot = ., "agronomy/Fig-2.jpg", units = "cm"
          , width = 25
          , height = 10
          )
 fig %>% 
-  ggsave2(plot = ., "files/Fig-2.eps", units = "cm"
+  ggsave2(plot = ., "agronomy/Fig-2.eps", units = "cm"
          , width = 25
          , height = 10
          )
 
-knitr::include_graphics("files/Fig-2.jpg")
+knitr::include_graphics("agronomy/Fig-2.jpg")
 ```
 
 ### Supplementary Figure 1
@@ -504,19 +516,7 @@ Results of the contributions and correlation of the variables in the Principal C
 ```{r}
 var <- get_pca_var(pca)
 
-tmp <- tempfile(fileext = ".png")
-ppi <- 300
-png(tmp, width=8*ppi, height=10*ppi, res=ppi)
-corrplot(var$cor, 
-         method="number",
-         tl.col="black", 
-         tl.srt=45,)
-graphics.off()
-
-pt1 <- png::readPNG(tmp) %>%
-  grid::rasterGrob(interpolate = TRUE)
-
-pt2 <- fviz_eig(pca, 
+pt1 <- fviz_eig(pca, 
                 addlabels=TRUE,
                 hjust = 0.05,
                 barfill="white",
@@ -528,7 +528,7 @@ pt2 <- fviz_eig(pca,
     y = "Variance (%)") +
   theme_minimal()
 
-pt3 <- fviz_contrib(pca,
+pt2 <- fviz_contrib(pca,
                      choice = "var", 
                      axes = 1, 
                      top = 10,
@@ -538,7 +538,7 @@ pt3 <- fviz_contrib(pca,
   ylim(0, 15) + 
   labs(title = "Dim 1 - variables contribution") 
 
-pt4 <- fviz_contrib(pca,
+pt3 <- fviz_contrib(pca,
                      choice = "var", 
                      axes = 2, 
                      top = 10,
@@ -548,21 +548,28 @@ pt4 <- fviz_contrib(pca,
   ylim(0, 80) + 
   labs(title = "Dim 2 - variables contribution") 
 
-plot <- ggdraw(xlim = c(0.0, 1.0), ylim = c(0, 1.0))+
-  draw_plot(pt1,  width = 0.4, height = 0.99, x = 0.62, y = 0.0) +  
-  draw_plot(pt2,  width = 0.6, height = 0.34, x = 0.03, y = 0.66) +
-  draw_plot(pt3, width = 0.6, height = 0.34, x = 0.03, y = 0.33) + 
-  draw_plot(pt4, width = 0.6, height = 0.34, x = 0.03, y = 0.0) +
-        draw_plot_label(
-    label = c("a", "b", "c", "d"),
-    x = c(0.005, 0.005, 0.005, 0.65),
-    y = c(0.999, 0.67, 0.34, 0.999))
 
-ggsave2(plot = plot, "files/FigS1.jpg", height = 25, width = 40, units = "cm")
+pt4 <- ~ {
+  
+  corrplot(var$cor, 
+         method="number",
+         tl.col="black", 
+         tl.srt=45,)
+  
+}
 
-ggsave2(plot = plot, "files/FigS1.eps", height = 25, width = 40, units = "cm")
 
-knitr::include_graphics("files/FigS1.jpg")
+plot <- list(pt1, pt2, pt3) %>% 
+  plot_grid(plotlist = ., ncol = 1, labels = "auto") %>% 
+  list(., pt4) %>% 
+  plot_grid(plotlist = ., ncol = 2, labels = c("", "d"))
+
+
+ggsave2(plot = plot, "agronomy/FigS1.jpg", height = 20, width = 26, units = "cm")
+
+ggsave2(plot = plot, "agronomy/FigS1.eps", height = 20, width = 26, units = "cm")
+
+knitr::include_graphics("agronomy/FigS1.jpg")
 ```
 
 ## Specific Objective 2
@@ -868,20 +875,20 @@ p2 <- list(p2a + labs(x = NULL) + theme(legend.position="none"
 fig <- plot_grid(legend, p2, ncol = 1, align = 'v', rel_heights = c(0.05, 1))
 
 fig %>% 
-  ggsave2(plot = ., "files/Fig-3.jpg"
+  ggsave2(plot = ., "agronomy/Fig-3.jpg"
          , units = "cm"
          , width = 25
-         , height = 27
+         , height = 25
          )
 
 fig %>% 
-  ggsave2(plot = ., "files/Fig-3.eps"
+  ggsave2(plot = ., "agronomy/Fig-3.eps"
          , units = "cm"
          , width = 25
-         , height = 27
+         , height = 25
          )
 
-knitr::include_graphics("files/Fig-3.jpg")
+knitr::include_graphics("agronomy/Fig-3.jpg")
 ```
 
 ### Multivariate analysis
@@ -911,7 +918,7 @@ summary(pca, nbelements = Inf, nb.dec = 2)
 
 
 f4a <- plot.PCA(x = pca, choix = "var"
-                , cex=0.8
+                , cex=0.5
                 )
 
 f4b <- plot.PCA(x = pca, choix = "ind"
@@ -920,7 +927,6 @@ f4b <- plot.PCA(x = pca, choix = "ind"
                 , cex=0.8
                 , ylim = c(-3,3)
                 ) 
-
 ```
 
 ### Figure 4
@@ -934,18 +940,18 @@ fig <- list(f4a, f4b) %>%
             , rel_widths = c(1, 1.5)
             )
 fig %>% 
-  ggsave2(plot = ., "files/Fig-4.jpg", units = "cm"
+  ggsave2(plot = ., "agronomy/Fig-4.jpg", units = "cm"
          , width = 25
          , height = 10
          )
 
 fig %>% 
-  ggsave2(plot = ., "files/Fig-4.eps", units = "cm"
+  ggsave2(plot = ., "agronomy/Fig-4.eps", units = "cm"
          , width = 25
          , height = 10
          )
 
-knitr::include_graphics("files/Fig-4.jpg")
+knitr::include_graphics("agronomy/Fig-4.jpg")
 ```
 
 ### Supplementary Figure 2
@@ -955,19 +961,7 @@ Results of the contributions and correlation of the variables in the Principal C
 ```{r}
 var <- get_pca_var(pca)
 
-tmp <- tempfile(fileext = ".png")
-ppi <- 300
-png(tmp, width=8*ppi, height=8*ppi, res=ppi)
-corrplot(var$cor, 
-         method="number",
-         tl.col="black", 
-         tl.srt=45,)
-graphics.off()
-
-pt1 <- png::readPNG(tmp) %>%
-  grid::rasterGrob(interpolate = TRUE)
-
-pt2 <- fviz_eig(pca, 
+pt1 <- fviz_eig(pca, 
                 addlabels=TRUE,
                 hjust = 0.05,
                 barfill="white",
@@ -979,7 +973,7 @@ pt2 <- fviz_eig(pca,
     y = "Variance (%)") +
   theme_minimal()
 
-pt3 <- fviz_contrib(pca,
+pt2 <- fviz_contrib(pca,
                      choice = "var", 
                      axes = 1, 
                      top = 10,
@@ -989,7 +983,7 @@ pt3 <- fviz_contrib(pca,
   ylim(0, 20) + 
   labs(title = "Dim 1 - variables contribution") 
 
-pt4 <- fviz_contrib(pca,
+pt3 <- fviz_contrib(pca,
                      choice = "var", 
                      axes = 2, 
                      top = 10,
@@ -999,21 +993,27 @@ pt4 <- fviz_contrib(pca,
   ylim(0, 80) + 
   labs(title = "Dim 2 - variables contribution") 
 
-plot <- ggdraw(xlim = c(0.0, 1.0), ylim = c(0, 1.0))+
-  draw_plot(pt1,  width = 0.4, height = 0.99, x = 0.62, y = 0.0) +  
-  draw_plot(pt2,  width = 0.6, height = 0.34, x = 0.03, y = 0.66) +
-  draw_plot(pt3, width = 0.6, height = 0.34, x = 0.03, y = 0.33) + 
-  draw_plot(pt4, width = 0.6, height = 0.34, x = 0.03, y = 0.0) +
-        draw_plot_label(
-    label = c("a", "b", "c", "d"),
-    x = c(0.005, 0.005, 0.005, 0.65),
-    y = c(0.999, 0.67, 0.34, 0.999))
 
-ggsave2(plot = plot, "files/FigS2.jpg", height = 25, width = 40, units = "cm")
+pt4 <- ~ {
+  
+  corrplot(var$cor, 
+         method="number",
+         tl.col="black", 
+         tl.srt=45,)
+  
+}
 
-ggsave2(plot = plot, "files/FigS2.eps", height = 25, width = 40, units = "cm")
 
-knitr::include_graphics("files/FigS2.jpg")
+plot <- list(pt1, pt2, pt3) %>% 
+  plot_grid(plotlist = ., ncol = 1, labels = "auto") %>% 
+  list(., pt4) %>% 
+  plot_grid(plotlist = ., ncol = 2, labels = c("", "d"))
+
+ggsave2(plot = plot, "agronomy/FigS2.jpg", height = 16, width = 25, units = "cm")
+
+ggsave2(plot = plot, "agronomy/FigS2.eps", height = 16, width = 25, units = "cm")
+
+knitr::include_graphics("agronomy/FigS2.jpg")
 ```
 
 # Meteorological data
@@ -1023,11 +1023,6 @@ Climatic conditions of the study area located in the Tambogrande district, Piura
 ```{r}
 met <- range_read(ss = gs, sheet = "clima") %>% 
   mutate(date = as_date(Fecha))
-
-str(met)
-names(met)
-
-max(met$PP)
 
 scale <- 3
 
@@ -1049,8 +1044,8 @@ plot <- met %>%
   theme(legend.position = "top")
 
 plot %>% 
-  ggsave2(plot = ., "files/weather.jpg", units = "cm"
+  ggsave2(plot = ., "agronomy/weather.jpg", units = "cm"
          , width = 25, height = 15)
 
-knitr::include_graphics("files/weather.jpg")
+knitr::include_graphics("agronomy/weather.jpg")
 ```
