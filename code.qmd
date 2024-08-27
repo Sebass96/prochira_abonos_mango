@@ -1,5 +1,5 @@
 ---
-title: "ABONOS ORGÁNICOS EN LA CALIDAD Y MANEJO POSTCOSECHA DE MANGO (Mangifera indica L). VAR. KENT"
+title: "ORGANIC FERTILIZERS IN THE QUALITY AND POST-HARVEST MANAGEMENT OF MANGO (_Mangifera indica_ L). VAR. KENT"
 format:
   html:
     toc: true
@@ -16,7 +16,7 @@ execute:
 
 # Setup
 
-Instalar version en desarrollo.
+Install development version.
 
 ```{r}
 #| eval: false
@@ -38,20 +38,12 @@ library(corrplot)
 library(png)
 source('https://inkaverse.com/setup.r')
 
-# library(rstatix)
-# library(dlookr)
-# library(car)
-
 session_info()
 ```
 
-# References
-
-- (PCA) https://www.r-bloggers.com/2017/07/pca-course-using-factominer/
-- (PCA) https://www.youtube.com/watch?v=Uhw-1NilmAk&ab_channel=Fran%C3%A7oisHusson
-- (HCPC) https://youtu.be/EJqYTDTJJug
-
 # Import data
+
+Data from the variables evaluated in 2023 during the 2022-2023 growing season. The evaluations focused on mango fruits of the ‘Kent’ variety at two stages: physiological maturity and commercial maturity.
 
 ```{r}
 url <- "https://docs.google.com/spreadsheets/d/1cjWrS-EVcII85c-l_NuEfTpjhVMI156e8REM9GDVP_w/edit?gid=95386135#gid=95386135"
@@ -96,6 +88,8 @@ glimpse(consumo)
 
 # Data summary
 
+Summary of the number of data points recorded for each treatment and evaluated variable.
+
 ```{r}
 sm <- fisio %>% 
   group_by(treat) %>% 
@@ -110,15 +104,13 @@ sm <- consumo %>%
 sm
 ```
 
-# Objetivos
+# Objetives
 
-- Mostrar  el efecto de los abonos orgánicos compost y biol en la calidad del fruto de mango en madurez fisiológica
+The objective of this study is to demonstrate the effect of organic fertilizers, specifically compost and biol, applied at the soil and foliar levels on the quality of mango fruit at physiological and commercial maturity.
 
-- Mostrar  el efecto de los abonos orgánicos compost y biol en la calidad del fruto de mango en madurez comercial
+## Specific Objective 1
 
-## Objetivo Específico 1
-
-> Mostrar  el efecto de los abonos orgánicos compost y biol en la calidad del fruto de mango en madurez fisiológica
+Demonstrate the effect of organic fertilizers, specifically compost and biol, applied at the soil and foliar levels on the quality of mango fruit at physiological maturity.
 
 ### Fruit firmness at physiological maturity (FFPM)
 
@@ -166,9 +158,7 @@ p1a <- mc %>%
 p1a
 ```
 
-###  Internal fruit color at physiological maturity (IFCPM).
-
-> Excluir esta variable como cuantitativo
+###  Internal fruit color at physiological maturity (IFCPM)
 
 ```{r}
 trait <- "cifmf"
@@ -395,6 +385,8 @@ p1f
 
 ### Figure 1
 
+Univariate analysis of the most critical variables for determining the physiological maturity of the fruit at harvest time and for preventing handling damage during commercialization or industrial processes.
+
 ```{r}
 legend <- cowplot::get_plot_component(p1a, 'guide-box-top', return_all = TRUE)
 
@@ -440,7 +432,9 @@ fig %>%
 knitr::include_graphics("files/Fig-1.jpg")
 ```
 
-### Multivariate
+### Multivariate analysis
+
+Principal Component Analysis (PCA) of quality characteristics to correlate with mango fruits at physiological maturity from compost and biol applications.
 
 ```{r}
 mv <- fisio %>% 
@@ -481,6 +475,8 @@ f2b <- plot.PCA(x = pca, choix = "ind"
 
 ### Figure 2
 
+Principal Component Analysis (PCA).
+
 ```{r}
 fig <- list(f2a, f2b) %>% 
   plot_grid(plotlist = ., ncol = 2, nrow = 1
@@ -501,7 +497,9 @@ fig %>%
 knitr::include_graphics("files/Fig-2.jpg")
 ```
 
-### Principal components
+### Supplementary Figure 1
+
+Results of the contributions and correlation of the variables in the Principal Component Analysis (PCA).
 
 ```{r}
 var <- get_pca_var(pca)
@@ -567,37 +565,9 @@ ggsave2(plot = plot, "files/FigS1.eps", height = 25, width = 40, units = "cm")
 knitr::include_graphics("files/FigS1.jpg")
 ```
 
-### Correlation
+## Specific Objective 2
 
-```{r}
-cor <- mv %>% 
-  dplyr::select(where(is.numeric)) %>% 
-  cor(., method ="pearson")
-
-cor %>% kable()
-
-sf1 <- ~ {
-  
-  corrplot::corrplot(cor, method = "number", type = "upper")
-}
-
-fig <- list(sf1) %>% 
-  plot_grid(plotlist = .)
-
-fig %>% 
-  ggsave2(plot = ., "files/FigSs1.jpg", units = "cm"
-         , width = 15, height = 15)
-
-fig %>% 
-  ggsave2(plot = ., "files/FigSs1.eps", units = "cm"
-         , width = 15, height = 15)
-
-knitr::include_graphics("files/FigSs1.jpg")
-```
-
-## Objetivo Específico 2
-
-> Mostrar el efecto de los abonos orgánicos compost y biol en la calidad del fruto de mango en madurez comercial
+Demonstrate the effect of organic fertilizers, specifically compost and biol, applied at the soil and foliar levels on the quality of mango fruit at commercial maturity.
 
 ### Fruit firmness at commercial maturity (FFCM)
 
@@ -781,7 +751,7 @@ p2d <- mc %>%
 p2d
 ```
 
-### Fruit pH at commercial maturity (FpHCM).
+### Fruit pH at commercial maturity (FpHCM)
 
 ```{r}
 trait <- "phfmc"
@@ -826,7 +796,7 @@ p2e <- mc %>%
 p2e
 ```
 
-### Internal fruit color at commercial maturity (IFCCM).
+### Internal fruit color at commercial maturity (IFCCM)
 
 ```{r}
 trait <- "cifmc"
@@ -873,6 +843,8 @@ p2f
 
 ### Figure 3
 
+Univariate analysis of the most crucial variables for determining the commercial maturity of the fruit in the postharvest handling process.
+
 ```{r}
 legend <- cowplot::get_plot_component(p2a, 'guide-box-top', return_all = TRUE)
 
@@ -912,7 +884,9 @@ fig %>%
 knitr::include_graphics("files/Fig-3.jpg")
 ```
 
-### Multivariate
+### Multivariate analysis
+
+Principal Component Analysis (PCA) of quality characteristics to correlate with mango fruits at commercial maturity from compost and biol applications.
 
 ```{r}
 mv <- consumo %>% 
@@ -951,6 +925,8 @@ f4b <- plot.PCA(x = pca, choix = "ind"
 
 ### Figure 4
 
+Principal Component Analysis (PCA).
+
 ```{r}
 fig <- list(f4a, f4b) %>% 
   plot_grid(plotlist = ., ncol = 2, nrow = 1
@@ -972,7 +948,9 @@ fig %>%
 knitr::include_graphics("files/Fig-4.jpg")
 ```
 
-### Principal components
+### Supplementary Figure 2
+
+Results of the contributions and correlation of the variables in the Principal Component Analysis (PCA).
 
 ```{r}
 var <- get_pca_var(pca)
@@ -1038,35 +1016,9 @@ ggsave2(plot = plot, "files/FigS2.eps", height = 25, width = 40, units = "cm")
 knitr::include_graphics("files/FigS2.jpg")
 ```
 
-### Correlation
+# Meteorological data
 
-```{r}
-cor <- mv %>% 
-  dplyr::select(where(is.numeric)) %>% 
-  cor(., method ="pearson")
-
-cor %>% kable()
-
-sf2 <- ~ {
-  
-  corrplot::corrplot(cor, method = "number", type = "upper")
-}
-
-fig <- list(sf2) %>% 
-  plot_grid(plotlist = .)
-
-fig %>% 
-  ggsave2(plot = ., "files/FigSs2.jpg", units = "cm"
-         , width = 15, height = 15)
-
-fig %>% 
-  ggsave2(plot = ., "files/FigSs2.eps", units = "cm"
-         , width = 15, height = 15)
-
-knitr::include_graphics("files/FigSs2.jpg")
-```
-
-# Datos metereológicos
+Climatic conditions of the study area located in the Tambogrande district, Piura region.
 
 ```{r}
 met <- range_read(ss = gs, sheet = "clima") %>% 
@@ -1102,4 +1054,3 @@ plot %>%
 
 knitr::include_graphics("files/weather.jpg")
 ```
-
