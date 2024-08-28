@@ -8,7 +8,7 @@ format:
     toc-location: left
     number-sections: true
     self-contained: true
-    output-file: "ESM_1"
+    output-file: "ESM_2"
 editor_options: 
   chunk_output_type: console
 execute: 
@@ -37,7 +37,6 @@ library(multcomp)
 library(FSA)
 library(factoextra)
 library(corrplot)
-library(png)
 source('https://inkaverse.com/setup.r')
 
 cat("Project: ", getwd(), "\n")
@@ -161,7 +160,7 @@ p1a <- mc %>%
            , error = "SE"
            , color = T
            , xlab = "Composts"
-           , ylab = "Fruit firmness at physiological maturity (kgf.cm^{-2})"
+           , ylab = "Fruit firmness at physiological maturity (kgf/cm^{2})"
            , glab = "Biol"
            , ylimits = c(0, 16, 4)
            )
@@ -252,7 +251,7 @@ p1c <- mc %>%
            , error = "SE"
            , color = T
            , xlab = "Composts"
-           , ylab = "pH del Fruto"
+           , ylab = "Fruit pH at physiological maturity"
            , ylimits = c(0, 4, 1)
            )
 
@@ -613,7 +612,7 @@ p2a <- mc %>%
            , error = "SE"
            , color = T
            , xlab = "Composts"
-           , ylab = "Fruit firmness at commercial maturity (kgf.cm^{-2})"
+           , ylab = "Fruit firmness at commercial maturity (kgf/cm^{2})"
            , glab = "Biol"
            , ylimits = c(0, 6, 2)
            )
