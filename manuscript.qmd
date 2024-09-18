@@ -39,8 +39,8 @@ crossref:
 #| label: setup
 
 source("http://inkaverse.com/docs.r")
-doc <- inti::gdoc2qmd(file = "manuscript.zip"
-                      # , type = "listfull"
+doc <- inti::gdoc2qmd(file = "draft.zip"
+                      , type = "listfull"
                       )
 params <- doc$params
 ```

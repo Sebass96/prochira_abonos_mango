@@ -103,6 +103,44 @@ sm <- consumo %>%
 sm
 ```
 
+# Meteorological data
+
+Climatic conditions of the study area located in the Tambogrande district, Piura region.
+
+```{r}
+met <- range_read(ss = gs, sheet = "clima") %>% 
+  mutate(date = as_date(Fecha))
+
+scale <- 3
+
+plot <- met %>% 
+  ggplot(aes(x = date)) +
+  geom_line(aes(y = TMax, color = "Tmax (°C)"), size= 0.8) + 
+  geom_line(aes(y = TMin, color = "Tmin (°C)"), size= 0.8) +
+  geom_bar(aes(y = PP/scale)
+            , stat="identity", size=.1, fill="blue", color="black", alpha=.4) +
+  geom_line(aes(y = HR/scale, color = "HR (%)"), size = 0.8) +
+  scale_color_manual("", values = c("skyblue", "red", "blue")) +
+  scale_y_continuous(limits = c(0, 40)
+                     , expand = c(0, 0)
+                     , name = "Temperature (°C)"
+                     , sec.axis = sec_axis(~ . * scale, name = "Precipitation (mm)")
+                     ) +
+  scale_x_date(date_breaks = "1 month", date_labels = "%m-%Y", name = NULL) +
+  theme_minimal_grid() +
+  theme(legend.position = "top")
+
+plot %>% 
+  ggsave2(plot = ., "submission/Figure_2.jpg", units = "cm"
+         , width = 25, height = 15)
+
+plot %>% 
+  ggsave2(plot = ., "submission/Figure_2.eps", units = "cm"
+         , width = 25, height = 15)
+
+knitr::include_graphics("submission/Figure_2.jpg")
+```
+
 # Objetives
 
 The objective of this study is to demonstrate the effect of organic fertilizers, specifically compost and biol, applied at the soil and foliar levels on the quality of mango fruit at physiological and commercial maturity.
@@ -382,7 +420,7 @@ p1f <- mc %>%
 p1f
 ```
 
-### Figure 1
+### Figure 3
 
 Univariate analysis of the variables for determining the physiological maturity of the fruit at harvest time and for preventing handling damage during commercialization or industrial processes.
 
@@ -415,20 +453,20 @@ p1 <- list(p1a + labs(x = NULL) + theme(legend.position="none"
 fig <- plot_grid(legend, p1, ncol = 1, align = 'v', rel_heights = c(0.05, 1))
   
 fig %>% 
-  ggsave2(plot = ., "agronomy/Fig-1.jpg"
+  ggsave2(plot = ., "submission/Figure_3.jpg"
          , units = "cm"
          , width = 26
          , height = 26
          )
 
 fig %>% 
-  ggsave2(plot = ., "agronomy/Fig-1.eps"
+  ggsave2(plot = ., "submission/Figure_3.eps"
          , units = "cm"
          , width = 26
          , height = 26
          )
 
-knitr::include_graphics("agronomy/Fig-1.jpg")
+knitr::include_graphics("submission/Figure_3.jpg")
 ```
 
 ### Multivariate analysis
@@ -472,7 +510,7 @@ f2b <- plot.PCA(x = pca, choix = "ind"
 
 ```
 
-### Figure 2
+### Figure 4
 
 Principal Component Analysis (PCA).
 
@@ -483,17 +521,17 @@ fig <- list(f2a, f2b) %>%
             , rel_widths = c(1, 1.5)
             )
 fig %>% 
-  ggsave2(plot = ., "agronomy/Fig-2.jpg", units = "cm"
+  ggsave2(plot = ., "submission/Figure_4.jpg", units = "cm"
          , width = 25
          , height = 10
          )
 fig %>% 
-  ggsave2(plot = ., "agronomy/Fig-2.eps", units = "cm"
+  ggsave2(plot = ., "submission/Figure_4.eps", units = "cm"
          , width = 25
          , height = 10
          )
 
-knitr::include_graphics("agronomy/Fig-2.jpg")
+knitr::include_graphics("submission/Figure_4.jpg")
 ```
 
 ### Supplementary Figure 1
@@ -552,11 +590,11 @@ plot <- list(pt1, pt2, pt3) %>%
   plot_grid(plotlist = ., ncol = 2, labels = c("", "d"))
 
 
-ggsave2(plot = plot, "agronomy/FigS1.jpg", height = 20, width = 26, units = "cm")
+ggsave2(plot = plot, "submission/FigS1.jpg", height = 20, width = 26, units = "cm")
 
-ggsave2(plot = plot, "agronomy/FigS1.eps", height = 20, width = 26, units = "cm")
+ggsave2(plot = plot, "submission/FigS1.eps", height = 20, width = 26, units = "cm")
 
-knitr::include_graphics("agronomy/FigS1.jpg")
+knitr::include_graphics("submission/FigS1.jpg")
 ```
 
 ## Specific Objective 2
@@ -835,7 +873,7 @@ p2f <- mc %>%
 p2f
 ```
 
-### Figure 3
+### Figure 5
 
 Univariate analysis of the most crucial variables for determining the commercial maturity of the fruit in the postharvest handling process.
 
@@ -862,20 +900,20 @@ p2 <- list(p2a + labs(x = NULL) + theme(legend.position="none"
 fig <- plot_grid(legend, p2, ncol = 1, align = 'v', rel_heights = c(0.05, 1))
 
 fig %>% 
-  ggsave2(plot = ., "agronomy/Fig-3.jpg"
+  ggsave2(plot = ., "submission/Figure_5.jpg"
          , units = "cm"
          , width = 25
          , height = 25
          )
 
 fig %>% 
-  ggsave2(plot = ., "agronomy/Fig-3.eps"
+  ggsave2(plot = ., "submission/Figure_5.eps"
          , units = "cm"
          , width = 25
          , height = 25
          )
 
-knitr::include_graphics("agronomy/Fig-3.jpg")
+knitr::include_graphics("submission/Figure_5.jpg")
 ```
 
 ### Multivariate analysis
@@ -916,7 +954,7 @@ f4b <- plot.PCA(x = pca, choix = "ind"
                 ) 
 ```
 
-### Figure 4
+### Figure 6
 
 Principal Component Analysis (PCA).
 
@@ -927,18 +965,18 @@ fig <- list(f4a, f4b) %>%
             , rel_widths = c(1, 1.5)
             )
 fig %>% 
-  ggsave2(plot = ., "agronomy/Fig-4.jpg", units = "cm"
+  ggsave2(plot = ., "submission/Figure_6.jpg", units = "cm"
          , width = 25
          , height = 10
          )
 
 fig %>% 
-  ggsave2(plot = ., "agronomy/Fig-4.eps", units = "cm"
+  ggsave2(plot = ., "submission/Figure_6.eps", units = "cm"
          , width = 25
          , height = 10
          )
 
-knitr::include_graphics("agronomy/Fig-4.jpg")
+knitr::include_graphics("submission/Figure_6.jpg")
 ```
 
 ### Supplementary Figure 2
@@ -996,43 +1034,11 @@ plot <- list(pt1, pt2, pt3) %>%
   list(., pt4) %>% 
   plot_grid(plotlist = ., ncol = 2, labels = c("", "d"))
 
-ggsave2(plot = plot, "agronomy/FigS2.jpg", height = 16, width = 25, units = "cm")
+ggsave2(plot = plot, "submission/FigS2.jpg", height = 16, width = 25, units = "cm")
 
-ggsave2(plot = plot, "agronomy/FigS2.eps", height = 16, width = 25, units = "cm")
+ggsave2(plot = plot, "submission/FigS2.eps", height = 16, width = 25, units = "cm")
 
-knitr::include_graphics("agronomy/FigS2.jpg")
+knitr::include_graphics("submission/FigS2.jpg")
 ```
 
-# Meteorological data
 
-Climatic conditions of the study area located in the Tambogrande district, Piura region.
-
-```{r}
-met <- range_read(ss = gs, sheet = "clima") %>% 
-  mutate(date = as_date(Fecha))
-
-scale <- 3
-
-plot <- met %>% 
-  ggplot(aes(x = date)) +
-  geom_line(aes(y = TMax, color = "Tmax (°C)"), size= 0.8) + 
-  geom_line(aes(y = TMin, color = "Tmin (°C)"), size= 0.8) +
-  geom_bar(aes(y = PP/scale)
-            , stat="identity", size=.1, fill="blue", color="black", alpha=.4) +
-  geom_line(aes(y = HR/scale, color = "HR (%)"), size = 0.8) +
-  scale_color_manual("", values = c("skyblue", "red", "blue")) +
-  scale_y_continuous(limits = c(0, 40)
-                     , expand = c(0, 0)
-                     , name = "Temperature (°C)"
-                     , sec.axis = sec_axis(~ . * scale, name = "Precipitation (mm)")
-                     ) +
-  scale_x_date(date_breaks = "1 month", date_labels = "%m-%Y", name = NULL) +
-  theme_minimal_grid() +
-  theme(legend.position = "top")
-
-plot %>% 
-  ggsave2(plot = ., "agronomy/weather.jpg", units = "cm"
-         , width = 25, height = 15)
-
-knitr::include_graphics("agronomy/weather.jpg")
-```
