@@ -50,6 +50,8 @@ Flavio Lozano-Isla: [0000-0002-0714-669X](https://orcid.org/0000-0002-0714-669X)
 
 
 
+**Statements and Declarations**
+
 **Author Contributions**
 
 Conceptualization, H.M-R., R.P-C. and A.M-P.; methodology, A.M-P. and J.D-C.; formal analysis, F.L-I. and S.C-N.; investigation, H.M-R.; resources H.M-R.; data curation, F.L-I. and S.C-N.; writing—original draft preparation, H.M-R., S.V-N., G.C-H., N.T-T., E-O.N-T., A.M-A., F.L-I. and S.C-N.; writing—review and editing, F.L-I. and L.V-A.; visualization, F.L-I. and S.C-N.; supervision, J.C. and M.R-R.; funding acquisition, J.C. All authors have read and agreed to the published version of the manuscript.
@@ -70,13 +72,6 @@ The authors want to thank Mr. L. Córdova C. for his support in fieldwork and te
 
 The authors declare no conflict of interest.
 
-**Highlights**
-
-* Application of compost and biol increase mango sweetness at physiological maturity.
-* Organic fertilizers improve internal flesh color and mango fruit blush percentage.
-* Using compost and biol reduce mango dehydration by 0.6% in postharvest handling.
-* Organic fertilizers maintain mango firmness at 4.39 kg/cm² at commercial maturity.
-
 # ABSTRACT
 
 Mango (*Mangifera indica* L.) is a fruit tree with high global demand. Its fruit presents morphological, physiological, and biochemical changes during maturation. An adequate nutrient supply during different physiological stages is key to increasing fruit yield and quality. This research was conducted in the Piura region of Peru; eight-year-old mango trees of the 'Kent' variety, were planted at a distance of 7 × 7 m during the 2022–2023 season. A 3 × 3 factorial design with three replications was employed, where the first factor was the application of compost at 0, 5, and 15 t/ha, and the second factor was the application of biol at concentrations of 0%, 5%, and 10%. The results revealed that combined organic fertilization with compost and biol positively affected fruit yield and quality, as it improved fruit firmness, increased soluble solids and dry matter content, and decreased titratable acidity and fruit dehydration during the physiological and commercial maturity stages. These results demonstrate that applying organic fertilizers significantly enhances the quality of mango fruits.
@@ -95,7 +90,7 @@ The mango fruit is a fleshy drupe that undergoes morphological, physiological, a
 
 A proper nutrient supply during the phenological stages of growth and development ensures optimal fruit yield. However, fruit quality and postharvest management involve addressing aesthetic, physical, chemical, and biological characteristics, as well as the health benefits and environmental impacts associated with production [(Estrada-Arellano et al., 2022; González-Salas et al., 2021; Magallanes-López et al., 2020)](https://www.zotero.org/google-docs/?ifejwC).
 
-Mango fertilization is linked to the application of synthetic NPK fertilizers to achieve high yields [(Bolaños Risco, 2023)](https://www.zotero.org/google-docs/?sRBv0j). However, synthetic fertilizers and pesticides have caused environmental pollution, decreased soil health, and impacted food security [(Naikoo et al., 2022; Rivera-Solís et al., 2023; Solano, 2023)](https://www.zotero.org/google-docs/?Qp1C10). An alternative to mitigate the use of synthetic fertilizers is organic farming, which employs organic composts to achieve native soil fertilization, high-yield crops, high-quality fruits, and reduced environmental pollutants [(Aguiñaga-Bravo et al., 2020; López-Morales et al., 2022)](https://www.zotero.org/google-docs/?0J6IXO). 
+Mango fertilization is linked to the application of synthetic NPK fertilizers to achieve high yields. However, synthetic fertilizers and pesticides have caused environmental pollution, decreased soil health, and impacted food security [(Rivera-Solís et al., 2023; Solano, 2023)](https://www.zotero.org/google-docs/?Qp1C10). An alternative to mitigate the use of synthetic fertilizers is organic farming, which employs organic composts to achieve native soil fertilization, high-yield crops, high-quality fruits, and reduced environmental pollutants [(Aguiñaga-Bravo et al., 2020; López-Morales et al., 2022)](https://www.zotero.org/google-docs/?0J6IXO). 
 
 The mango plant requires sources of nitrogen, phosphorus, and potassium to achieve optimal vegetative growth, reproductive development, and yield [(Azam et al., 2022; Ma et al., 2023)](https://www.zotero.org/google-docs/?KkZY7p). Organic fertilizers are characterized by lower concentrations of nutrients but a greater number of nutrients because they affect the synthesis of compounds [(Guo et al., 2019)](https://www.zotero.org/google-docs/?Zr2hW7). They can be applied as soil amendments or foliar treatments because they release slowly and improve the yield and quality of mango fruit from trees [(Jurado et al., 2015)](https://www.zotero.org/google-docs/?nZnMcR). Soil amendments improve the soil‒plant system by increasing root hair density, promoting the soil biota, preventing pathogens, and ensuring the gradual mineralization of nutrients [(Campos Mariscal et al., 2020; Díaz-Chuquizuta et al., 2022; Sánchez-Hernández et al., 2019)](https://www.zotero.org/google-docs/?wx9MyZ). Foliar fertilizers stimulate morphological and physiological changes in plants via micronutrients, phytohormones, and aromatic substances, which elongate cell tissues and provide repellent action against pests and diseases [(Chew et al., 2019; Liu et al., 2015, 2021)](https://www.zotero.org/google-docs/?eMg0q1). 
 
@@ -115,7 +110,7 @@ The plant material consisted of eight-year-old ‘Kent’ mango trees, planted w
 
 ![Research area on organic fertilizers and postharvest fruit quality management of mango (*Mangifera indica* L.) var. 'Kent' in Tambogrande, Piura region. Coordinates: 4° 54’ 45’’ S, 80° 16’ 9’’ W.](img_0.jpg){#fig:id.umhwcapm7kiw}
 
-The ‘Kent’ variety was developed in 1932 in Florida, USA, from seeds of the ‘Brooks’ variety. However, it was not until 1938 that the first fruits were produced, and the variety was officially described in 1945 [(Sergent, 1999)](https://www.zotero.org/google-docs/?yAdOh0). In Peru, the ‘Kent’ variety of mango predominates over the other varieties due to its slightly oval shape, dark green color with reddish hues at the base, prominent lenticels around the thin skin, juicy flesh with low fiber, and sweet, buttery flavor. These characteristics have led to increased exports and expansion into new international markets such as South Korea, Belgium, and Germany [(Aragón Mendieta, 2022)](https://www.zotero.org/google-docs/?eL6SVD) **.** 
+The ‘Kent’ variety was developed in 1932 in Florida, USA, from seeds of the ‘Brooks’ variety. However, it was not until 1938 that the first fruits were produced, and the variety was officially described in 1945 [(Mandal et al., 2023)](https://www.zotero.org/google-docs/?yAdOh0). In Peru, the ‘Kent’ variety of mango predominates over the other varieties due to its slightly oval shape, dark green color with reddish hues at the base, prominent lenticels around the thin skin, juicy flesh with low fiber, and sweet, buttery flavor. These characteristics have led to increased exports and expansion into new international markets such as South Korea, Belgium, and Germany [(Mirza et al., 2021)](https://www.zotero.org/google-docs/?eL6SVD) **.** 
 
 ## Organic fertilizers
 
@@ -123,20 +118,24 @@ The organic fertilizers used in this study include compost as commercial product
 
 The physicochemical analysis and nutritional composition of Compost Nutri Suelo 3M and homemade biol were conducted at the Water, Soil, Plants, and Fertilizers Laboratory of the Faculty of Agronomy at the National Agrarian University La Molina, Lima, Peru (Table 1).
 
-```Unknown element type at this position: UNSUPPORTED```
-
-
-| Table 1: Chemical analysis and nutritional composition of organic fertilizers, Compost Nutri Suelo 3M, and biol used to evaluate the quality and postharvest characteristics of mango (*Mangifera indica* L.) var. ‘Kent’ in Tambogrande, Piura.  |
 
 
 ## 
 
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> bbc92187166378190b3b89297408de1d99d2ee24
 | **Organic fertilizers** | **N (ppm)**             | **P (ppm)**             | **K (ppm)**             | **Ca (ppm)**            | **Mg (ppm)**            | **Na (ppm)**            | **M.O %**               | **pH**                  | **CE dS/m**              |
 |-------------------------|-------------------------|-------------------------|-------------------------|-------------------------|-------------------------|-------------------------|-------------------------|-------------------------|--------------------------|
 | Compost                 | 20900                   | 20100                   | 25600                   | 44500                   | 28000                   | 2100                    | 28.5                    | 7                       | 31.7                     |
 | Biol (p/v)              | 1143.2                  | 181.4                   | 1975                    | 440                     | 145                     | 248                     | 2.14                    | 3.1                     | 10.54                    |
 
+
+
+
+: Chemical analysis and nutritional composition of organic fertilizers, Compost Nutri Suelo 3M, and biol used to evaluate the quality and postharvest characteristics of mango (*Mangifera indica* L.) var. ‘Kent’ in Tambogrande, Piura. {#tbl:id.uscdin6sqnhr}
 
 ## 
 
@@ -156,7 +155,7 @@ Fifteen mango fruits were sampled from each treatment for the analysis of traits
 
 ## Statistical analysis
 
-The experiment was carried out via a 3 × 3 factorial design with three replications. The first factor was the application of compost at concentrations of 0, 5, and 15 t/ha, and the second factor was the application of biol at concentrations of 0%, 5%, and 10%. The experimental unit consisted of five mango trees. Three plants were randomly selected for the evaluations YP, PFCCPM, FFCM, IFCPM, SSCFCM, FpHPM, TAFPM, FDMPPM, FPMI, FDPCM, FFCM, IFCCM, SSCFCM, FpHCM, TAFCM, and FCMI. Five fruits per plant were evaluated for analysis at physiological maturity. Fifteen fruits per treatment were selected for analysis of fruits at commercial maturity. An analysis of variance (ANOVA) was conducted to determine if there were differences among the treatment applications. The mean comparison test used was Tukey's test implemented in the R package *emmeans* [(Lenth, 2017; Searle et al., 1980)](https://www.zotero.org/google-docs/?RqdqHS). The 16 variables under study were subjected to multivariate analysis of principal components (PCA) via the *FactoMineR* package [(Francois Husson, Julie Josse, Sebastien Le, Jeremy Mazet, 2006)](https://www.zotero.org/google-docs/?7uqEPX). The correlation analysis of variables in PCA was conducted via the corrplot package. The data analysis was performed via R statistical software version 4.4.1 (Supplementary File 2, [R Core Team, 2024)](https://www.zotero.org/google-docs/?i9Y5V5).
+The experiment was carried out via a 3 × 3 factorial design with three replications. The first factor was the application of compost at concentrations of 0, 5, and 15 t/ha, and the second factor was the application of biol at concentrations of 0%, 5%, and 10%. The experimental unit consisted of five mango trees. Three plants were randomly selected for the evaluations YP, PFCCPM, FFCM, IFCPM, SSCFCM, FpHPM, TAFPM, FDMPPM, FPMI, FDPCM, FFCM, IFCCM, SSCFCM, FpHCM, TAFCM, and FCMI. Five fruits per plant were evaluated for analysis at physiological maturity. Fifteen fruits per treatment were selected for analysis of fruits at commercial maturity. An analysis of variance (ANOVA) was conducted to determine if there were differences among the treatment applications. The mean comparison test used was Tukey's test implemented in the R package *emmeans* [(Searle et al., 1980)](https://www.zotero.org/google-docs/?RqdqHS). The 16 variables under study were subjected to multivariate analysis of principal components (PCA) via the *FactoMineR* package [(Francois Husson et al., 2006)](https://www.zotero.org/google-docs/?7uqEPX). The correlation analysis of variables in PCA was conducted via the corrplot package. The data analysis was performed via R statistical software version 4.4.1 (Supplementary File 2, [R Core Team, 2024)](https://www.zotero.org/google-docs/?i9Y5V5).
 
 # RESULTS
 
@@ -234,9 +233,9 @@ The mango produced in Peru is a highly demanded crop internationally, as more th
 
 The quality of mango at physiological maturity is determined by variables such as FFPM, SSCFPM, TAFPM, and FDMPPM [(Alebidi et al., 2023; Jiménez-Maldonado et al., 2022; Kumar et al., 2022b; Velasquez et al., 2023)](https://www.zotero.org/google-docs/?8s2eEV). In the present study, it was found that biol application increased mango fruit firmness ([Figure  @fig:kix.jeoh8ws8urib]:a) and dry solids ([Figure  @fig:kix.jeoh8ws8urib]:d). This could be attributed to the calcium, potassium, and magnesium nutrients present in biol (Table 1) which are responsible for  the accumulation of homogalacturonans, the binding of pectin networks, and the formation of phospholipids that structure the cell wall and regulate the water permeability of the membrane [(Huang et al., 2023; Morales-Meléndez et al., 2024; Vásquez – Rojas, 2020)](https://www.zotero.org/google-docs/?qxbOL4). Additionally, the combined application of compost and biol increased YP and SSCFPM ([Figure  @fig:kix.jeoh8ws8urib]:b) while decreasing TAFPM ([Figure  @fig:kix.jeoh8ws8urib]:c). This could be due to the presence of phosphorus and potassium in compost and biol (Table 1), which are involved in carbohydrate accumulation in the fruit and the reduction of acids at the vacuolar level [(Irfan et al., 2019; Navarro et al., 2023)](https://www.zotero.org/google-docs/?ljTf7G). Additionally, compost contains humic acids (Table A.1), which, according to [Murbach et al. (2020)](https://www.zotero.org/google-docs/?G2PHiw) act as chelators in nutrient absorption. Although both compost and biol contain calcium, potassium, and magnesium (Table 1), foliar application of biol increased the firmness value. This suggests that the foliar application method of organic fertilizer can affect FFPM and FDMPPM, which is in agreement with the findings of [Díaz-Chuquizuta et al. (2022)](https://www.zotero.org/google-docs/?OZ8MR2). The correlation between YP and SSCFPM can be attributed to the nutrients present in compost and biol, such as nitrogen, phosphorus, potassium, calcium, and magnesium (Table 1). These nutrients, when present in adequate proportions, improve fruit quality by preventing internal disorders [(Ma et al., 2023, 2022)](https://www.zotero.org/google-docs/?hw2pri). 
 
-With respect to the timing of the biol applications, our study involved three applications. This allowed for greater potassium availability throughout fruit development, which, according to [Wang et al. (2019)](https://www.zotero.org/google-docs/?uOeKmO), enhances starch accumulation in fruits. Other studies have reported that the fractionation of foliar applications based on potassium and calcium allows for better assimilation of the product. This is because more than 50% of these nutrients are absorbed during fruit maturation. [Osuna-Enciso et al. (2023)](https://www.zotero.org/google-docs/?LhV0ZL) reported that the application of ethephon generates significant differences in fruit firmness, soluble solids, and acidity at harvest [(Castro-Villarreal and Villarreal-Núñez, 2020; Jaime-Guerrero et al., 2024; Sotiropoulos et al., 2021)](https://www.zotero.org/google-docs/?pmvOXp).
+With respect to the timing of the biol applications, our study involved three applications. This allowed for greater potassium availability throughout fruit development, which, according to [Wang et al. (2019)](https://www.zotero.org/google-docs/?uOeKmO), enhances starch accumulation in fruits. Other studies have reported that the fractionation of foliar applications based on potassium and calcium allows for better assimilation of the product. This is because more than 50% of these nutrients are absorbed during fruit maturation. [Osuna-Enciso et al. (2023)](https://www.zotero.org/google-docs/?LhV0ZL) reported that the application of ethephon generates significant differences in fruit firmness, soluble solids, and acidity at harvest [(Jaime-Guerrero et al., 2024; Sotiropoulos et al., 2021)](https://www.zotero.org/google-docs/?pmvOXp).
 
-During the commercial maturity stage, mango shows physicochemical changes reflected in quality variables such as FFCM, SSCFCM, TAFCM, and FDPCM [(Barrón-García et al., 2021; Prasad et al., 2024; Saroj et al., 2023; Saroj and Prasad, 2023)](https://www.zotero.org/google-docs/?8CVrUa). In the present study, the interaction of compost and biol improved fruit firmness ([Figure 5](https://docs.google.com/document/d/1ySwDDV4CYy3IYeRz8Fg_sUGJ30KOWt2aGAcdRm7EHFU/edit?pli=1#bookmark=id.apkbyaf8rnn2)a) and reduced fruit acidity ([Figure 5](https://docs.google.com/document/d/1ySwDDV4CYy3IYeRz8Fg_sUGJ30KOWt2aGAcdRm7EHFU/edit?pli=1#bookmark=id.apkbyaf8rnn2)c). This can be attributed to the calcium absorbed by the fruits during organic fertilization. According to previous studies, calcium regulates enzymatic activity and increases shelf life during the commercial maturity process [(Kumar et al., 2022b; Prasad et al., 2024)](https://www.zotero.org/google-docs/?87eMVG). [Prasad et al. (2024)](https://www.zotero.org/google-docs/?S5cy2K) reported that fruits fertilized with organic fertilizers experienced lower FDPCM during the commercial maturity process. The decrease in TAFCM and the increase in SSCFCM can be attributed to the hydrolysis of starch, which is responsible for the increase in sugars and the decrease in organic acids at the vacuolar level [(Prasad et al., 2024, 2022b)](https://www.zotero.org/google-docs/?8XltO1). In our work, the improvement in fruit firmness, increase in soluble solids, and decrease in acidity and dehydration ([Figure 5](https://docs.google.com/document/d/1ySwDDV4CYy3IYeRz8Fg_sUGJ30KOWt2aGAcdRm7EHFU/edit?pli=1#bookmark=id.apkbyaf8rnn2)a,c,d) can be attributed to high doses of organic fertilizers. These doses likely increase the supply of nutrients that are potentially delivered to the fruit [(Sudha et al., 2012)](https://www.zotero.org/google-docs/?I5COPJ). These findings are supported by those of [Sun et al. (2022)](https://www.zotero.org/google-docs/?f0Q0cW) who demonstrated that fertilizing mango fruit during the maturation period affects the concentrations of soluble solids, vitamin C, carotenoids, and the water content of the fruit.  Additionally, [Abd El-Rahman (2021)](https://www.zotero.org/google-docs/?WKUN7E) reported that applying compost to soil and biofertilizers through foliar spraying improved the physical properties, soluble solids, acidity percentage, and vitamin C concentration of mango fruit. Other studies mention that the content of photosynthates and nutrients in the leaves is correlated with the total sugars of the fruit because of decreases in water supply [(Hueso et al., 2021; Rani et al., 2020; Sun et al., 2022)](https://www.zotero.org/google-docs/?J1lhMp). Although the interaction of compost and biol did not significantly differ for FFPM, FDMPPM, SSCFCM, and FDPCM, the best values of fruit yield and quality were achieved with the highest doses of combined compost and biol. Which can be associated with the increased dosage of nutrients, which has been reported to prevent metabolic imbalances and influence fruit development and maturation [(De Bang et al., 2021)](https://www.zotero.org/google-docs/?cMwYRK).
+During the commercial maturity stage, mango shows physicochemical changes reflected in quality variables such as FFCM, SSCFCM, TAFCM, and FDPCM [(Barrón-García et al., 2021; Prasad et al., 2024; Saroj et al., 2023; Saroj and Prasad, 2023)](https://www.zotero.org/google-docs/?8CVrUa). In the present study, the interaction of compost and biol improved fruit firmness ([Figure 5](https://docs.google.com/document/d/1ySwDDV4CYy3IYeRz8Fg_sUGJ30KOWt2aGAcdRm7EHFU/edit?pli=1#bookmark=id.apkbyaf8rnn2)a) and reduced fruit acidity ([Figure 5](https://docs.google.com/document/d/1ySwDDV4CYy3IYeRz8Fg_sUGJ30KOWt2aGAcdRm7EHFU/edit?pli=1#bookmark=id.apkbyaf8rnn2)c). This can be attributed to the calcium absorbed by the fruits during organic fertilization. According to previous studies, calcium regulates enzymatic activity and increases shelf life during the commercial maturity process [(Kumar et al., 2022b; Prasad et al., 2024)](https://www.zotero.org/google-docs/?87eMVG). [Prasad et al. (2024)](https://www.zotero.org/google-docs/?S5cy2K) reported that fruits fertilized with organic fertilizers experienced lower FDPCM during the commercial maturity process. The decrease in TAFCM and the increase in SSCFCM can be attributed to the hydrolysis of starch, which is responsible for the increase in sugars and the decrease in organic acids at the vacuolar level [(Prasad et al., 2024, 2022b)](https://www.zotero.org/google-docs/?8XltO1). In our work, the improvement in fruit firmness, increase in soluble solids, and decrease in acidity and dehydration ([Figure 5](https://docs.google.com/document/d/1ySwDDV4CYy3IYeRz8Fg_sUGJ30KOWt2aGAcdRm7EHFU/edit?pli=1#bookmark=id.apkbyaf8rnn2)a,c,d) can be attributed to high doses of organic fertilizers. These doses likely increase the supply of nutrients that are potentially delivered to the fruit [(Sudha et al., 2012)](https://www.zotero.org/google-docs/?I5COPJ). These findings are supported by those of [Sun et al. (2022)](https://www.zotero.org/google-docs/?f0Q0cW) who demonstrated that fertilizing mango fruit during the maturation period affects the concentrations of soluble solids, vitamin C, carotenoids, and the water content of the fruit.  Additionally, [Abd El-Rahman (2021)](https://www.zotero.org/google-docs/?WKUN7E) reported that applying compost to soil and biofertilizers through foliar spraying improved the physical properties, soluble solids, acidity percentage, and vitamin C concentration of mango fruit. Other studies mention that the content of photosynthates and nutrients in the leaves is correlated with the total sugars of the fruit because of decreases in water supply [(Hueso et al., 2021; Sun et al., 2022)](https://www.zotero.org/google-docs/?J1lhMp). Although the interaction of compost and biol did not significantly differ for FFPM, FDMPPM, SSCFCM, and FDPCM, the best values of fruit yield and quality were achieved with the highest doses of combined compost and biol. Which can be associated with the increased dosage of nutrients, which has been reported to prevent metabolic imbalances and influence fruit development and maturation [(De Bang et al., 2021)](https://www.zotero.org/google-docs/?cMwYRK).
 
 Among the limitations of the present study is the lack of soil analysis at the end of the experiment, which would have been crucial for determining nutrient extraction by the plants. This omission was due to the coincidence of the harvest time with the physico-chemical analysis of the mango fruits, which were conducted in different provinces. Additionally, no foliar analysis was performed before or after organic fertilization, which would have provided valuable information on nutrient concentrations in the leaves and allowed for more precise adjustments to foliar or soil applications. Despite these limitations, the results of this study contribute to the understanding of sustainable agricultural practices, benefiting both producers and the environment. Another challenge for comparison studies is the lack of specification regarding the exact timing of variable evaluations. Therefore, adopting the BBCH scale to standardize evaluations and facilitate comparisons between studies is suggested.
 
@@ -266,6 +265,8 @@ The present study revealed that mango fruits of the variety ‘Kent’ analyzed 
 
 
 
+
+
 # REFERENCES
 
 [Abd El-Rahman, A., 2021. Response of Mango Trees to Mineral, Bio-Organic Fertilizers and Growth Stimulants. J. Plant Prod. 12, 981–986. https://doi.org/10.21608/jpp.2021.202613](https://www.zotero.org/google-docs/?Xqsy4g)
@@ -274,19 +275,13 @@ The present study revealed that mango fruits of the variety ‘Kent’ analyzed 
 
 [Alebidi, A., Abdel-Sattar, M., Mostafa, L.Y., Hamad, A.S.A., Rihan, H.Z., 2023. Synergistic Effects of Applying Potassium Nitrate Spray with Putrescine on Productivity and Fruit Quality of Mango Trees cv. Ewais. Agronomy 13, 2717. https://doi.org/10.3390/agronomy13112717](https://www.zotero.org/google-docs/?Xqsy4g)
 
-[Aragón Mendieta, D.F., 2022. Estudio de tendencias de mercado - Mango, Instituto Nacional de Innovación Agraria. Instituto Nacional de Innovación Agraria.](https://www.zotero.org/google-docs/?Xqsy4g)
-
 [Association of Official Analytical Chemists (AOAC) (Ed.), 2005. Official methods of analysis, 18th ed, Food Science Text Series. Springer International Publishing, Washington, DC, USA,. https://doi.org/10.1007/978-3-319-45776-5\_36](https://www.zotero.org/google-docs/?Xqsy4g)
 
 [Azam, M., Qadri, R., Aslam, A., Khan, M.I., Khan, A.S., Anwar, R., Ghani, M.A., Ejaz, S., Hussain, Z., Iqbal, M.A., Chen, J., 2022. Effects of different combinations of N, P and K at different time interval on vegetative, reproductive, yield and quality traits of mango (Mangifera Indica. L) cv. Dusehri. Braz. J. Biol. 82, e235612. https://doi.org/10.1590/1519-6984.235612](https://www.zotero.org/google-docs/?Xqsy4g)
 
 [Barrón-García, O.Y., Gaytán-Martínez, M., Ramírez-Jiménez, A.K., Luzardo-Ocampo, I., Velazquez, G., Morales-Sánchez, E., 2021. Physicochemical characterization and polyphenol oxidase inactivation of Ataulfo mango pulp pasteurized by conventional and ohmic heating processes. LWT 143, 111113. https://doi.org/10.1016/j.lwt.2021.111113](https://www.zotero.org/google-docs/?Xqsy4g)
 
-[Bolaños Risco, A.A., 2023. Factores que limitan la producción del cultivo de mango en el Valle de Santa, Ancash - Perú.](https://www.zotero.org/google-docs/?Xqsy4g)
-
 [Campos Mariscal, J.L., Álvarez Sánchez, M.E., Maldonado Torres, R., Vargas Gustavo, A., 2020. Aplicación de abonos orgánicos en el rendimiento y desarrollo radicular en el cultivo de aguacate. Rev. Mex. Cienc. Agríc. 11, 263–274. https://doi.org/10.29312/remexca.v11i2.2301](https://www.zotero.org/google-docs/?Xqsy4g)
-
-[Castro-Villarreal, J.A., Villarreal-Núñez, J.E., 2020. Absorción De Nutrientes En Tomate Industrial Idiap – T7 En Suelos De La Región De Azuero. Cienc. Agropecu. 27–44.](https://www.zotero.org/google-docs/?Xqsy4g)
 
 [Chanduví-García, R., Sandoval-Panta, M.A., Peña-Castillo, R., Javier-Alva, J., Álvarez, L.A., Quiroz-Calderón, M.V., Granda-Wong, C., Aguilar-Anccota, R., Galecio-Julca, M., Morales-Pizarro, A., Chanduví-García, R., Sandoval-Panta, M.A., Peña-Castillo, R., Javier-Alva, J., Álvarez, L.A., Quiroz-Calderón, M.V., Granda-Wong, C., Aguilar-Anccota, R., Galecio-Julca, M., Morales-Pizarro, A., 2023. Biofertilizante y su Correlación entre Parámetros Productivos y de Calidad en Limón Sutil (*Citrus aurantifolia Swingle* ). Terra Latinoam. 41. https://doi.org/10.28940/terra.v41i0.1685](https://www.zotero.org/google-docs/?Xqsy4g)
 
@@ -300,7 +295,7 @@ The present study revealed that mango fruits of the variety ‘Kent’ analyzed 
 
 [Food and Agriculture Organization of the United Nations, 2022. Cultivos y Productos de Ganadería [WWW Document]. FAOSTAT. URL https://www.fao.org/faostat/en/#data/QCL/visualize (accessed 5.21.24).](https://www.zotero.org/google-docs/?Xqsy4g)
 
-[Francois Husson, Julie Josse, Sebastien Le, Jeremy Mazet, 2006. FactoMineR: Multivariate Exploratory Data Analysis and Data Mining 2.11. https://doi.org/10.32614/CRAN.package.FactoMineR](https://www.zotero.org/google-docs/?Xqsy4g)
+[Francois Husson, Josse, J., Le, S., Mazet, J., 2006. FactoMineR: Multivariate Exploratory Data Analysis and Data Mining.](https://www.zotero.org/google-docs/?Xqsy4g)
 
 [García-Santiago, J.C., González-Fuentes, J.A., Rojas-Duarte, A., Hernández-Pérez, A., Aureoles-Rodríguez, F., Martínez-Mares, R., 2023. Los ácidos húmicos reducen la adición de NPK y mejoran la calidad de mango. Ecosistemas Recur. Agropecu. 10. https://doi.org/10.19136/era.a10n1.3319](https://www.zotero.org/google-docs/?Xqsy4g)
 
@@ -328,8 +323,6 @@ The present study revealed that mango fruits of the variety ‘Kent’ analyzed 
 
 [Kumar, S., Kaushik, R.A., Jain, D., Saini, V.P., Babu, S.R., Choudhary, R., Ercisli, S., 2022b. Genetic diversity among local mango (Mangifera indica L.) germplasm using morphological, biochemical and chloroplast DNA barcodes analyses. Mol. Biol. Rep. 49, 3491–3501. https://doi.org/10.1007/s11033-022-07186-7](https://www.zotero.org/google-docs/?Xqsy4g)
 
-[Lenth, R.V., 2017. emmeans: Estimated Marginal Means, aka Least-Squares Means 1.10.4. https://doi.org/10.32614/CRAN.package.emmeans](https://www.zotero.org/google-docs/?Xqsy4g)
-
 [Liu, H., Li, J., Li, X., Zheng, Y., Feng, S., Jiang, G., 2015. Mitigating greenhouse gas emissions through replacement of chemical fertilizer with organic manure in a temperate farmland. Sci. Bull. 60, 598–606. https://doi.org/10.1007/s11434-014-0679-6](https://www.zotero.org/google-docs/?Xqsy4g)
 
 [Liu, J., Shu, A., Song, W., Shi, W., Li, M., Zhang, W., Li, Z., Liu, G., Yuan, F., Zhang, S., Liu, Z., Gao, Z., 2021. Long-term organic fertilizer substitution increases rice yield by improving soil properties and regulating soil bacteria. Geoderma 404, 115287. https://doi.org/10.1016/j.geoderma.2021.115287](https://www.zotero.org/google-docs/?Xqsy4g)
@@ -342,6 +335,8 @@ The present study revealed that mango fruits of the variety ‘Kent’ analyzed 
 
 [Magallanes-López, A.M., Martínez-Damián, M.T., Jaime Sahagún-Castellanos, Pérez-Flores, L.J., Marín-Montes, I.M., Rodríguez-Pérez, J.E., 2020. Calidad poscosecha de 40 poblaciones de tomate (*Solanum lycopersicum* L.) nativas de México. Agrociencia 54, 779–796. https://doi.org/10.47163/agrociencia.v54i6.2184](https://www.zotero.org/google-docs/?Xqsy4g)
 
+[Mandal, D., Wermund, U., Phavaphutanon, L., Cronje, R. (Eds.), 2023. Tropical and subtropical fruit crops: production, processing, and marketing, First edition. ed, Innovations in horticultural science. Apple Academic Press, Palm Bay, FL burlington, ON.](https://www.zotero.org/google-docs/?Xqsy4g)
+
 [Martínez, E., Abud Archila, M., Freile Pelegrín, Y., Luján Hidalgo, M.C., Gutiérrez Miceli, F.A., Ovando Chacón, S.L., 2022. Recubrimientos a base de alginato de sodio extraído de *Sargassum fluitans* y nanopartículas de plata para prolongar la vida de anaquel de papaya (*Carica papaya* L.). Biotecnia 24, 159–168. https://doi.org/10.18633/biotecnia.v24i3.1739](https://www.zotero.org/google-docs/?Xqsy4g)
 
 [Martínez-González, M.E., Balois Morales, R., Alia-Tejacal, I., Cortes-Cruz, M.A., Palomino-Hermosillo, Y.A., López-Gúzman, G.G., 2017. Postcosecha de frutos: maduración y cambios bioquímicos. Rev. Mex. Cienc. Agríc. 4075–4087. https://doi.org/10.29312/remexca.v0i19.674](https://www.zotero.org/google-docs/?Xqsy4g)
@@ -350,11 +345,11 @@ The present study revealed that mango fruits of the variety ‘Kent’ analyzed 
 
 [Ministerio de Desarrollo Agrario y Riego, 2023. Estadística Agropecuaria [WWW Document]. Sist. Integrado Estad. Agrar. URL https://siea.midagri.gob.pe/portal/siea\_bi/index.html (accessed 5.21.24).](https://www.zotero.org/google-docs/?Xqsy4g)
 
+[Mirza, B., Croley, C.R., Ahmad, M., Pumarol, J., Das, N., Sethi, G., Bishayee, A., 2021. Mango (*Mangifera indica*L.): a magnificent plant with cancer preventive and anticancer therapeutic potential. Crit. Rev. Food Sci. Nutr. 61, 2125–2151. https://doi.org/10.1080/10408398.2020.1771678](https://www.zotero.org/google-docs/?Xqsy4g)
+
 [Morales-Meléndez, R., Arroyo-Ramírez, A., Camposeco-Montejo, N., Méndez-López, A., López-Pérez, M.C., 2024. (*Ascophyllum Nodosum* ) y Nitrato de Calcio como Bioestimulantes en el Desarrollo y Rendimiento de Cultivo de Tomate. Cienc. Lat. Rev. Científica Multidiscip. 8, 1574–1589. https://doi.org/10.37811/cl\_rcm.v8i1.9553](https://www.zotero.org/google-docs/?Xqsy4g)
 
 [Murbach, T.S., Glávits, R., Endres, J.R., Clewell, A.E., Hirka, G., Vértesi, A., Béres, E., Pasics Szakonyiné, I., 2020. A toxicological evaluation of a fulvic and humic acids preparation. Toxicol. Rep. 7, 1242–1254. https://doi.org/10.1016/j.toxrep.2020.08.030](https://www.zotero.org/google-docs/?Xqsy4g)
-
-[Naikoo, N.B., Chesti, M.H., Bhat, M.A., Mir, A.H., Bashir, O., Bhat, T.A., Mir, M.S., Amin, Z., Gull, A., Ayoub, L., 2022. ​Biostimulants towards soil health improvement: a review. Agric. Rev. https://doi.org/10.18805/ag.R-2526](https://www.zotero.org/google-docs/?Xqsy4g)
 
 [Navarro, C.F.A., Balois-Morales, R., Zurita, J.O.J., Jiménez, V.A.O., Ramírez, I.F.P., Varela, G.B., Rosales, P.U.B., 2023. Frutos de Mango Partenocárpicos y Estenospermocárpicos: Factores Causantes. Rev. Bio Cienc. 10. https://doi.org/10.15741/revbio.10.e1480](https://www.zotero.org/google-docs/?Xqsy4g)
 
@@ -372,8 +367,6 @@ The present study revealed that mango fruits of the variety ‘Kent’ analyzed 
 
 [R, M., Singh, S.K., Srivastav, M., Prakash, J., Saha, S., Pradhan, S., 2022. Physico-chemical characterization and biochemical profiling of mango genotypes during different fruit development stages. South Afr. J. Bot. 149, 476–486. https://doi.org/10.1016/j.sajb.2022.06.023](https://www.zotero.org/google-docs/?Xqsy4g)
 
-[Rani, K.U., Honnabyraiah, M.K., Sakthivel, T., Adiga, J.D., Alur, A.S., Halesh, G.K., 2020. Studies on correlation among vegetative parameters, yield parameters, fruit quality parameters, soil and leaf nutrient status of mango (Mangifera indica L.) cv. Alphonso. J. Pharmacogn. Phytochem. 9, 647–650.](https://www.zotero.org/google-docs/?Xqsy4g)
-
 [Rivera-Solís, L.L., Benavides-Mendoza, A., Robledo-Olivo, A., González-Morales, S., 2023. La salud del suelo y el uso de bioestimulantes. Rev. Agrar. 20, 5–10. https://doi.org/10.59741/agraria.v20i3.46](https://www.zotero.org/google-docs/?Xqsy4g)
 
 [Sánchez-Hernández, R., Vásquez-Montiel, L., Valdés-Velarde, E., Mendoza-Palacios, J.D.D., López-Noverola, U., Escamilla-Prado, E., 2019. Cambios edáficos provocados por el uso de abonos de origen natural en una región cafetalera de Veracruz, México. Rev. TERRA Latinoam. 37, 351. https://doi.org/10.28940/terra.v37i4.515](https://www.zotero.org/google-docs/?Xqsy4g)
@@ -383,8 +376,6 @@ The present study revealed that mango fruits of the variety ‘Kent’ analyzed 
 [Saroj, N., Prasad, K., Singh, S.K., Kumar, V., Maurya, S., Maurya, P., Tiwari, R.K., Lal, M.K., Kumar, R., 2023. Characterization of bioactive and fruit quality compounds of promising mango genotypes grown in Himalayan plain region. PeerJ 11, e15867. https://doi.org/10.7717/peerj.15867](https://www.zotero.org/google-docs/?Xqsy4g)
 
 [Searle, S.R., Speed, F.M., Milliken, G.A., 1980. Population Marginal Means in the Linear Model: An Alternative to Least Squares Means. Am. Stat. 34, 216–221. https://doi.org/10.1080/00031305.1980.10483031](https://www.zotero.org/google-docs/?Xqsy4g)
-
-[Sergent, E., 1999. El cultivo del mango (*Mangifera indica*   L.). CDCH UCV.](https://www.zotero.org/google-docs/?Xqsy4g)
 
 [Shivran, M., Sharma, Nimisha, Dubey, A.K., Singh, S.K., Sharma, Neha, Muthusamy, V., Jain, M., Singh, B.P., Singh, Nisha, Kumar, N., Singh, Narendra, Sethi, S., Sharma, R.M., 2023. Scion/Rootstock Interaction Studies for Quality Traits in Mango (Mangifera indica L.) Varieties. Agronomy 13, 204. https://doi.org/10.3390/agronomy13010204](https://www.zotero.org/google-docs/?Xqsy4g)
 
@@ -409,6 +400,17 @@ The present study revealed that mango fruits of the variety ‘Kent’ analyzed 
 [Wang, R., Tavano, E.C. da R., Lammers, M., Martinelli, A.P., Angenent, G.C., de Maagd, R.A., 2019. Re-evaluation of transcription factor function in tomato fruit development and ripening with CRISPR/Cas9-mutagenesis. Sci. Rep. 9, 1696. https://doi.org/10.1038/s41598-018-38170-6](https://www.zotero.org/google-docs/?Xqsy4g)
 
 [Zamora-Cienfuegos, E., S.-García, H., Montes-de Oca, M.M., Tovar-Gómez, B., 2022. Aceleración de la maduración en mango ‘Kent’ refrigerado. Rev. Fitotec. Mex. 27, 359. https://doi.org/10.35196/rfm.2004.4.359](https://www.zotero.org/google-docs/?Xqsy4g)
+
+
+
+#| newpage
+
+**Highlights**
+
+* Application of compost and biol increase mango sweetness at physiological maturity.
+* Organic fertilizers improve internal flesh color and mango fruit blush percentage.
+* Using compost and biol reduce mango dehydration by 0.6% in postharvest handling.
+* Organic fertilizers maintain mango firmness at 4.39 kg/cm² at commercial maturity.
 
 
 
