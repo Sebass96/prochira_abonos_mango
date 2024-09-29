@@ -1,6 +1,5 @@
 ---
 title: "Impact of organic fertilizers on quality and post-harvest management of Mango ‘Kent’ (_Mangifera indica_ L.)"
-author: "Henry Morocho-Romero; Ricardo Peña-Castillo; Arturo Morales-Pizarro; Junior Domínguez-Chozo; Sandy Vilchez-Navarro; Sebastian Casas-Niño; Gabriela Cárdenas-Huamán; Nery Tirabante-Terrones; Esdwin-Oberti Nuñez-Ticliahunca; Ana-Gabriela Montañez-Artica; Leslie Velarde-Apaza; Max Ramirez-Rojas; Juancarlos Cruz; Flavio Lozano-Isla."
 format:
   html:
     toc: true
@@ -415,20 +414,20 @@ p1 <- list(p1a + labs(x = NULL) + theme(legend.position="none"
 fig <- plot_grid(legend, p1, ncol = 1, align = 'v', rel_heights = c(0.05, 1))
   
 fig %>% 
-  ggsave2(plot = ., "agronomy/Fig-1.jpg"
+  ggsave2(plot = ., "submission/Fig-1.jpg"
          , units = "cm"
          , width = 26
          , height = 26
          )
 
 fig %>% 
-  ggsave2(plot = ., "agronomy/Fig-1.eps"
+  ggsave2(plot = ., "submission/Fig-1.eps"
          , units = "cm"
          , width = 26
          , height = 26
          )
 
-knitr::include_graphics("agronomy/Fig-1.jpg")
+knitr::include_graphics("submission/Fig-1.jpg")
 ```
 
 ### Multivariate analysis
@@ -483,17 +482,17 @@ fig <- list(f2a, f2b) %>%
             , rel_widths = c(1, 1.5)
             )
 fig %>% 
-  ggsave2(plot = ., "agronomy/Fig-2.jpg", units = "cm"
+  ggsave2(plot = ., "submission/Fig-2.jpg", units = "cm"
          , width = 25
          , height = 10
          )
 fig %>% 
-  ggsave2(plot = ., "agronomy/Fig-2.eps", units = "cm"
+  ggsave2(plot = ., "submission/Fig-2.eps", units = "cm"
          , width = 25
          , height = 10
          )
 
-knitr::include_graphics("agronomy/Fig-2.jpg")
+knitr::include_graphics("submission/Fig-2.jpg")
 ```
 
 ### Supplementary Figure 1
@@ -552,11 +551,11 @@ plot <- list(pt1, pt2, pt3) %>%
   plot_grid(plotlist = ., ncol = 2, labels = c("", "d"))
 
 
-ggsave2(plot = plot, "agronomy/FigS1.jpg", height = 20, width = 26, units = "cm")
+ggsave2(plot = plot, "submission/FigS1.jpg", height = 20, width = 26, units = "cm")
 
-ggsave2(plot = plot, "agronomy/FigS1.eps", height = 20, width = 26, units = "cm")
+ggsave2(plot = plot, "submission/FigS1.eps", height = 20, width = 26, units = "cm")
 
-knitr::include_graphics("agronomy/FigS1.jpg")
+knitr::include_graphics("submission/FigS1.jpg")
 ```
 
 ## Specific Objective 2
@@ -862,20 +861,20 @@ p2 <- list(p2a + labs(x = NULL) + theme(legend.position="none"
 fig <- plot_grid(legend, p2, ncol = 1, align = 'v', rel_heights = c(0.05, 1))
 
 fig %>% 
-  ggsave2(plot = ., "agronomy/Fig-3.jpg"
+  ggsave2(plot = ., "submission/Fig-3.jpg"
          , units = "cm"
          , width = 25
          , height = 25
          )
 
 fig %>% 
-  ggsave2(plot = ., "agronomy/Fig-3.eps"
+  ggsave2(plot = ., "submission/Fig-3.eps"
          , units = "cm"
          , width = 25
          , height = 25
          )
 
-knitr::include_graphics("agronomy/Fig-3.jpg")
+knitr::include_graphics("submission/Fig-3.jpg")
 ```
 
 ### Multivariate analysis
@@ -927,18 +926,18 @@ fig <- list(f4a, f4b) %>%
             , rel_widths = c(1, 1.5)
             )
 fig %>% 
-  ggsave2(plot = ., "agronomy/Fig-4.jpg", units = "cm"
+  ggsave2(plot = ., "submission/Fig-4.jpg", units = "cm"
          , width = 25
          , height = 10
          )
 
 fig %>% 
-  ggsave2(plot = ., "agronomy/Fig-4.eps", units = "cm"
+  ggsave2(plot = ., "submission/Fig-4.eps", units = "cm"
          , width = 25
          , height = 10
          )
 
-knitr::include_graphics("agronomy/Fig-4.jpg")
+knitr::include_graphics("submission/Fig-4.jpg")
 ```
 
 ### Supplementary Figure 2
@@ -996,11 +995,11 @@ plot <- list(pt1, pt2, pt3) %>%
   list(., pt4) %>% 
   plot_grid(plotlist = ., ncol = 2, labels = c("", "d"))
 
-ggsave2(plot = plot, "agronomy/FigS2.jpg", height = 16, width = 25, units = "cm")
+ggsave2(plot = plot, "submission/FigS2.jpg", height = 16, width = 25, units = "cm")
 
-ggsave2(plot = plot, "agronomy/FigS2.eps", height = 16, width = 25, units = "cm")
+ggsave2(plot = plot, "submission/FigS2.eps", height = 16, width = 25, units = "cm")
 
-knitr::include_graphics("agronomy/FigS2.jpg")
+knitr::include_graphics("submission/FigS2.jpg")
 ```
 
 # Meteorological data
@@ -1031,8 +1030,8 @@ plot <- met %>%
   theme(legend.position = "top")
 
 plot %>% 
-  ggsave2(plot = ., "agronomy/weather.jpg", units = "cm"
+  ggsave2(plot = ., "submission/weather.jpg", units = "cm"
          , width = 25, height = 15)
 
-knitr::include_graphics("agronomy/weather.jpg")
+knitr::include_graphics("submission/weather.jpg")
 ```
