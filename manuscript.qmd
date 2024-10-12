@@ -41,7 +41,7 @@ crossref:
 # browseURL("https://docs.google.com/document/d/1ySwDDV4CYy3IYeRz8Fg_sUGJ30KOWt2aGAcdRm7EHFU/edit")
 
 source("http://inkaverse.com/docs.r")
-doc <- inti::gdoc2qmd(file = "draft.zip"
+doc <- inti::gdoc2qmd(file = "_draft.zip"
                       , type = "listfull"
                       )
 params <- doc$params
