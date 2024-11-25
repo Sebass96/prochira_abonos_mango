@@ -1,6 +1,5 @@
 ---
-title: "Impact of organic fertilizers on quality and post-harvest management of Mango ‘Kent’ (_Mangifera indica_ L.)"
-author: "Henry Morocho-Romero; Ricardo Peña-Castillo; Arturo Morales-Pizarro; Junior Domínguez-Chozo; Sandy Vilchez-Navarro; Sebastian Casas-Niño; Gabriela Cárdenas-Huamán; Nery Tirabante-Terrones; Esdwin-Oberti Nuñez-Ticliahunca; Ana-Gabriela Montañez-Artica; Leslie Velarde-Apaza; Max Ramirez-Rojas; Juancarlos Cruz; Flavio Lozano-Isla."
+title: "Impact of organic fertilizers on the quality of mango (Mangifera indica L.) var. 'Kent' during physiological maturity and commercial maturity"
 format:
   html:
     toc: true
