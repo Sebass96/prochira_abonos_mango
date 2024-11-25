@@ -1,9 +1,5 @@
 ---
-<<<<<<< HEAD
 title: "Impact of organic fertilizers on the quality of mango (Mangifera indica L.) var. 'Kent' during physiological maturity and commercial maturity"
-=======
-title: "Impact of organic fertilizers on quality and post-harvest management of Mango ‘Kent’ (_Mangifera indica_ L.)"
->>>>>>> ffe4b723a95c874f6fad8f81fe1cf7a32f926329
 format:
   html:
     toc: true
