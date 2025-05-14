@@ -188,7 +188,7 @@ mc <- merge(mc1, mc2) %>%
 
 mc %>% kable()
 
-p1a <- mc %>% 
+p1a <- mc %>%
   plot_smr(x = "composts"
            , y = "emmean"
            , group = "biol"
@@ -200,32 +200,36 @@ p1a <- mc %>%
            , glab = "Biol"
            # , ylimits = c(0, 14, 4)
            , type = "line"
-           ) 
+           )
 
 p1a
 
-# Calcular el valor máximo (upper whisker) por grupo
-positions <- fb %>%
-  group_by(composts, biol) %>%
-  summarise(y_pos = max(ffmf, na.rm = TRUE) + 0.3, .groups = "drop")
-
-# Combinar con las letras del objeto mc
-mc_pos <- left_join(mc, positions, by = c("composts", "biol"))
-
-# Gráfico
-ggplot(fb, aes(x = factor(composts), y = ffmf, fill = factor(biol))) +
-  stat_boxplot(geom = "errorbar", width = 0.5, position = position_dodge(0.8)) +
-  geom_boxplot(width = 0.5, position = position_dodge(0.8)) +
-  geom_jitter(position = position_jitterdodge(jitter.width = 0.2, dodge.width = 0.8),
-              shape = 21, size = 1.8, alpha = 0.6, color = "black") +
-  geom_text(data = mc_pos,
-            aes(x = factor(composts), y = y_pos, label = group, fill = factor(biol)),
-            position = position_dodge(width = 0.8),
-            size = 4,
-            inherit.aes = FALSE) +
-  labs(x = "Composts", y = "Fruit firmness at physiological maturity (kgf/cm²)", fill = "Biol") +
-  theme_minimal() +
-  theme(legend.position = "top")
+# # Calcular el valor máximo (upper whisker) por grupo
+# positions <-  rmout$data$clean %>%
+#   group_by(composts, biol) %>%
+#   summarise(y_pos = max(ffmf, na.rm = TRUE) + 0.3, .groups = "drop")
+# 
+# # Combinar con las letras del objeto mc
+# mc_pos <- left_join(mc, positions, by = c("composts", "biol"))
+# 
+# # Gráfico
+# p1a <- ggplot( rmout$data$clean, aes(x = factor(composts), y = ffmf, fill = factor(biol))) +
+#   stat_boxplot(geom = "errorbar", width = 0.5, position = position_dodge(0.8)) +
+#   geom_boxplot(width = 0.5, position = position_dodge(0.8)) +
+#   geom_jitter(position = position_jitterdodge(jitter.width = 0.2, dodge.width = 0.8),
+#               shape = 21, size = 1.8, alpha = 0.6, color = "black") +
+#   geom_text(data = mc_pos,
+#             aes(x = factor(composts), y = y_pos, label = group, fill = factor(biol)),
+#             position = position_dodge(width = 0.8),
+#             size = 4,
+#             inherit.aes = FALSE) +
+#   labs(x = "Composts", y = "Fruit firmness at physiological maturity (kgf/cm²)", fill = "Biol") +
+#   theme_minimal() +
+#   theme(legend.position = "top") +
+#     theme(
+#     panel.border = element_rect(colour = "black", fill = NA, linewidth = 0.5),
+#     panel.background = element_blank()
+#   )
 ```
 
 ###  Internal fruit color at physiological maturity (IFC_pm)
@@ -267,7 +271,7 @@ mc <- merge(mc1, mc2) %>%
 
 mc %>% kable()
 
-p1b <- mc %>% 
+p1b <- mc %>%
   plot_smr(x = "composts"
            , y = "emmean"
            , group = "biol"
@@ -276,14 +280,15 @@ p1b <- mc %>%
            , color = T
            , xlab = "Composts"
            , ylab = "Internal fruit color at physiological maturity"
-           , ylimits = c(0, 3, 1)
+           # , ylimits = c(0, 3, 1)
+           , glab = "Biol"
+           , type = "line"
            )
 
 p1b
-
 ```
 
-### Fruit pH at physiological maturity  (FpHPM)
+### Fruit pH at physiological maturity  (FpH_pm)
 
 ```{r}
 trait <- "phfmf"
@@ -338,7 +343,7 @@ p1c <- mc %>%
 p1c
 ```
 
-### Soluble solids content of the fruit at physiological maturity (SSCFPM)
+### Soluble solids content of the fruit at physiological maturity (SSCF_pm)
 
 ```{r}
 trait <- "ssfmf"
@@ -377,7 +382,7 @@ mc <- merge(mc1, mc2) %>%
 
 mc %>% kable()
 
-p1d <- mc %>% 
+p1d <- mc %>%
   plot_smr(x = "composts"
            , y = "emmean"
            , group = "biol"
@@ -386,14 +391,15 @@ p1d <- mc %>%
            , color = T
            , xlab = "Composts"
            , ylab = "Soluble solids content of the fruit at physiological maturity (brix^{o})"
-           # 
+           , glab = "Biol"
+           #, ylimits = c(0, 4, 1)
            , type = "line"
            )
 
 p1d
 ```
 
-### Titratable acidity of the fruit at physiological maturity (TAFPM)
+### Titratable acidity of the fruit at physiological maturity (TAF_pm)
 
 ```{r}
 trait <- "atfmf"
@@ -432,7 +438,7 @@ mc <- merge(mc1, mc2) %>%
 
 mc %>% kable()
 
-p1e <- mc %>% 
+p1e <- mc %>%
   plot_smr(x = "composts"
            , y = "emmean"
            , group = "biol"
@@ -441,14 +447,15 @@ p1e <- mc %>%
            , color = T
            , xlab = "Composts"
            , ylab = "Titratable acidity of the fruit at physiological maturity ('%')"
-           # 
+           , glab = "Biol"
+           #
            , type = "line"
            )
 
 p1e
 ```
 
-### Fruit dry matter percentage at physiological maturity (FDMPPM)
+### Fruit dry matter percentage at physiological maturity (FDMP_pm)
 
 ```{r}
 trait <- "msfmf"
@@ -487,7 +494,7 @@ mc <- merge(mc1, mc2) %>%
 
 mc %>% kable()
 
-p1f <- mc %>% 
+p1f <- mc %>%
   plot_smr(x = "composts"
            , y = "emmean"
            , group = "biol"
@@ -496,7 +503,8 @@ p1f <- mc %>%
            , color = T
            , xlab = "Composts"
            , ylab = "Fruit dry matter at physiological maturity ('%')"
-           # 
+           , glab = "Biol"
+           #
            , type = "line"
            )
 
@@ -538,7 +546,7 @@ fig <- plot_grid(legend, p1, ncol = 1, align = 'v', rel_heights = c(0.05, 1))
 fig %>% 
   ggsave2(plot = ., "submission/Figure_3.jpg"
          , units = "cm"
-         , width = 26
+         , width = 24
          , height = 26
          )
 
@@ -562,16 +570,25 @@ mv <- fisio %>%
   summarise(across(where(is.numeric), ~ mean(., na.rm = T))) %>%   
   unite("treat", composts:biol, sep = "-") %>% 
   rename(Treat = treat
-         ,PFCCPM = pcfmf
-         ,FFPM = ffmf
-         ,IFCPM = cifmf
-         ,SSCFPM = ssfmf
-         ,FpHPM = phfmf
-         ,TAFPM = atfmf
-         ,FDMPPM = msfmf
+         ,PFCC_pm = pcfmf
+         ,FF_pm = ffmf
+         ,IFC_pm = cifmf
+         ,SSCF_pm = ssfmf
+         ,FpH_pm = phfmf
+         ,TAF_pm = atfmf
+         ,FDMP_pm = msfmf
          ,FPMI = imf
-         ,RPP = rpp)
-   
+         ,RPP = rpp) %>% 
+  mutate(Treat = case_when(Treat == "0-0" ~ "T0",
+                           Treat == "0-5" ~ "T1",
+                           Treat == "0-10" ~ "T2",
+                           Treat == "5-0" ~ "T3",
+                           Treat == "5-5" ~ "T4",
+                           Treat == "5-10" ~ "T5",
+                           Treat == "15-0" ~ "T6",
+                           Treat == "15-5" ~ "T7",
+                           Treat == "15-10" ~ "T8"))
+
 pca <- mv %>% 
   PCA(scale.unit = T, quali.sup = 1, graph = F) 
 
@@ -584,6 +601,12 @@ f2a <- plot.PCA(x = pca, choix = "var"
                 , cex=0.5
                 )
 
+fviz_pca_var(pca,
+             col.var = "contrib", # Color by contributions to the PC
+             gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
+             repel = TRUE     # Avoid text overlapping
+)
+
 f2b <- plot.PCA(x = pca, choix = "ind"
                 , habillage = 1
                 , invisible = c("ind")
@@ -591,6 +614,14 @@ f2b <- plot.PCA(x = pca, choix = "ind"
                 , ylim = c(-3,3)
                 ) 
 
+grupo <- as.factor(mv$Treat)
+
+fviz_pca_ind(pca,
+                axes = c(1,2),
+                geom.ind = "text",
+                repel = FALSE,
+             , habillage = 1
+)
 ```
 
 ### Figure 4
@@ -603,11 +634,13 @@ fig <- list(f2a, f2b) %>%
             , labels = "auto"
             , rel_widths = c(1, 1.5)
             )
+
 fig %>% 
   ggsave2(plot = ., "submission/Figure_4.jpg", units = "cm"
          , width = 25
          , height = 10
          )
+
 fig %>% 
   ggsave2(plot = ., "submission/Figure_4.eps", units = "cm"
          , width = 25
