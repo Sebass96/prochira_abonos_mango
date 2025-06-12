@@ -288,7 +288,7 @@ p1b <- mc %>%
 p1b
 ```
 
-###  Internal fruit color at physiological maturity (IFC_pm)
+### Fruit pulp color at physiological maturity (FPC_pm)
 
 ```{r}
 trait <- "cifmf"
@@ -331,11 +331,11 @@ p1c <- mc %>%
   plot_smr(x = "composts"
            , y = "emmean"
            , group = "biol"
-           # , sig = "group"
+           , sig = "group"
            , error = "SE"
            , color = T
            , xlab = "Composts"
-           , ylab = "Internal fruit color at physiological maturity"
+           , ylab = "Fruit pulp color at physiological maturity"
            # , ylimits = c(0, 3, 1)
            , glab = "Biol"
            , type = "line"
@@ -638,7 +638,7 @@ mv <- fisio %>%
   rename(Treat = treat
          ,PFCC_pm = pcfmf
          ,FF_pm = ffmf
-         ,IFC_pm = cifmf
+         ,FPC_pm = cifmf
          ,SSCF_pm = ssfmf
          ,FpH_pm = phfmf
          ,TAF_pm = atfmf
@@ -1061,7 +1061,7 @@ p2e <- mc %>%
 p2e
 ```
 
-### Internal fruit color at commercial maturity (IFCCM)
+### Fruit pulp color at commercial maturity (IFCCM)
 
 ```{r}
 trait <- "cifmc"
@@ -1108,7 +1108,7 @@ p2f <- mc %>%
            , error = "SE"
            , color = T
            , xlab = "Composts"
-           , ylab = "Internal fruit color at commercial maturity"
+           , ylab = "Fruit pulp color at commercial maturity"
            # , ylimits = c(0, 5, 1)
            , type = "line"
            )
@@ -1178,7 +1178,7 @@ mv <- consumo %>%
   rename(Treat = treat
          ,FDP_cm = pdfmc
          ,FF_cm = ffmc
-         ,IFC_cm = cifmc
+         ,FPC_cm = cifmc
          ,SSCF_cm = ssfmc
          ,FpH_cm = phfmc
          ,TAF_cm = atfmc
