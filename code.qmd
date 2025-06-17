@@ -204,6 +204,25 @@ p1a <- mc %>%
 
 p1a
 
+mc_1a <- emmeans(model, ~ biol*composts) %>%
+  cld(Letters = letters, reversed = T) %>% 
+  mutate(across(".group", ~ trimws(.)))
+
+p1_a <- mc_1a %>%
+  plot_smr(x = "composts"
+           , y = "emmean"
+           , group = "biol"
+           , sig = ".group"
+           , error = "SE"
+           , color = T
+           , xlab = "Composts"
+           , ylab = "Fruit firmness at physiological maturity (kgf/cm^{2})"
+           , glab = "Biol"
+           , ylimits = c(0, 15, 3)
+           , type = "bar"
+           )
+
+
 # # Calcular el valor máximo (upper whisker) por grupo
 # positions <-  rmout$data$clean %>%
 #   group_by(composts, biol) %>%
@@ -286,6 +305,24 @@ p1b <- mc %>%
            ) 
 
 p1b
+
+mc_1b <- emmeans(model, ~ biol*composts) %>%
+  cld(Letters = letters, reversed = T) %>% 
+  mutate(across(".group", ~ trimws(.)))
+
+p1_b <- mc_1b %>%
+  plot_smr(x = "composts"
+           , y = "emmean"
+           , group = "biol"
+           , sig = ".group"
+           , error = "SE"
+           , color = T
+           , xlab = "Composts"
+           , ylab = "Percentage of fruit canopy cover at physiological maturity ('%')"
+           , glab = "Biol"
+           , ylimits = c(0, 90, 15)
+           , type = "bar"
+           )
 ```
 
 ### Fruit pulp color at physiological maturity (FPC_pm)
@@ -352,6 +389,24 @@ p1c <- mc %>%
   # geom_text(color = )
 
 p1c
+
+mc_1c <- emmeans(model, ~ biol*composts) %>%
+  cld(Letters = letters, reversed = T) %>% 
+  mutate(across(".group", ~ trimws(.)))
+
+p1_c <- mc_1c %>%
+  plot_smr(x = "composts"
+           , y = "emmean"
+           , group = "biol"
+           , sig = ".group"
+           , error = "SE"
+           , color = T
+           , xlab = "Composts"
+           , ylab = "Fruit pulp color at physiological maturity"
+           , glab = "Biol"
+           , ylimits = c(0, 3, 1)
+           , type = "bar"
+           )
 ```
 
 ### Fruit pH at physiological maturity  (FpH_pm)
@@ -463,6 +518,24 @@ p1d <- mc %>%
            )
 
 p1d
+
+mc_1d <- emmeans(model, ~ biol*composts) %>%
+  cld(Letters = letters, reversed = T) %>% 
+  mutate(across(".group", ~ trimws(.)))
+
+p1_d <- mc_1d %>%
+  plot_smr(x = "composts"
+           , y = "emmean"
+           , group = "biol"
+           , sig = ".group"
+           , error = "SE"
+           , color = T
+           , xlab = "Composts"
+           , ylab = "Soluble solids content of the fruit at physiological maturity (brix^{o})"
+           , glab = "Biol"
+           , ylimits = c(0, 10, 2)
+           , type = "bar"
+           )
 ```
 
 ### Titratable acidity of the fruit at physiological maturity (TAF_pm)
@@ -519,6 +592,24 @@ p1e <- mc %>%
            )
 
 p1e
+
+mc_1e <- emmeans(model, ~ biol*composts) %>%
+  cld(Letters = letters, reversed = T) %>% 
+  mutate(across(".group", ~ trimws(.)))
+
+p1_e <- mc_1e %>%
+  plot_smr(x = "composts"
+           , y = "emmean"
+           , group = "biol"
+           , sig = ".group"
+           , error = "SE"
+           , color = T
+           , xlab = "Composts"
+           , ylab = "Titratable acidity of the fruit at physiological maturity ('%')"
+           , glab = "Biol"
+           , ylimits = c(0, 1.5, 0.5)
+           , type = "bar"
+           )
 ```
 
 ### Fruit dry matter percentage at physiological maturity (FDMP_pm)
@@ -575,6 +666,24 @@ p1f <- mc %>%
            )
 
 p1f
+
+mc_1f <- emmeans(model, ~ biol*composts) %>%
+  cld(Letters = letters, reversed = T) %>% 
+  mutate(across(".group", ~ trimws(.)))
+
+p1_f <- mc_1f %>%
+  plot_smr(x = "composts"
+           , y = "emmean"
+           , group = "biol"
+           , sig = ".group"
+           , error = "SE"
+           , color = T
+           , xlab = "Composts"
+           , ylab = "Fruit dry matter at physiological maturity ('%')"
+           , glab = "Biol"
+           , ylimits = c(0, 24, 6)
+           , type = "bar"
+           )
 ```
 
 ### Figure 3
@@ -626,12 +735,62 @@ fig %>%
 knitr::include_graphics("submission/Figure_3.jpg")
 ```
 
+### Supplementary Figure 1
+
+Univariate analysis of the variables for determining the physiological maturity of the fruit at harvest time and for preventing handling damage during commercialization or industrial processes.
+
+```{r}
+legend <- cowplot::get_plot_component(p1_a, 'guide-box-top', return_all = TRUE)
+
+p1 <- list(p1_a + labs(x = NULL) + theme(legend.position="none"
+                                        , axis.title.x=element_blank()
+                                        , axis.text.x=element_blank()
+                                        , axis.ticks.x=element_blank())
+           , p1_b + labs(x = NULL) + theme(legend.position="none"
+                                        , axis.title.x=element_blank()
+                                        , axis.text.x=element_blank()
+                                        , axis.ticks.x=element_blank())
+           , p1_c + labs(x = NULL) + theme(legend.position="none"
+                                        , axis.title.x=element_blank()
+                                        , axis.text.x=element_blank()
+                                        , axis.ticks.x=element_blank())
+           , p1_d + labs(x = NULL) + theme(legend.position="none"
+                                        , axis.title.x=element_blank()
+                                        , axis.text.x=element_blank()
+                                        , axis.ticks.x=element_blank())
+           , p1_e + theme(legend.position="none")
+           , p1_f + theme(legend.position="none")
+           ) %>% 
+  plot_grid(plotlist = ., ncol = 2
+            , labels = "auto"
+            ) 
+
+fig <- plot_grid(legend, p1, ncol = 1, align = 'v', rel_heights = c(0.05, 1))
+  
+fig %>% 
+  ggsave2(plot = ., "submission/Figure_S1.jpg"
+         , units = "cm"
+         , width = 35
+         , height = 38
+         )
+
+fig %>% 
+  ggsave2(plot = ., "submission/Figure_S1.eps"
+         , units = "cm"
+         , width = 35
+         , height = 38
+         )
+
+knitr::include_graphics("submission/Figure_S1.jpg")
+```
+
 ### Multivariate analysis
 
 Principal Component Analysis (PCA) of quality traits to correlate with mango fruits at physiological maturity from compost and biol applications.
 
 ```{r}
 mv <- fisio %>% 
+  select(-rpp) %>% 
   group_by(composts, biol) %>% 
   summarise(across(where(is.numeric), ~ mean(., na.rm = T))) %>%   
   unite("treat", composts:biol, sep = "-") %>% 
@@ -643,8 +802,7 @@ mv <- fisio %>%
          ,FpH_pm = phfmf
          ,TAF_pm = atfmf
          ,FDMP_pm = msfmf
-         ,FPMI = imf
-         ,RPP = rpp) %>% 
+         ,FPMI = imf) %>% 
   mutate(Treat = case_when(Treat == "0-0" ~ "T0",
                            Treat == "0-5" ~ "T1",
                            Treat == "0-10" ~ "T2",
@@ -715,7 +873,7 @@ fig %>%
 knitr::include_graphics("submission/Figure_4.jpg")
 ```
 
-### Supplementary Figure 1
+### Supplementary Figure 3
 
 Results of the contributions and correlation of the variables in the Principal Component Analysis (PCA).
 
@@ -771,11 +929,11 @@ plot <- list(pt1, pt2, pt3) %>%
   plot_grid(plotlist = ., ncol = 2, labels = c("", "d"))
 
 
-ggsave2(plot = plot, "submission/FigS1.jpg", height = 20, width = 26, units = "cm")
+ggsave2(plot = plot, "submission/Fig_S3.jpg", height = 20, width = 26, units = "cm")
 
-ggsave2(plot = plot, "submission/FigS1.eps", height = 20, width = 26, units = "cm")
+ggsave2(plot = plot, "submission/Fig_S3.eps", height = 20, width = 26, units = "cm")
 
-knitr::include_graphics("submission/FigS1.jpg")
+knitr::include_graphics("submission/Fig_S3.jpg")
 ```
 
 ## Specific Objective 2
@@ -836,6 +994,24 @@ p2a <- mc %>%
            ) 
 
 p2a
+
+mc_2a <- emmeans(model, ~ biol*composts) %>%
+  cld(Letters = letters, reversed = T) %>% 
+  mutate(across(".group", ~ trimws(.)))
+
+p2_a <- mc_2a %>%
+  plot_smr(x = "composts"
+           , y = "emmean"
+           , group = "biol"
+           , sig = ".group"
+           , error = "SE"
+           , color = T
+           , xlab = "Composts"
+           , ylab = "Fruit firmness at commercial maturity (kgf/cm^{2})"
+           , glab = "Biol"
+           , ylimits = c(0, 5, 1)
+           , type = "bar"
+           )
 ```
 
 ### Soluble solids content of the fruit at commercial maturity (SSCFCM)
@@ -891,6 +1067,24 @@ p2b <- mc %>%
            )
 
 p2b
+
+mc_2b <- emmeans(model, ~ biol*composts) %>%
+  cld(Letters = letters, reversed = T) %>% 
+  mutate(across(".group", ~ trimws(.)))
+
+p2_b <- mc_2b %>%
+  plot_smr(x = "composts"
+           , y = "emmean"
+           , group = "biol"
+           , sig = ".group"
+           , error = "SE"
+           , color = T
+           , xlab = "Composts"
+           , ylab = "Soluble solids content of the fruit at commercial maturity (brix^{o})"
+           , glab = "Biol"
+           , ylimits = c(0, 18, 6)
+           , type = "bar"
+           )
 ```
 
 ### Titratable acidity of the fruit at commercial maturity (TAFCM)
@@ -936,7 +1130,7 @@ p2c <- mc %>%
   plot_smr(x = "composts"
            , y = "emmean"
            , group = "biol"
-           # , sig = "group"
+           , sig = "group"
            , error = "SE"
            , color = T
            , xlab = "Composts"
@@ -947,7 +1141,23 @@ p2c <- mc %>%
 
 p2c
 
-library(ggrepel)
+mc_2c <- emmeans(model, ~ biol*composts) %>%
+  cld(Letters = letters, reversed = T) %>% 
+  mutate(across(".group", ~ trimws(.)))
+
+p2_c <- mc_2c %>%
+  plot_smr(x = "composts"
+           , y = "emmean"
+           , group = "biol"
+           , sig = ".group"
+           , error = "SE"
+           , color = T
+           , xlab = "Composts"
+           , ylab = "Titratable acidity of the fruit at commercial maturity ('%')"
+           , glab = "Biol"
+           , ylimits = c(0, 0.8, 0.2)
+           , type = "bar"
+           )
 ```
 
 ### Fruit dehydration percentage at commercial maturity (FDPCM)
@@ -1004,6 +1214,24 @@ p2d <- mc %>%
            )
 
 p2d
+
+mc_2d <- emmeans(model, ~ biol*composts) %>%
+  cld(Letters = letters, reversed = T) %>% 
+  mutate(across(".group", ~ trimws(.)))
+
+p2_d <- mc_2d %>%
+  plot_smr(x = "composts"
+           , y = "emmean"
+           , group = "biol"
+           , sig = ".group"
+           , error = "SE"
+           , color = T
+           , xlab = "Composts"
+           , ylab = "Fruit dehydration at commercial maturity ('%')"
+           , glab = "Biol"
+           , ylimits = c(0, 8, 2)
+           , type = "bar"
+           )
 ```
 
 ### Fruit pH at commercial maturity (FpHCM)
@@ -1059,6 +1287,24 @@ p2e <- mc %>%
            )
 
 p2e
+
+mc_2e <- emmeans(model, ~ biol*composts) %>%
+  cld(Letters = letters, reversed = T) %>% 
+  mutate(across(".group", ~ trimws(.)))
+
+p2_e <- mc_2e %>%
+  plot_smr(x = "composts"
+           , y = "emmean"
+           , group = "biol"
+           , sig = ".group"
+           , error = "SE"
+           , color = T
+           , xlab = "Composts"
+           , ylab = "Fruit pH at commercial maturity"
+           , glab = "Biol"
+           , ylimits = c(0, 5.5, 1)
+           , type = "bar"
+           )
 ```
 
 ### Fruit pulp color at commercial maturity (IFCCM)
@@ -1114,6 +1360,24 @@ p2f <- mc %>%
            )
 
 p2f
+
+mc_2f <- emmeans(model, ~ biol*composts) %>%
+  cld(Letters = letters, reversed = T) %>% 
+  mutate(across(".group", ~ trimws(.)))
+
+p2_f <- mc_2f %>%
+  plot_smr(x = "composts"
+           , y = "emmean"
+           , group = "biol"
+           , sig = ".group"
+           , error = "SE"
+           , color = T
+           , xlab = "Composts"
+           , ylab = "Fruit pH at commercial maturity"
+           , glab = "Biol"
+           , ylimits = c(0, 4.5, 1)
+           , type = "bar"
+           )
 ```
 
 ### Figure 5
@@ -1162,8 +1426,56 @@ fig %>%
          , height = 38
          )
 
-
 knitr::include_graphics("submission/Figure_5.jpg")
+```
+
+### Supplementary Figure 2
+
+Univariate analysis of the most crucial variables for determining the commercial maturity of the fruit in the postharvest handling process.
+
+```{r}
+legend <- cowplot::get_plot_component(p2a, 'guide-box-top', return_all = TRUE)
+
+p2 <- list(p2_a + labs(x = NULL) + theme(legend.position="none"
+                                        , axis.title.x=element_blank()
+                                        , axis.text.x=element_blank()
+                                        , axis.ticks.x=element_blank())
+           , p2_b + labs(x = NULL) + theme(legend.position="none"
+                                        , axis.title.x=element_blank()
+                                        , axis.text.x=element_blank()
+                                        , axis.ticks.x=element_blank())
+           , p2_c + labs(x = NULL) + theme(legend.position="none"
+                                        , axis.title.x=element_blank()
+                                        , axis.text.x=element_blank()
+                                        , axis.ticks.x=element_blank())
+           , p2_d + labs(x = NULL) + theme(legend.position="none"
+                                        , axis.title.x=element_blank()
+                                        , axis.text.x=element_blank()
+                                        , axis.ticks.x=element_blank())
+           , p2_e + theme(legend.position="none")
+           , p2_f + theme(legend.position="none")
+           ) %>% 
+  plot_grid(plotlist = ., ncol = 2
+            , labels = "auto"
+            ) 
+
+fig <- plot_grid(legend, p2, ncol = 1, align = 'v', rel_heights = c(0.05, 1))
+
+fig %>% 
+  ggsave2(plot = ., "submission/Figure_S2.jpg"
+         , units = "cm"
+         , width = 35
+         , height = 38
+         )
+
+fig %>% 
+  ggsave2(plot = ., "submission/Figure_S2.eps"
+         , units = "cm"
+         , width = 35
+         , height = 38
+         )
+
+knitr::include_graphics("submission/Figure_S2.jpg")
 ```
 
 ### Multivariate analysis
@@ -1246,7 +1558,7 @@ fig %>%
 knitr::include_graphics("submission/Figure_6.jpg")
 ```
 
-### Supplementary Figure 2
+### Supplementary Figure 4
 
 Results of the contributions and correlation of the variables in the Principal Component Analysis (PCA).
 
@@ -1301,11 +1613,11 @@ plot <- list(pt1, pt2, pt3) %>%
   list(., pt4) %>% 
   plot_grid(plotlist = ., ncol = 2, labels = c("", "d"))
 
-ggsave2(plot = plot, "submission/FigS2.jpg", height = 16, width = 25, units = "cm")
+ggsave2(plot = plot, "submission/Fig_S4.jpg", height = 16, width = 25, units = "cm")
 
-ggsave2(plot = plot, "submission/FigS2.eps", height = 16, width = 25, units = "cm")
+ggsave2(plot = plot, "submission/Fig_S4.eps", height = 16, width = 25, units = "cm")
 
-knitr::include_graphics("submission/FigS2.jpg")
+knitr::include_graphics("submission/Fig_S4.jpg")
 ```
 
 Climatic conditions of the study area located in the Tambogrande district, Piura region.
