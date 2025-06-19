@@ -1373,7 +1373,7 @@ p2_f <- mc_2f %>%
            , error = "SE"
            , color = T
            , xlab = "Composts"
-           , ylab = "Fruit pH at commercial maturity"
+           , ylab = "Fruit pulp color at commercial maturity"
            , glab = "Biol"
            , ylimits = c(0, 4.5, 1)
            , type = "bar"
