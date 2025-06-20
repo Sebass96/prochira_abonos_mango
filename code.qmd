@@ -795,13 +795,13 @@ mv <- fisio %>%
   summarise(across(where(is.numeric), ~ mean(., na.rm = T))) %>%   
   unite("treat", composts:biol, sep = "-") %>% 
   rename(Treat = treat
-         ,PFCC_pm = pcfmf
-         ,FF_pm = ffmf
-         ,FPC_pm = cifmf
-         ,SSCF_pm = ssfmf
-         ,FpH_pm = phfmf
-         ,TAF_pm = atfmf
-         ,FDMP_pm = msfmf
+         ,PFCC = pcfmf
+         ,FF = ffmf
+         ,FPC = cifmf
+         ,SSCF = ssfmf
+         ,FpH = phfmf
+         ,TAF = atfmf
+         ,FDMP = msfmf
          ,FPMI = imf) %>% 
   mutate(Treat = case_when(Treat == "0-0" ~ "T0",
                            Treat == "0-5" ~ "T1",
@@ -1488,12 +1488,12 @@ mv <- consumo %>%
   summarise(across(where(is.numeric), ~ mean(., na.rm = T))) %>%   
   unite("treat", composts:biol, sep = "-") %>% 
   rename(Treat = treat
-         ,FDP_cm = pdfmc
-         ,FF_cm = ffmc
-         ,FPC_cm = cifmc
-         ,SSCF_cm = ssfmc
-         ,FpH_cm = phfmc
-         ,TAF_cm = atfmc
+         ,FDP = pdfmc
+         ,FF = ffmc
+         ,FPC = cifmc
+         ,SSCF = ssfmc
+         ,FpH = phfmc
+         ,TAF = atfmc
          ,FCMI = imf) %>% 
   mutate(Treat = case_when(Treat == "0-0" ~ "T0",
                            Treat == "0-5" ~ "T1",
