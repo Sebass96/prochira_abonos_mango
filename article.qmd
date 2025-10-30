@@ -9,8 +9,8 @@ format:
     toc: false
     toc-title: Indice
     section-numbers: true
-    reference-doc: "submission/style.docx"
-    output-file: "_manuscript"
+    reference-doc: "files/template.dot"
+    output-file: "manuscript"
 editor_options: 
   chunk_output_type: console
 execute:
@@ -38,11 +38,9 @@ crossref:
 ```{r}
 #| label: setup
 
-# browseURL("https://docs.google.com/document/d/1ySwDDV4CYy3IYeRz8Fg_sUGJ30KOWt2aGAcdRm7EHFU/edit")
-
 source("http://inkaverse.com/docs.r")
-doc <- inti::gdoc2qmd(file = "_draft.zip"
-                      , type = "listfull"
+doc <- inti::gdoc2qmd(file = "article.zip"
+                      # , type = "listfull"
                       )
 params <- doc$params
 ```
@@ -68,7 +66,6 @@ doc$path %>%
   cat(sep = '\n')
 ```
 
-
 ```{r}
 #| label: Image pdf to jpeg
 #| eval: false
@@ -93,4 +90,16 @@ imgs <- 1:length(pdf4pub) %>% map(\(x) {
 })
 ```
 
+```{r}
+#| label: zip file
+#| eval: false
 
+tozip <- "manuscript" 
+
+# unlink(paste0(tozip, ".zip"), recursive = T)
+
+utils::zip(zipfile = paste0(tozip, ".zip")
+                             , files = tozip
+                             , flags = "-r9Xj"
+                             )
+```
