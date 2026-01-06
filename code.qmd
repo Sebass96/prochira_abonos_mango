@@ -1,6 +1,5 @@
 ---
-title: "Impact of organic fertilizers on quality and post-harvest management of Mango ‘Kent’ (_Mangifera indica_ L.)"
-author: "Henry Morocho-Romero; Ricardo Peña-Castillo; Arturo Morales-Pizarro; Junior Domínguez-Chozo; Sandy Vilchez-Navarro; Sebastian Casas-Niño; Gabriela Cárdenas-Huamán; Nery Tirabante-Terrones; Esdwin-Oberti Nuñez-Ticliahunca; Ana-Gabriela Montañez-Artica; Leslie Velarde-Apaza; Max Ramirez-Rojas; Juancarlos Cruz; Flavio Lozano-Isla."
+title: "Impact of organic fertilizers on the quality of mango (Mangifera indica L.) var. 'Kent' during physiological maturity and commercial maturity"
 format:
   html:
     toc: true
@@ -26,6 +25,7 @@ library(multcomp)
 library(FSA)
 library(factoextra)
 library(corrplot)
+library(car)
 source('https://inkaverse.com/setup.r')
 
 cat("Project: ", getwd(), "\n")
@@ -149,37 +149,46 @@ The objective of this study is to demonstrate the effect of organic fertilizers,
 
 Demonstrate the effect of organic fertilizers, specifically compost and biol, applied at the soil and foliar levels on the quality of mango fruit at physiological maturity.
 
-### Fruit firmness at physiological maturity (FFPM)
+### Fruit firmness at physiological maturity (FF_pm)
 
 ```{r}
 trait <- "ffmf"
+
 fb <- fisio
 
 lmm <- paste({{trait}}, "~ 1 + (1|repetition) + composts*biol") %>% as.formula()
-
-lmd <- paste({{trait}}, "~ composts*biol") %>% as.formula()
 
 rmout <- fb %>% 
   remove_outliers(formula = lmm
                   , drop_na = T, plot_diag = T)
 
-rmout$diagplot
+plot_diagnostic(rmout$data$clean, formula = lmm) %>% 
+  plot_grid(plotlist = ., ncol = 2)
 
 rmout$outliers
 
 model <- rmout$data$clean %>% 
-  aov(formula = lmd, .)
+  lmer(formula = lmm, .)
 
-anova(model)
+Anova(model, type = 3, test.statistic = "F")
 
-mc <- emmeans(model, ~ biol|composts) %>%
-  cld(Letters = letters, reversed = T) %>%
-  mutate(across(.group, trimws)) %>% 
-  rename(group = ".group")
+mc1 <- emmeans(model, ~ biol|composts) %>%
+  cld(Letters = letters, reversed = T) %>% 
+  mutate(across(".group", ~ trimws(.))) %>% 
+  rename(sig1 = ".group")
+
+mc2 <- emmeans(model, ~ composts|biol) %>%
+  cld(Letters = letters, reversed = T) %>% 
+  mutate(across(".group", ~ trimws(.))) %>% 
+  mutate(across(".group", ~ toupper(.))) %>% 
+  rename(sig2 = ".group")
+
+mc <- merge(mc1, mc2) %>% 
+  unite(col = "group", c("sig1", "sig2"), sep = "")
 
 mc %>% kable()
 
-p1a <- mc %>% 
+p1a <- mc %>%
   plot_smr(x = "composts"
            , y = "emmean"
            , group = "biol"
@@ -189,43 +198,173 @@ p1a <- mc %>%
            , xlab = "Composts"
            , ylab = "Fruit firmness at physiological maturity (kgf/cm^{2})"
            , glab = "Biol"
-           , ylimits = c(0, 16, 4)
+           # , ylimits = c(0, 14, 4)
+           , type = "line"
            )
 
 p1a
+
+mc_1a <- emmeans(model, ~ biol*composts) %>%
+  cld(Letters = letters, reversed = T) %>% 
+  mutate(across(".group", ~ trimws(.)))
+
+p1_a <- mc_1a %>%
+  plot_smr(x = "composts"
+           , y = "emmean"
+           , group = "biol"
+           , sig = ".group"
+           , error = "SE"
+           , color = T
+           , xlab = "Composts"
+           , ylab = "Fruit firmness at physiological maturity (kgf/cm^{2})"
+           , glab = "Biol"
+           , ylimits = c(0, 15, 3)
+           , type = "bar"
+           )
+
+
+# # Calcular el valor máximo (upper whisker) por grupo
+# positions <-  rmout$data$clean %>%
+#   group_by(composts, biol) %>%
+#   summarise(y_pos = max(ffmf, na.rm = TRUE) + 0.3, .groups = "drop")
+# 
+# # Combinar con las letras del objeto mc
+# mc_pos <- left_join(mc, positions, by = c("composts", "biol"))
+# 
+# # Gráfico
+# p1a <- ggplot( rmout$data$clean, aes(x = factor(composts), y = ffmf, fill = factor(biol))) +
+#   stat_boxplot(geom = "errorbar", width = 0.5, position = position_dodge(0.8)) +
+#   geom_boxplot(width = 0.5, position = position_dodge(0.8)) +
+#   geom_jitter(position = position_jitterdodge(jitter.width = 0.2, dodge.width = 0.8),
+#               shape = 21, size = 1.8, alpha = 0.6, color = "black") +
+#   geom_text(data = mc_pos,
+#             aes(x = factor(composts), y = y_pos, label = group, fill = factor(biol)),
+#             position = position_dodge(width = 0.8),
+#             size = 4,
+#             inherit.aes = FALSE) +
+#   labs(x = "Composts", y = "Fruit firmness at physiological maturity (kgf/cm²)", fill = "Biol") +
+#   theme_minimal() +
+#   theme(legend.position = "top") +
+#     theme(
+#     panel.border = element_rect(colour = "black", fill = NA, linewidth = 0.5),
+#     panel.background = element_blank()
+#   )
 ```
 
-###  Internal fruit color at physiological maturity (IFCPM)
+### Percentage of fruit canopy cover at physiological maturity (PFCC_pm).
+
+```{r}
+trait <- "pcfmf"
+
+fb <- fisio
+
+lmm <- paste({{trait}}, "~ 1 + (1|repetition) + composts*biol") %>% as.formula()
+
+rmout <- fb %>% 
+  remove_outliers(formula = lmm
+                  , drop_na = T, plot_diag = T)
+
+plot_diagnostic(rmout$data$clean, formula = lmm) %>% 
+  plot_grid(plotlist = ., ncol = 2)
+
+rmout$outliers
+
+model <- rmout$data$clean %>% 
+  lmer(formula = lmm, .)
+
+Anova(model, type = 3, test.statistic = "F")
+
+mc1 <- emmeans(model, ~ biol|composts) %>%
+  cld(Letters = letters, reversed = T) %>% 
+  mutate(across(".group", ~ trimws(.))) %>% 
+  rename(sig1 = ".group")
+
+mc2 <- emmeans(model, ~ composts|biol) %>%
+  cld(Letters = letters, reversed = T) %>% 
+  mutate(across(".group", ~ trimws(.))) %>% 
+  mutate(across(".group", ~ toupper(.))) %>% 
+  rename(sig2 = ".group")
+
+mc <- merge(mc1, mc2) %>% 
+  unite(col = "group", c("sig1", "sig2"), sep = "")
+
+mc %>% kable()
+
+p1b <- mc %>%
+  plot_smr(x = "composts"
+           , y = "emmean"
+           , group = "biol"
+           , sig = "group"
+           , error = "SE"
+           , color = T
+           , xlab = "Composts"
+           , ylab = "Percentage of fruit canopy cover at physiological maturity ('%')"
+           # , ylimits = c(0, 3, 1)
+           , glab = "Biol"
+           , type = "line"
+           ) 
+
+p1b
+
+mc_1b <- emmeans(model, ~ biol*composts) %>%
+  cld(Letters = letters, reversed = T) %>% 
+  mutate(across(".group", ~ trimws(.)))
+
+p1_b <- mc_1b %>%
+  plot_smr(x = "composts"
+           , y = "emmean"
+           , group = "biol"
+           , sig = ".group"
+           , error = "SE"
+           , color = T
+           , xlab = "Composts"
+           , ylab = "Percentage of fruit canopy cover at physiological maturity ('%')"
+           , glab = "Biol"
+           , ylimits = c(0, 90, 15)
+           , type = "bar"
+           )
+```
+
+### Fruit pulp color at physiological maturity (FPC_pm)
 
 ```{r}
 trait <- "cifmf"
+
 fb <- fisio
 
 lmm <- paste({{trait}}, "~ 1 + (1|repetition) + composts*biol") %>% as.formula()
-
-lmd <- paste({{trait}}, "~ composts*biol") %>% as.formula()
 
 rmout <- fb %>% 
   remove_outliers(formula = lmm
                   , drop_na = T, plot_diag = T)
 
-rmout$diagplot
+plot_diagnostic(rmout$data$clean, formula = lmm) %>% 
+  plot_grid(plotlist = ., ncol = 2)
 
 rmout$outliers
 
 model <- rmout$data$clean %>% 
-  aov(formula = lmd, .)
+  lmer(formula = lmm, .)
 
-anova(model)
+Anova(model, type = 3, test.statistic = "F")
 
-mc <- emmeans(model, ~ biol|composts) %>%
-  cld(Letters = letters, reversed = T) %>%
-  mutate(across(.group, trimws)) %>% 
-  rename(group = ".group")
+mc1 <- emmeans(model, ~ biol|composts) %>%
+  cld(Letters = letters, reversed = T) %>% 
+  mutate(across(".group", ~ trimws(.))) %>% 
+  rename(sig1 = ".group")
+
+mc2 <- emmeans(model, ~ composts|biol) %>%
+  cld(Letters = letters, reversed = T) %>% 
+  mutate(across(".group", ~ trimws(.))) %>% 
+  mutate(across(".group", ~ toupper(.))) %>% 
+  rename(sig2 = ".group")
+
+mc <- merge(mc1, mc2) %>% 
+  unite(col = "group", c("sig1", "sig2"), sep = "")
 
 mc %>% kable()
 
-p1b <- mc %>% 
+p1c <- mc %>%
   plot_smr(x = "composts"
            , y = "emmean"
            , group = "biol"
@@ -233,89 +372,138 @@ p1b <- mc %>%
            , error = "SE"
            , color = T
            , xlab = "Composts"
-           , ylab = "Internal fruit color at physiological maturity"
-           , ylimits = c(0, 3, 1)
-           )
+           , ylab = "Fruit pulp color at physiological maturity"
+           # , ylimits = c(0, 3, 1)
+           , glab = "Biol"
+           , type = "line"
+           ) 
+  # geom_text_repel(data = mc,
+  #               aes(x = composts, y = emmean, label = group, group = biol),
+  #               size = 3.5,
+  #               max.overlaps = Inf, # para mostrar todas las letras
+  #               box.padding = 0.3,
+  #               point.padding = 0.2,
+  #               segment.color = "grey50",
+  #               segment.size = 0.2,
+  #               colour = "black") +
+  # geom_text(color = )
 
-p1b
+p1c
+
+mc_1c <- emmeans(model, ~ biol*composts) %>%
+  cld(Letters = letters, reversed = T) %>% 
+  mutate(across(".group", ~ trimws(.)))
+
+p1_c <- mc_1c %>%
+  plot_smr(x = "composts"
+           , y = "emmean"
+           , group = "biol"
+           , sig = ".group"
+           , error = "SE"
+           , color = T
+           , xlab = "Composts"
+           , ylab = "Fruit pulp color at physiological maturity"
+           , glab = "Biol"
+           , ylimits = c(0, 3, 1)
+           , type = "bar"
+           )
 ```
 
-### Fruit pH at physiological maturity  (FpHPM)
+### Fruit pH at physiological maturity  (FpH_pm)
 
 ```{r}
 trait <- "phfmf"
+
 fb <- fisio
 
 lmm <- paste({{trait}}, "~ 1 + (1|repetition) + composts*biol") %>% as.formula()
-
-lmd <- paste({{trait}}, "~ composts*biol") %>% as.formula()
 
 rmout <- fb %>% 
   remove_outliers(formula = lmm
                   , drop_na = T, plot_diag = T)
 
-rmout$diagplot
+plot_diagnostic(rmout$data$clean, formula = lmm) %>% 
+  plot_grid(plotlist = ., ncol = 2)
 
 rmout$outliers
 
 model <- rmout$data$clean %>% 
-  aov(formula = lmd, .)
+  lmer(formula = lmm, .)
 
-anova(model)
+Anova(model, type = 3, test.statistic = "F")
 
-mc <- emmeans(model, ~ biol|composts) %>%
-  cld(Letters = letters, reversed = T) %>%
-  mutate(across(.group, trimws)) %>% 
-  rename(group = ".group")
+mc1 <- emmeans(model, ~ biol|composts) %>%
+  cld(Letters = letters, reversed = T) %>% 
+  mutate(across(".group", ~ trimws(.))) %>% 
+  rename(sig1 = ".group")
+
+mc2 <- emmeans(model, ~ composts|biol) %>%
+  cld(Letters = letters, reversed = T) %>% 
+  mutate(across(".group", ~ trimws(.))) %>% 
+  mutate(across(".group", ~ toupper(.))) %>% 
+  rename(sig2 = ".group")
+
+mc <- merge(mc1, mc2) %>% 
+  unite(col = "group", c("sig1", "sig2"), sep = "")
 
 mc %>% kable()
 
-p1c <- mc %>% 
-  plot_smr(x = "composts"
-           , y = "emmean"
-           , group = "biol"
-           , sig = "group"
-           , error = "SE"
-           , color = T
-           , xlab = "Composts"
-           , ylab = "Fruit pH at physiological maturity"
-           , ylimits = c(0, 4, 1)
-           )
-
-p1c
+# p1c <- mc %>% 
+#   plot_smr(x = "composts"
+#            , y = "emmean"
+#            , group = "biol"
+#            , sig = "group"
+#            , error = "SE"
+#            , color = T
+#            , xlab = "Composts"
+#            , ylab = "Fruit pH at physiological maturity"
+#            # , ylimits = c(0, 4, 1)
+#            , type = "line"
+#            )
+# 
+# p1d
 ```
 
-### Soluble solids content of the fruit at physiological maturity (SSCFPM)
+### Soluble solids content of the fruit at physiological maturity (SSCF_pm)
 
 ```{r}
 trait <- "ssfmf"
+
 fb <- fisio
 
 lmm <- paste({{trait}}, "~ 1 + (1|repetition) + composts*biol") %>% as.formula()
-
-lmd <- paste({{trait}}, "~ composts*biol") %>% as.formula()
 
 rmout <- fb %>% 
   remove_outliers(formula = lmm
                   , drop_na = T, plot_diag = T)
 
-rmout$diagplot
+plot_diagnostic(rmout$data$clean, formula = lmm) %>% 
+  plot_grid(plotlist = ., ncol = 2)
 
 rmout$outliers
 
 model <- rmout$data$clean %>% 
-  aov(formula = lmd, .)
+  lmer(formula = lmm, .)
 
-anova(model)
+Anova(model, type = 3, test.statistic = "F")
 
-mc <- emmeans(model, ~ biol|composts) %>%
-  cld(Letters = letters, reversed = T) %>%
-  mutate(across(.group, trimws)) %>% 
-  rename(group = ".group")
+mc1 <- emmeans(model, ~ biol|composts) %>%
+  cld(Letters = letters, reversed = T) %>% 
+  mutate(across(".group", ~ trimws(.))) %>% 
+  rename(sig1 = ".group")
+
+mc2 <- emmeans(model, ~ composts|biol) %>%
+  cld(Letters = letters, reversed = T) %>% 
+  mutate(across(".group", ~ trimws(.))) %>% 
+  mutate(across(".group", ~ toupper(.))) %>% 
+  rename(sig2 = ".group")
+
+mc <- merge(mc1, mc2) %>% 
+  unite(col = "group", c("sig1", "sig2"), sep = "")
 
 mc %>% kable()
 
-p1d <- mc %>% 
+p1d <- mc %>%
   plot_smr(x = "composts"
            , y = "emmean"
            , group = "biol"
@@ -324,43 +512,72 @@ p1d <- mc %>%
            , color = T
            , xlab = "Composts"
            , ylab = "Soluble solids content of the fruit at physiological maturity (brix^{o})"
-           , ylimits = c(0, 12, 2)
+           , glab = "Biol"
+           #, ylimits = c(0, 4, 1)
+           , type = "line"
            )
 
 p1d
+
+mc_1d <- emmeans(model, ~ biol*composts) %>%
+  cld(Letters = letters, reversed = T) %>% 
+  mutate(across(".group", ~ trimws(.)))
+
+p1_d <- mc_1d %>%
+  plot_smr(x = "composts"
+           , y = "emmean"
+           , group = "biol"
+           , sig = ".group"
+           , error = "SE"
+           , color = T
+           , xlab = "Composts"
+           , ylab = "Soluble solids content of the fruit at physiological maturity (brix^{o})"
+           , glab = "Biol"
+           , ylimits = c(0, 10, 2)
+           , type = "bar"
+           )
 ```
 
-### Titratable acidity of the fruit at physiological maturity (TAFPM)
+### Titratable acidity of the fruit at physiological maturity (TAF_pm)
 
 ```{r}
 trait <- "atfmf"
+
 fb <- fisio
 
 lmm <- paste({{trait}}, "~ 1 + (1|repetition) + composts*biol") %>% as.formula()
-
-lmd <- paste({{trait}}, "~ composts*biol") %>% as.formula()
 
 rmout <- fb %>% 
   remove_outliers(formula = lmm
                   , drop_na = T, plot_diag = T)
 
-rmout$diagplot
+plot_diagnostic(rmout$data$clean, formula = lmm) %>% 
+  plot_grid(plotlist = ., ncol = 2)
 
 rmout$outliers
 
 model <- rmout$data$clean %>% 
-  aov(formula = lmd, .)
+  lmer(formula = lmm, .)
 
-anova(model)
+Anova(model, type = 3, test.statistic = "F")
 
-mc <- emmeans(model, ~ biol|composts) %>%
-  cld(Letters = letters, reversed = T) %>%
-  mutate(across(.group, trimws)) %>% 
-  rename(group = ".group")
+mc1 <- emmeans(model, ~ biol|composts) %>%
+  cld(Letters = letters, reversed = T) %>% 
+  mutate(across(".group", ~ trimws(.))) %>% 
+  rename(sig1 = ".group")
+
+mc2 <- emmeans(model, ~ composts|biol) %>%
+  cld(Letters = letters, reversed = T) %>% 
+  mutate(across(".group", ~ trimws(.))) %>% 
+  mutate(across(".group", ~ toupper(.))) %>% 
+  rename(sig2 = ".group")
+
+mc <- merge(mc1, mc2) %>% 
+  unite(col = "group", c("sig1", "sig2"), sep = "")
 
 mc %>% kable()
 
-p1e <- mc %>% 
+p1e <- mc %>%
   plot_smr(x = "composts"
            , y = "emmean"
            , group = "biol"
@@ -369,43 +586,72 @@ p1e <- mc %>%
            , color = T
            , xlab = "Composts"
            , ylab = "Titratable acidity of the fruit at physiological maturity ('%')"
-           , ylimits = c(0, 2, 1)
+           , glab = "Biol"
+           #
+           , type = "line"
            )
 
 p1e
+
+mc_1e <- emmeans(model, ~ biol*composts) %>%
+  cld(Letters = letters, reversed = T) %>% 
+  mutate(across(".group", ~ trimws(.)))
+
+p1_e <- mc_1e %>%
+  plot_smr(x = "composts"
+           , y = "emmean"
+           , group = "biol"
+           , sig = ".group"
+           , error = "SE"
+           , color = T
+           , xlab = "Composts"
+           , ylab = "Titratable acidity of the fruit at physiological maturity ('%')"
+           , glab = "Biol"
+           , ylimits = c(0, 1.5, 0.5)
+           , type = "bar"
+           )
 ```
 
-### Fruit dry matter percentage at physiological maturity (FDMPPM)
+### Fruit dry matter percentage at physiological maturity (FDMP_pm)
 
 ```{r}
 trait <- "msfmf"
+
 fb <- fisio
 
 lmm <- paste({{trait}}, "~ 1 + (1|repetition) + composts*biol") %>% as.formula()
-
-lmd <- paste({{trait}}, "~ composts*biol") %>% as.formula()
 
 rmout <- fb %>% 
   remove_outliers(formula = lmm
                   , drop_na = T, plot_diag = T)
 
-rmout$diagplot
+plot_diagnostic(rmout$data$clean, formula = lmm) %>% 
+  plot_grid(plotlist = ., ncol = 2)
 
 rmout$outliers
 
 model <- rmout$data$clean %>% 
-  aov(formula = lmd, .)
+  lmer(formula = lmm, .)
 
-anova(model)
+Anova(model, type = 3, test.statistic = "F")
 
-mc <- emmeans(model, ~ biol|composts) %>%
-  cld(Letters = letters, reversed = T) %>%
-  mutate(across(.group, trimws)) %>% 
-  rename(group = ".group")
+mc1 <- emmeans(model, ~ biol|composts) %>%
+  cld(Letters = letters, reversed = T) %>% 
+  mutate(across(".group", ~ trimws(.))) %>% 
+  rename(sig1 = ".group")
+
+mc2 <- emmeans(model, ~ composts|biol) %>%
+  cld(Letters = letters, reversed = T) %>% 
+  mutate(across(".group", ~ trimws(.))) %>% 
+  mutate(across(".group", ~ toupper(.))) %>% 
+  rename(sig2 = ".group")
+
+mc <- merge(mc1, mc2) %>% 
+  unite(col = "group", c("sig1", "sig2"), sep = "")
 
 mc %>% kable()
 
-p1f <- mc %>% 
+p1f <- mc %>%
   plot_smr(x = "composts"
            , y = "emmean"
            , group = "biol"
@@ -414,10 +660,30 @@ p1f <- mc %>%
            , color = T
            , xlab = "Composts"
            , ylab = "Fruit dry matter at physiological maturity ('%')"
-           , ylimits = c(0, 25, 5)
+           , glab = "Biol"
+           #
+           , type = "line"
            )
 
 p1f
+
+mc_1f <- emmeans(model, ~ biol*composts) %>%
+  cld(Letters = letters, reversed = T) %>% 
+  mutate(across(".group", ~ trimws(.)))
+
+p1_f <- mc_1f %>%
+  plot_smr(x = "composts"
+           , y = "emmean"
+           , group = "biol"
+           , sig = ".group"
+           , error = "SE"
+           , color = T
+           , xlab = "Composts"
+           , ylab = "Fruit dry matter at physiological maturity ('%')"
+           , glab = "Biol"
+           , ylimits = c(0, 24, 6)
+           , type = "bar"
+           )
 ```
 
 ### Figure 3
@@ -431,14 +697,14 @@ p1 <- list(p1a + labs(x = NULL) + theme(legend.position="none"
                                         , axis.title.x=element_blank()
                                         , axis.text.x=element_blank()
                                         , axis.ticks.x=element_blank())
-           # , p1b + labs(x = NULL) + theme(legend.position="none"
-           #                              , axis.title.x=element_blank()
-           #                              , axis.text.x=element_blank()
-           #                              , axis.ticks.x=element_blank())
-           # , p1c + labs(x = NULL) + theme(legend.position="none"
-           #                              , axis.title.x=element_blank()
-           #                              , axis.text.x=element_blank()
-           #                              , axis.ticks.x=element_blank())
+           , p1b + labs(x = NULL) + theme(legend.position="none"
+                                        , axis.title.x=element_blank()
+                                        , axis.text.x=element_blank()
+                                        , axis.ticks.x=element_blank())
+           , p1c + labs(x = NULL) + theme(legend.position="none"
+                                        , axis.title.x=element_blank()
+                                        , axis.text.x=element_blank()
+                                        , axis.ticks.x=element_blank())
            , p1d + labs(x = NULL) + theme(legend.position="none"
                                         , axis.title.x=element_blank()
                                         , axis.text.x=element_blank()
@@ -455,18 +721,67 @@ fig <- plot_grid(legend, p1, ncol = 1, align = 'v', rel_heights = c(0.05, 1))
 fig %>% 
   ggsave2(plot = ., "submission/Figure_3.jpg"
          , units = "cm"
-         , width = 26
-         , height = 26
+         , width = 35
+         , height = 38
          )
 
 fig %>% 
   ggsave2(plot = ., "submission/Figure_3.eps"
          , units = "cm"
-         , width = 26
-         , height = 26
+         , width = 35
+         , height = 38
          )
 
 knitr::include_graphics("submission/Figure_3.jpg")
+```
+
+### Supplementary Figure 1
+
+Univariate analysis of the variables for determining the physiological maturity of the fruit at harvest time and for preventing handling damage during commercialization or industrial processes.
+
+```{r}
+legend <- cowplot::get_plot_component(p1_a, 'guide-box-top', return_all = TRUE)
+
+p1 <- list(p1_a + labs(x = NULL) + theme(legend.position="none"
+                                        , axis.title.x=element_blank()
+                                        , axis.text.x=element_blank()
+                                        , axis.ticks.x=element_blank())
+           , p1_b + labs(x = NULL) + theme(legend.position="none"
+                                        , axis.title.x=element_blank()
+                                        , axis.text.x=element_blank()
+                                        , axis.ticks.x=element_blank())
+           , p1_c + labs(x = NULL) + theme(legend.position="none"
+                                        , axis.title.x=element_blank()
+                                        , axis.text.x=element_blank()
+                                        , axis.ticks.x=element_blank())
+           , p1_d + labs(x = NULL) + theme(legend.position="none"
+                                        , axis.title.x=element_blank()
+                                        , axis.text.x=element_blank()
+                                        , axis.ticks.x=element_blank())
+           , p1_e + theme(legend.position="none")
+           , p1_f + theme(legend.position="none")
+           ) %>% 
+  plot_grid(plotlist = ., ncol = 2
+            , labels = "auto"
+            ) 
+
+fig <- plot_grid(legend, p1, ncol = 1, align = 'v', rel_heights = c(0.05, 1))
+  
+fig %>% 
+  ggsave2(plot = ., "submission/Figure_S1.jpg"
+         , units = "cm"
+         , width = 35
+         , height = 38
+         )
+
+fig %>% 
+  ggsave2(plot = ., "submission/Figure_S1.eps"
+         , units = "cm"
+         , width = 35
+         , height = 38
+         )
+
+knitr::include_graphics("submission/Figure_S1.jpg")
 ```
 
 ### Multivariate analysis
@@ -475,39 +790,61 @@ Principal Component Analysis (PCA) of quality traits to correlate with mango fru
 
 ```{r}
 mv <- fisio %>% 
+  select(-rpp) %>% 
   group_by(composts, biol) %>% 
   summarise(across(where(is.numeric), ~ mean(., na.rm = T))) %>%   
   unite("treat", composts:biol, sep = "-") %>% 
   rename(Treat = treat
-         ,PFCCPM = pcfmf
-         ,FFPM = ffmf
-         ,IFCPM = cifmf
-         ,SSCFPM = ssfmf
-         ,FpHPM = phfmf
-         ,TAFPM = atfmf
-         ,FDMPPM = msfmf
-         ,FPMI = imf
-         ,RPP = rpp)
-   
+         ,PFCC = pcfmf
+         ,FF = ffmf
+         ,FPC = cifmf
+         ,SSCF = ssfmf
+         ,FpH = phfmf
+         ,TAF = atfmf
+         ,FDMP = msfmf
+         ,FPMI = imf) %>% 
+  mutate(Treat = case_when(Treat == "0-0" ~ "T0",
+                           Treat == "0-5" ~ "T1",
+                           Treat == "0-10" ~ "T2",
+                           Treat == "5-0" ~ "T3",
+                           Treat == "5-5" ~ "T4",
+                           Treat == "5-10" ~ "T5",
+                           Treat == "15-0" ~ "T6",
+                           Treat == "15-5" ~ "T7",
+                           Treat == "15-10" ~ "T8")) %>% 
+  column_to_rownames(var = "Treat")
+
 pca <- mv %>% 
-  PCA(scale.unit = T, quali.sup = 1, graph = F) 
+  PCA(scale.unit = T, graph = F) 
 
 # summary
 
 summary(pca, nbelements = Inf, nb.dec = 2)
 
 
-f2a <- plot.PCA(x = pca, choix = "var"
-                , cex=0.5
-                )
+f2a <- fviz_pca_var(pca,
+             col.var = "contrib", # Color by contributions to the PC
+             gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
+             repel = TRUE     # Avoid text overlapping
+)
 
-f2b <- plot.PCA(x = pca, choix = "ind"
-                , habillage = 1
-                , invisible = c("ind")
-                , cex=0.8
-                , ylim = c(-3,3)
-                ) 
+# plot.PCA(x = pca, choix = "var"
+#                 , cex=0.5
+#                 )
 
+f2b <- fviz_pca_ind(pca,
+                axes = c(1,2),
+                geom.ind = "text",
+                repel = FALSE,
+             , habillage = 1) +
+  theme(legend.position = "none")
+
+# plot.PCA(x = pca, choix = "ind"
+#                 , habillage = 1
+#                 , invisible = c("ind")
+#                 , cex=0.8
+#                 , ylim = c(-3,3)
+#                 ) 
 ```
 
 ### Figure 4
@@ -518,23 +855,25 @@ Principal Component Analysis (PCA).
 fig <- list(f2a, f2b) %>% 
   plot_grid(plotlist = ., ncol = 2, nrow = 1
             , labels = "auto"
-            , rel_widths = c(1, 1.5)
+            , rel_widths = c(1.2, 1.1)
             )
+
 fig %>% 
   ggsave2(plot = ., "submission/Figure_4.jpg", units = "cm"
-         , width = 25
-         , height = 10
+         , width = 28
+         , height = 13
          )
+
 fig %>% 
   ggsave2(plot = ., "submission/Figure_4.eps", units = "cm"
-         , width = 25
-         , height = 10
+         , width = 28
+         , height = 13
          )
 
 knitr::include_graphics("submission/Figure_4.jpg")
 ```
 
-### Supplementary Figure 1
+### Supplementary Figure 3
 
 Results of the contributions and correlation of the variables in the Principal Component Analysis (PCA).
 
@@ -590,11 +929,11 @@ plot <- list(pt1, pt2, pt3) %>%
   plot_grid(plotlist = ., ncol = 2, labels = c("", "d"))
 
 
-ggsave2(plot = plot, "submission/FigS1.jpg", height = 20, width = 26, units = "cm")
+ggsave2(plot = plot, "submission/Fig_S3.jpg", height = 20, width = 26, units = "cm")
 
-ggsave2(plot = plot, "submission/FigS1.eps", height = 20, width = 26, units = "cm")
+ggsave2(plot = plot, "submission/Fig_S3.eps", height = 20, width = 26, units = "cm")
 
-knitr::include_graphics("submission/FigS1.jpg")
+knitr::include_graphics("submission/Fig_S3.jpg")
 ```
 
 ## Specific Objective 2
@@ -605,29 +944,38 @@ Demonstrate the effect of organic fertilizers, specifically compost and biol, ap
 
 ```{r}
 trait <- "ffmc"
+
 cs <- consumo
 
 lmm <- paste({{trait}}, "~ 1 + (1|repetition) + composts*biol") %>% as.formula()
-
-lmd <- paste({{trait}}, "~ composts*biol") %>% as.formula()
 
 rmout <- cs %>% 
   remove_outliers(formula = lmm
                   , drop_na = T, plot_diag = T)
 
-rmout$diagplot
+plot_diagnostic(rmout$data$clean, formula = lmm) %>% 
+  plot_grid(plotlist = ., ncol = 2)
 
 rmout$outliers
 
 model <- rmout$data$clean %>% 
-  aov(formula = lmd, .)
+  lmer(formula = lmm, .)
 
-anova(model)
+Anova(model, type = 3, test.statistic = "F")
 
-mc <- emmeans(model, ~ biol|composts) %>%
-  cld(Letters = letters, reversed = T) %>%
-  mutate(across(.group, trimws)) %>% 
-  rename(group = ".group")
+mc1 <- emmeans(model, ~ biol|composts) %>%
+  cld(Letters = letters, reversed = T) %>% 
+  mutate(across(".group", ~ trimws(.))) %>% 
+  rename(sig1 = ".group")
+
+mc2 <- emmeans(model, ~ composts|biol) %>%
+  cld(Letters = letters, reversed = T) %>% 
+  mutate(across(".group", ~ trimws(.))) %>% 
+  mutate(across(".group", ~ toupper(.))) %>% 
+  rename(sig2 = ".group")
+
+mc <- merge(mc1, mc2) %>% 
+  unite(col = "group", c("sig1", "sig2"), sep = "")
 
 mc %>% kable()
 
@@ -641,39 +989,67 @@ p2a <- mc %>%
            , xlab = "Composts"
            , ylab = "Fruit firmness at commercial maturity (kgf/cm^{2})"
            , glab = "Biol"
-           , ylimits = c(0, 6, 2)
-           )
+           # , ylimits = c(0, 6, 2)
+           , type = "line"
+           ) 
 
 p2a
+
+mc_2a <- emmeans(model, ~ biol*composts) %>%
+  cld(Letters = letters, reversed = T) %>% 
+  mutate(across(".group", ~ trimws(.)))
+
+p2_a <- mc_2a %>%
+  plot_smr(x = "composts"
+           , y = "emmean"
+           , group = "biol"
+           , sig = ".group"
+           , error = "SE"
+           , color = T
+           , xlab = "Composts"
+           , ylab = "Fruit firmness at commercial maturity (kgf/cm^{2})"
+           , glab = "Biol"
+           , ylimits = c(0, 5, 1)
+           , type = "bar"
+           )
 ```
 
 ### Soluble solids content of the fruit at commercial maturity (SSCFCM)
 
 ```{r}
 trait <- "ssfmc"
+
 cs <- consumo
 
 lmm <- paste({{trait}}, "~ 1 + (1|repetition) + composts*biol") %>% as.formula()
-
-lmd <- paste({{trait}}, "~ composts*biol") %>% as.formula()
 
 rmout <- cs %>% 
   remove_outliers(formula = lmm
                   , drop_na = T, plot_diag = T)
 
-rmout$diagplot
+plot_diagnostic(rmout$data$clean, formula = lmm) %>% 
+  plot_grid(plotlist = ., ncol = 2)
 
 rmout$outliers
 
 model <- rmout$data$clean %>% 
-  aov(formula = lmd, .)
+  lmer(formula = lmm, .)
 
-anova(model)
+Anova(model, type = 3, test.statistic = "F")
 
-mc <- emmeans(model, ~ biol|composts) %>%
-  cld(Letters = letters, reversed = T) %>%
-  mutate(across(.group, trimws)) %>% 
-  rename(group = ".group")
+mc1 <- emmeans(model, ~ biol|composts) %>%
+  cld(Letters = letters, reversed = T) %>% 
+  mutate(across(".group", ~ trimws(.))) %>% 
+  rename(sig1 = ".group")
+
+mc2 <- emmeans(model, ~ composts|biol) %>%
+  cld(Letters = letters, reversed = T) %>% 
+  mutate(across(".group", ~ trimws(.))) %>% 
+  mutate(across(".group", ~ toupper(.))) %>% 
+  rename(sig2 = ".group")
+
+mc <- merge(mc1, mc2) %>% 
+  unite(col = "group", c("sig1", "sig2"), sep = "")
 
 mc %>% kable()
 
@@ -686,39 +1062,67 @@ p2b <- mc %>%
            , color = T
            , xlab = "Composts"
            , ylab = "Soluble solids content of the fruit at commercial maturity (brix^{o})"
-           , ylimits = c(0, 18, 3)
+           # , ylimits = c(0, 18, 3)
+           , type = "line"
            )
 
 p2b
+
+mc_2b <- emmeans(model, ~ biol*composts) %>%
+  cld(Letters = letters, reversed = T) %>% 
+  mutate(across(".group", ~ trimws(.)))
+
+p2_b <- mc_2b %>%
+  plot_smr(x = "composts"
+           , y = "emmean"
+           , group = "biol"
+           , sig = ".group"
+           , error = "SE"
+           , color = T
+           , xlab = "Composts"
+           , ylab = "Soluble solids content of the fruit at commercial maturity (brix^{o})"
+           , glab = "Biol"
+           , ylimits = c(0, 18, 6)
+           , type = "bar"
+           )
 ```
 
 ### Titratable acidity of the fruit at commercial maturity (TAFCM)
 
 ```{r}
 trait <- "atfmc"
+
 cs <- consumo
 
 lmm <- paste({{trait}}, "~ 1 + (1|repetition) + composts*biol") %>% as.formula()
-
-lmd <- paste({{trait}}, "~ composts*biol") %>% as.formula()
 
 rmout <- cs %>% 
   remove_outliers(formula = lmm
                   , drop_na = T, plot_diag = T)
 
-rmout$diagplot
+plot_diagnostic(rmout$data$clean, formula = lmm) %>% 
+  plot_grid(plotlist = ., ncol = 2)
 
 rmout$outliers
 
 model <- rmout$data$clean %>% 
-  aov(formula = lmd, .)
+  lmer(formula = lmm, .)
 
-anova(model)
+Anova(model, type = 3, test.statistic = "F")
 
-mc <- emmeans(model, ~ biol|composts) %>%
-  cld(Letters = letters, reversed = T) %>%
-  mutate(across(.group, trimws)) %>% 
-  rename(group = ".group")
+mc1 <- emmeans(model, ~ biol|composts) %>%
+  cld(Letters = letters, reversed = T) %>% 
+  mutate(across(".group", ~ trimws(.))) %>% 
+  rename(sig1 = ".group")
+
+mc2 <- emmeans(model, ~ composts|biol) %>%
+  cld(Letters = letters, reversed = T) %>% 
+  mutate(across(".group", ~ trimws(.))) %>% 
+  mutate(across(".group", ~ toupper(.))) %>% 
+  rename(sig2 = ".group")
+
+mc <- merge(mc1, mc2) %>% 
+  unite(col = "group", c("sig1", "sig2"), sep = "")
 
 mc %>% kable()
 
@@ -731,39 +1135,67 @@ p2c <- mc %>%
            , color = T
            , xlab = "Composts"
            , ylab = "Titratable acidity of the fruit at commercial maturity ('%')"
-           , ylimits = c(0, 0.8, 0.2)
-           )
+           # , ylimits = c(0, 0.8, 0.2)
+           , type = "line"
+           ) 
 
 p2c
+
+mc_2c <- emmeans(model, ~ biol*composts) %>%
+  cld(Letters = letters, reversed = T) %>% 
+  mutate(across(".group", ~ trimws(.)))
+
+p2_c <- mc_2c %>%
+  plot_smr(x = "composts"
+           , y = "emmean"
+           , group = "biol"
+           , sig = ".group"
+           , error = "SE"
+           , color = T
+           , xlab = "Composts"
+           , ylab = "Titratable acidity of the fruit at commercial maturity ('%')"
+           , glab = "Biol"
+           , ylimits = c(0, 0.8, 0.2)
+           , type = "bar"
+           )
 ```
 
 ### Fruit dehydration percentage at commercial maturity (FDPCM)
 
 ```{r}
 trait <- "pdfmc"
+
 cs <- consumo
 
 lmm <- paste({{trait}}, "~ 1 + (1|repetition) + composts*biol") %>% as.formula()
-
-lmd <- paste({{trait}}, "~ composts*biol") %>% as.formula()
 
 rmout <- cs %>% 
   remove_outliers(formula = lmm
                   , drop_na = T, plot_diag = T)
 
-rmout$diagplot
+plot_diagnostic(rmout$data$clean, formula = lmm) %>% 
+  plot_grid(plotlist = ., ncol = 2)
 
 rmout$outliers
 
 model <- rmout$data$clean %>% 
-  aov(formula = lmd, .)
+  lmer(formula = lmm, .)
 
-anova(model)
+Anova(model, type = 3, test.statistic = "F")
 
-mc <- emmeans(model, ~ biol|composts) %>%
-  cld(Letters = letters, reversed = T) %>%
-  mutate(across(.group, trimws)) %>% 
-  rename(group = ".group")
+mc1 <- emmeans(model, ~ biol|composts) %>%
+  cld(Letters = letters, reversed = T) %>% 
+  mutate(across(".group", ~ trimws(.))) %>% 
+  rename(sig1 = ".group")
+
+mc2 <- emmeans(model, ~ composts|biol) %>%
+  cld(Letters = letters, reversed = T) %>% 
+  mutate(across(".group", ~ trimws(.))) %>% 
+  mutate(across(".group", ~ toupper(.))) %>% 
+  rename(sig2 = ".group")
+
+mc <- merge(mc1, mc2) %>% 
+  unite(col = "group", c("sig1", "sig2"), sep = "")
 
 mc %>% kable()
 
@@ -777,39 +1209,67 @@ p2d <- mc %>%
            , xlab = "Composts"
            , ylab = "Fruit dehydration at commercial maturity ('%')"
            , glab = "Biol"
-           , ylimits = c(0, 8, 2)
+           # , ylimits = c(0, 8, 2)
+           , type = "line"
            )
 
 p2d
+
+mc_2d <- emmeans(model, ~ biol*composts) %>%
+  cld(Letters = letters, reversed = T) %>% 
+  mutate(across(".group", ~ trimws(.)))
+
+p2_d <- mc_2d %>%
+  plot_smr(x = "composts"
+           , y = "emmean"
+           , group = "biol"
+           , sig = ".group"
+           , error = "SE"
+           , color = T
+           , xlab = "Composts"
+           , ylab = "Fruit dehydration at commercial maturity ('%')"
+           , glab = "Biol"
+           , ylimits = c(0, 8, 2)
+           , type = "bar"
+           )
 ```
 
 ### Fruit pH at commercial maturity (FpHCM)
 
 ```{r}
 trait <- "phfmc"
+
 cs <- consumo
 
 lmm <- paste({{trait}}, "~ 1 + (1|repetition) + composts*biol") %>% as.formula()
-
-lmd <- paste({{trait}}, "~ composts*biol") %>% as.formula()
 
 rmout <- cs %>% 
   remove_outliers(formula = lmm
                   , drop_na = T, plot_diag = T)
 
-rmout$diagplot
+plot_diagnostic(rmout$data$clean, formula = lmm) %>% 
+  plot_grid(plotlist = ., ncol = 2)
 
 rmout$outliers
 
 model <- rmout$data$clean %>% 
-  aov(formula = lmd, .)
+  lmer(formula = lmm, .)
 
-anova(model)
+Anova(model, type = 3, test.statistic = "F")
 
-mc <- emmeans(model, ~ biol|composts) %>%
-  cld(Letters = letters, reversed = T) %>%
-  mutate(across(.group, trimws)) %>% 
-  rename(group = ".group")
+mc1 <- emmeans(model, ~ biol|composts) %>%
+  cld(Letters = letters, reversed = T) %>% 
+  mutate(across(".group", ~ trimws(.))) %>% 
+  rename(sig1 = ".group")
+
+mc2 <- emmeans(model, ~ composts|biol) %>%
+  cld(Letters = letters, reversed = T) %>% 
+  mutate(across(".group", ~ trimws(.))) %>% 
+  mutate(across(".group", ~ toupper(.))) %>% 
+  rename(sig2 = ".group")
+
+mc <- merge(mc1, mc2) %>% 
+  unite(col = "group", c("sig1", "sig2"), sep = "")
 
 mc %>% kable()
 
@@ -822,39 +1282,67 @@ p2e <- mc %>%
            , color = T
            , xlab = "Composts"
            , ylab = "Fruit pH at commercial maturity"
-           , ylimits = c(0, 6, 2)
+           # , ylimits = c(0, 6, 2)
+           , type = "line"
            )
 
 p2e
+
+mc_2e <- emmeans(model, ~ biol*composts) %>%
+  cld(Letters = letters, reversed = T) %>% 
+  mutate(across(".group", ~ trimws(.)))
+
+p2_e <- mc_2e %>%
+  plot_smr(x = "composts"
+           , y = "emmean"
+           , group = "biol"
+           , sig = ".group"
+           , error = "SE"
+           , color = T
+           , xlab = "Composts"
+           , ylab = "Fruit pH at commercial maturity"
+           , glab = "Biol"
+           , ylimits = c(0, 5.5, 1)
+           , type = "bar"
+           )
 ```
 
-### Internal fruit color at commercial maturity (IFCCM)
+### Fruit pulp color at commercial maturity (IFCCM)
 
 ```{r}
 trait <- "cifmc"
+
 cs <- consumo
 
 lmm <- paste({{trait}}, "~ 1 + (1|repetition) + composts*biol") %>% as.formula()
-
-lmd <- paste({{trait}}, "~ composts*biol") %>% as.formula()
 
 rmout <- cs %>% 
   remove_outliers(formula = lmm
                   , drop_na = T, plot_diag = T)
 
-rmout$diagplot
+plot_diagnostic(rmout$data$clean, formula = lmm) %>% 
+  plot_grid(plotlist = ., ncol = 2)
 
 rmout$outliers
 
 model <- rmout$data$clean %>% 
-  aov(formula = lmd, .)
+  lmer(formula = lmm, .)
 
-anova(model)
+Anova(model, type = 3, test.statistic = "F")
 
-mc <- emmeans(model, ~ biol|composts) %>%
-  cld(Letters = letters, reversed = T) %>%
-  mutate(across(.group, trimws)) %>% 
-  rename(group = ".group")
+mc1 <- emmeans(model, ~ biol|composts) %>%
+  cld(Letters = letters, reversed = T) %>% 
+  mutate(across(".group", ~ trimws(.))) %>% 
+  rename(sig1 = ".group")
+
+mc2 <- emmeans(model, ~ composts|biol) %>%
+  cld(Letters = letters, reversed = T) %>% 
+  mutate(across(".group", ~ trimws(.))) %>% 
+  mutate(across(".group", ~ toupper(.))) %>% 
+  rename(sig2 = ".group")
+
+mc <- merge(mc1, mc2) %>% 
+  unite(col = "group", c("sig1", "sig2"), sep = "")
 
 mc %>% kable()
 
@@ -866,11 +1354,30 @@ p2f <- mc %>%
            , error = "SE"
            , color = T
            , xlab = "Composts"
-           , ylab = "Internal fruit color at commercial maturity"
-           , ylimits = c(0, 5, 1)
+           , ylab = "Fruit pulp color at commercial maturity"
+           # , ylimits = c(0, 5, 1)
+           , type = "line"
            )
 
 p2f
+
+mc_2f <- emmeans(model, ~ biol*composts) %>%
+  cld(Letters = letters, reversed = T) %>% 
+  mutate(across(".group", ~ trimws(.)))
+
+p2_f <- mc_2f %>%
+  plot_smr(x = "composts"
+           , y = "emmean"
+           , group = "biol"
+           , sig = ".group"
+           , error = "SE"
+           , color = T
+           , xlab = "Composts"
+           , ylab = "Fruit pulp color at commercial maturity"
+           , glab = "Biol"
+           , ylimits = c(0, 4.5, 1)
+           , type = "bar"
+           )
 ```
 
 ### Figure 5
@@ -888,10 +1395,16 @@ p2 <- list(p2a + labs(x = NULL) + theme(legend.position="none"
                                         , axis.title.x=element_blank()
                                         , axis.text.x=element_blank()
                                         , axis.ticks.x=element_blank())
-           , p2c + theme(legend.position="none")
-           , p2d + theme(legend.position="none")
-           # , p2e + theme(legend.position="none")
-           # , p2f + theme(legend.position="none")
+           , p2c + labs(x = NULL) + theme(legend.position="none"
+                                        , axis.title.x=element_blank()
+                                        , axis.text.x=element_blank()
+                                        , axis.ticks.x=element_blank())
+           , p2d + labs(x = NULL) + theme(legend.position="none"
+                                        , axis.title.x=element_blank()
+                                        , axis.text.x=element_blank()
+                                        , axis.ticks.x=element_blank())
+           , p2e + theme(legend.position="none")
+           , p2f + theme(legend.position="none")
            ) %>% 
   plot_grid(plotlist = ., ncol = 2
             , labels = "auto"
@@ -902,18 +1415,67 @@ fig <- plot_grid(legend, p2, ncol = 1, align = 'v', rel_heights = c(0.05, 1))
 fig %>% 
   ggsave2(plot = ., "submission/Figure_5.jpg"
          , units = "cm"
-         , width = 25
-         , height = 25
+         , width = 35
+         , height = 38
          )
 
 fig %>% 
   ggsave2(plot = ., "submission/Figure_5.eps"
          , units = "cm"
-         , width = 25
-         , height = 25
+         , width = 35
+         , height = 38
          )
 
 knitr::include_graphics("submission/Figure_5.jpg")
+```
+
+### Supplementary Figure 2
+
+Univariate analysis of the most crucial variables for determining the commercial maturity of the fruit in the postharvest handling process.
+
+```{r}
+legend <- cowplot::get_plot_component(p2a, 'guide-box-top', return_all = TRUE)
+
+p2 <- list(p2_a + labs(x = NULL) + theme(legend.position="none"
+                                        , axis.title.x=element_blank()
+                                        , axis.text.x=element_blank()
+                                        , axis.ticks.x=element_blank())
+           , p2_b + labs(x = NULL) + theme(legend.position="none"
+                                        , axis.title.x=element_blank()
+                                        , axis.text.x=element_blank()
+                                        , axis.ticks.x=element_blank())
+           , p2_c + labs(x = NULL) + theme(legend.position="none"
+                                        , axis.title.x=element_blank()
+                                        , axis.text.x=element_blank()
+                                        , axis.ticks.x=element_blank())
+           , p2_d + labs(x = NULL) + theme(legend.position="none"
+                                        , axis.title.x=element_blank()
+                                        , axis.text.x=element_blank()
+                                        , axis.ticks.x=element_blank())
+           , p2_e + theme(legend.position="none")
+           , p2_f + theme(legend.position="none")
+           ) %>% 
+  plot_grid(plotlist = ., ncol = 2
+            , labels = "auto"
+            ) 
+
+fig <- plot_grid(legend, p2, ncol = 1, align = 'v', rel_heights = c(0.05, 1))
+
+fig %>% 
+  ggsave2(plot = ., "submission/Figure_S2.jpg"
+         , units = "cm"
+         , width = 35
+         , height = 38
+         )
+
+fig %>% 
+  ggsave2(plot = ., "submission/Figure_S2.eps"
+         , units = "cm"
+         , width = 35
+         , height = 38
+         )
+
+knitr::include_graphics("submission/Figure_S2.jpg")
 ```
 
 ### Multivariate analysis
@@ -926,32 +1488,49 @@ mv <- consumo %>%
   summarise(across(where(is.numeric), ~ mean(., na.rm = T))) %>%   
   unite("treat", composts:biol, sep = "-") %>% 
   rename(Treat = treat
-         ,FDPCM = pdfmc
-         ,FFCM = ffmc
-         ,IFCCM = cifmc
-         ,SSCFCM = ssfmc
-         ,FpHCM = phfmc
-         ,TAFCM = atfmc
-         ,FCMI = imf)
+         ,FDP = pdfmc
+         ,FF = ffmc
+         ,FPC = cifmc
+         ,SSCF = ssfmc
+         ,FpH = phfmc
+         ,TAF = atfmc
+         ,FCMI = imf) %>% 
+  mutate(Treat = case_when(Treat == "0-0" ~ "T0",
+                           Treat == "0-5" ~ "T1",
+                           Treat == "0-10" ~ "T2",
+                           Treat == "5-0" ~ "T3",
+                           Treat == "5-5" ~ "T4",
+                           Treat == "5-10" ~ "T5",
+                           Treat == "15-0" ~ "T6",
+                           Treat == "15-5" ~ "T7",
+                           Treat == "15-10" ~ "T8")) %>% 
+  column_to_rownames(var = "Treat")
   
 pca <- mv %>% 
-  PCA(scale.unit = T, quali.sup = 1, graph = F) 
+  PCA(scale.unit = T, graph = F) 
 
 # summary
 
 summary(pca, nbelements = Inf, nb.dec = 2)
 
 
-f4a <- plot.PCA(x = pca, choix = "var"
-                , cex=0.5
-                )
+f4a <- fviz_pca_var(pca,
+             col.var = "contrib", # Color by contributions to the PC
+             gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
+             repel = TRUE     # Avoid text overlapping
+)
 
-f4b <- plot.PCA(x = pca, choix = "ind"
-                , habillage = 1
-                , invisible = c("ind")
-                , cex=0.8
-                , ylim = c(-3,3)
-                ) 
+# plot.PCA(x = pca, choix = "var"
+#                 , cex=0.5
+#                 )
+
+f4b <- fviz_pca_ind(pca,
+                axes = c(1,2),
+                geom.ind = "text",
+                repel = FALSE,
+             , habillage = 1) +
+  theme(legend.position = "none") +
+  ylim(c(-3,3))
 ```
 
 ### Figure 6
@@ -962,24 +1541,24 @@ Principal Component Analysis (PCA).
 fig <- list(f4a, f4b) %>% 
   plot_grid(plotlist = ., ncol = 2, nrow = 1
             , labels = "auto"
-            , rel_widths = c(1, 1.5)
+            , rel_widths = c(1.2, 1.05)
             )
 fig %>% 
   ggsave2(plot = ., "submission/Figure_6.jpg", units = "cm"
-         , width = 25
-         , height = 10
+         , width = 28
+         , height = 13
          )
 
 fig %>% 
   ggsave2(plot = ., "submission/Figure_6.eps", units = "cm"
-         , width = 25
-         , height = 10
+         , width = 28
+         , height = 13
          )
 
 knitr::include_graphics("submission/Figure_6.jpg")
 ```
 
-### Supplementary Figure 2
+### Supplementary Figure 4
 
 Results of the contributions and correlation of the variables in the Principal Component Analysis (PCA).
 
@@ -1034,11 +1613,42 @@ plot <- list(pt1, pt2, pt3) %>%
   list(., pt4) %>% 
   plot_grid(plotlist = ., ncol = 2, labels = c("", "d"))
 
-ggsave2(plot = plot, "submission/FigS2.jpg", height = 16, width = 25, units = "cm")
+ggsave2(plot = plot, "submission/Fig_S4.jpg", height = 16, width = 25, units = "cm")
 
-ggsave2(plot = plot, "submission/FigS2.eps", height = 16, width = 25, units = "cm")
+ggsave2(plot = plot, "submission/Fig_S4.eps", height = 16, width = 25, units = "cm")
 
-knitr::include_graphics("submission/FigS2.jpg")
+knitr::include_graphics("submission/Fig_S4.jpg")
 ```
 
+Climatic conditions of the study area located in the Tambogrande district, Piura region.
+
+```{r}
+met <- range_read(ss = gs, sheet = "clima") %>% 
+  mutate(date = as_date(Fecha))
+
+scale <- 3
+
+plot <- met %>% 
+  ggplot(aes(x = date)) +
+  geom_line(aes(y = TMax, color = "Tmax (°C)"), size= 0.8) + 
+  geom_line(aes(y = TMin, color = "Tmin (°C)"), size= 0.8) +
+  geom_bar(aes(y = PP/scale)
+            , stat="identity", size=.1, fill="blue", color="black", alpha=.4) +
+  geom_line(aes(y = HR/scale, color = "HR (%)"), size = 0.8) +
+  scale_color_manual("", values = c("skyblue", "red", "blue")) +
+  scale_y_continuous(limits = c(0, 40)
+                     , expand = c(0, 0)
+                     , name = "Temperature (°C)"
+                     , sec.axis = sec_axis(~ . * scale, name = "Precipitation (mm)")
+                     ) +
+  scale_x_date(date_breaks = "1 month", date_labels = "%m-%Y", name = NULL) +
+  theme_minimal_grid() +
+  theme(legend.position = "top")
+
+plot %>% 
+  ggsave2(plot = ., "submission/weather.jpg", units = "cm"
+         , width = 25, height = 15)
+
+knitr::include_graphics("submission/weather.jpg")
+```
 
