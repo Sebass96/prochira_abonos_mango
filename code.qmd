@@ -152,7 +152,10 @@ Demonstrate the effect of organic fertilizers, specifically compost and biol, ap
 ### Fruit firmness at physiological maturity (FF_pm)
 
 ```{r}
-trait <- "ffmf"
+fisio <- fisio %>%
+  mutate(ffmf_MPa = ffmf * 0.0980665)
+
+trait <- "ffmf_MPa"
 
 fb <- fisio
 
@@ -196,7 +199,7 @@ p1a <- mc %>%
            , error = "SE"
            , color = T
            , xlab = "Composts"
-           , ylab = "Fruit firmness at physiological maturity (kgf/cm^{2})"
+           , ylab = "Fruit firmness (MPa)"
            , glab = "Biol"
            # , ylimits = c(0, 14, 4)
            , type = "line"
@@ -205,7 +208,7 @@ p1a <- mc %>%
 p1a
 
 mc_1a <- emmeans(model, ~ biol*composts) %>%
-  cld(Letters = letters, reversed = T) %>% 
+  cld(Letters = letters, reversed = T) %>%
   mutate(across(".group", ~ trimws(.)))
 
 p1_a <- mc_1a %>%
@@ -216,39 +219,11 @@ p1_a <- mc_1a %>%
            , error = "SE"
            , color = T
            , xlab = "Composts"
-           , ylab = "Fruit firmness at physiological maturity (kgf/cm^{2})"
+           , ylab = "Fruit firmness (MPa)"
            , glab = "Biol"
-           , ylimits = c(0, 15, 3)
+           # , ylimits = c(0, 15, 3)
            , type = "bar"
            )
-
-
-# # Calcular el valor máximo (upper whisker) por grupo
-# positions <-  rmout$data$clean %>%
-#   group_by(composts, biol) %>%
-#   summarise(y_pos = max(ffmf, na.rm = TRUE) + 0.3, .groups = "drop")
-# 
-# # Combinar con las letras del objeto mc
-# mc_pos <- left_join(mc, positions, by = c("composts", "biol"))
-# 
-# # Gráfico
-# p1a <- ggplot( rmout$data$clean, aes(x = factor(composts), y = ffmf, fill = factor(biol))) +
-#   stat_boxplot(geom = "errorbar", width = 0.5, position = position_dodge(0.8)) +
-#   geom_boxplot(width = 0.5, position = position_dodge(0.8)) +
-#   geom_jitter(position = position_jitterdodge(jitter.width = 0.2, dodge.width = 0.8),
-#               shape = 21, size = 1.8, alpha = 0.6, color = "black") +
-#   geom_text(data = mc_pos,
-#             aes(x = factor(composts), y = y_pos, label = group, fill = factor(biol)),
-#             position = position_dodge(width = 0.8),
-#             size = 4,
-#             inherit.aes = FALSE) +
-#   labs(x = "Composts", y = "Fruit firmness at physiological maturity (kgf/cm²)", fill = "Biol") +
-#   theme_minimal() +
-#   theme(legend.position = "top") +
-#     theme(
-#     panel.border = element_rect(colour = "black", fill = NA, linewidth = 0.5),
-#     panel.background = element_blank()
-#   )
 ```
 
 ### Percentage of fruit canopy cover at physiological maturity (PFCC_pm).
@@ -298,7 +273,7 @@ p1b <- mc %>%
            , error = "SE"
            , color = T
            , xlab = "Composts"
-           , ylab = "Percentage of fruit canopy cover at physiological maturity ('%')"
+           , ylab = "Fruit canopy cover ('%')"
            # , ylimits = c(0, 3, 1)
            , glab = "Biol"
            , type = "line"
@@ -307,7 +282,7 @@ p1b <- mc %>%
 p1b
 
 mc_1b <- emmeans(model, ~ biol*composts) %>%
-  cld(Letters = letters, reversed = T) %>% 
+  cld(Letters = letters, reversed = T) %>%
   mutate(across(".group", ~ trimws(.)))
 
 p1_b <- mc_1b %>%
@@ -318,7 +293,7 @@ p1_b <- mc_1b %>%
            , error = "SE"
            , color = T
            , xlab = "Composts"
-           , ylab = "Percentage of fruit canopy cover at physiological maturity ('%')"
+           , ylab = "Fruit canopy cover ('%')"
            , glab = "Biol"
            , ylimits = c(0, 90, 15)
            , type = "bar"
@@ -364,34 +339,35 @@ mc <- merge(mc1, mc2) %>%
 
 mc %>% kable()
 
+set.seed(123)
+
 p1c <- mc %>%
   plot_smr(x = "composts"
            , y = "emmean"
            , group = "biol"
-           , sig = "group"
+           # , sig = "group"
            , error = "SE"
            , color = T
            , xlab = "Composts"
-           , ylab = "Fruit pulp color at physiological maturity"
+           , ylab = "Fruit pulp color index"
            # , ylimits = c(0, 3, 1)
            , glab = "Biol"
            , type = "line"
-           ) 
-  # geom_text_repel(data = mc,
-  #               aes(x = composts, y = emmean, label = group, group = biol),
-  #               size = 3.5,
-  #               max.overlaps = Inf, # para mostrar todas las letras
-  #               box.padding = 0.3,
-  #               point.padding = 0.2,
-  #               segment.color = "grey50",
-  #               segment.size = 0.2,
-  #               colour = "black") +
-  # geom_text(color = )
+           ) +
+  geom_text_repel(data = mc,
+                aes(x = composts, y = emmean, label = group, group = biol),
+                size = 3,
+                max.overlaps = Inf, # para mostrar todas las letras
+                box.padding = 0.3,
+                point.padding = 0.2,
+                segment.color = "white",
+                segment.size = 0.2,
+                colour = "black")
 
 p1c
 
 mc_1c <- emmeans(model, ~ biol*composts) %>%
-  cld(Letters = letters, reversed = T) %>% 
+  cld(Letters = letters, reversed = T) %>%
   mutate(across(".group", ~ trimws(.)))
 
 p1_c <- mc_1c %>%
@@ -402,7 +378,7 @@ p1_c <- mc_1c %>%
            , error = "SE"
            , color = T
            , xlab = "Composts"
-           , ylab = "Fruit pulp color at physiological maturity"
+           , ylab = "Fruit pulp color index"
            , glab = "Biol"
            , ylimits = c(0, 3, 1)
            , type = "bar"
@@ -511,7 +487,7 @@ p1d <- mc %>%
            , error = "SE"
            , color = T
            , xlab = "Composts"
-           , ylab = "Soluble solids content of the fruit at physiological maturity (brix^{o})"
+           , ylab = "Soluble solids content ('°'*Brix)"
            , glab = "Biol"
            #, ylimits = c(0, 4, 1)
            , type = "line"
@@ -520,7 +496,7 @@ p1d <- mc %>%
 p1d
 
 mc_1d <- emmeans(model, ~ biol*composts) %>%
-  cld(Letters = letters, reversed = T) %>% 
+  cld(Letters = letters, reversed = T) %>%
   mutate(across(".group", ~ trimws(.)))
 
 p1_d <- mc_1d %>%
@@ -531,7 +507,7 @@ p1_d <- mc_1d %>%
            , error = "SE"
            , color = T
            , xlab = "Composts"
-           , ylab = "Soluble solids content of the fruit at physiological maturity (brix^{o})"
+           , ylab = "Soluble solids content ('°'*Brix)"
            , glab = "Biol"
            , ylimits = c(0, 10, 2)
            , type = "bar"
@@ -585,7 +561,7 @@ p1e <- mc %>%
            , error = "SE"
            , color = T
            , xlab = "Composts"
-           , ylab = "Titratable acidity of the fruit at physiological maturity ('%')"
+           , ylab = "Titratable acidity ('%')"
            , glab = "Biol"
            #
            , type = "line"
@@ -594,7 +570,7 @@ p1e <- mc %>%
 p1e
 
 mc_1e <- emmeans(model, ~ biol*composts) %>%
-  cld(Letters = letters, reversed = T) %>% 
+  cld(Letters = letters, reversed = T) %>%
   mutate(across(".group", ~ trimws(.)))
 
 p1_e <- mc_1e %>%
@@ -605,7 +581,7 @@ p1_e <- mc_1e %>%
            , error = "SE"
            , color = T
            , xlab = "Composts"
-           , ylab = "Titratable acidity of the fruit at physiological maturity ('%')"
+           , ylab = "Titratable acidity ('%')"
            , glab = "Biol"
            , ylimits = c(0, 1.5, 0.5)
            , type = "bar"
@@ -659,7 +635,7 @@ p1f <- mc %>%
            , error = "SE"
            , color = T
            , xlab = "Composts"
-           , ylab = "Fruit dry matter at physiological maturity ('%')"
+           , ylab = "Fruit dry matter ('%')"
            , glab = "Biol"
            #
            , type = "line"
@@ -668,7 +644,7 @@ p1f <- mc %>%
 p1f
 
 mc_1f <- emmeans(model, ~ biol*composts) %>%
-  cld(Letters = letters, reversed = T) %>% 
+  cld(Letters = letters, reversed = T) %>%
   mutate(across(".group", ~ trimws(.)))
 
 p1_f <- mc_1f %>%
@@ -679,7 +655,7 @@ p1_f <- mc_1f %>%
            , error = "SE"
            , color = T
            , xlab = "Composts"
-           , ylab = "Fruit dry matter at physiological maturity ('%')"
+           , ylab = "Fruit dry matter ('%')"
            , glab = "Biol"
            , ylimits = c(0, 24, 6)
            , type = "bar"
@@ -721,15 +697,15 @@ fig <- plot_grid(legend, p1, ncol = 1, align = 'v', rel_heights = c(0.05, 1))
 fig %>% 
   ggsave2(plot = ., "submission/Figure_3.jpg"
          , units = "cm"
-         , width = 35
-         , height = 38
+         , width = 27
+         , height = 30
          )
 
 fig %>% 
   ggsave2(plot = ., "submission/Figure_3.eps"
          , units = "cm"
-         , width = 35
-         , height = 38
+         , width = 27
+         , height = 30
          )
 
 knitr::include_graphics("submission/Figure_3.jpg")
@@ -770,15 +746,15 @@ fig <- plot_grid(legend, p1, ncol = 1, align = 'v', rel_heights = c(0.05, 1))
 fig %>% 
   ggsave2(plot = ., "submission/Figure_S1.jpg"
          , units = "cm"
-         , width = 35
-         , height = 38
+         , width = 27
+         , height = 30
          )
 
 fig %>% 
   ggsave2(plot = ., "submission/Figure_S1.eps"
          , units = "cm"
-         , width = 35
-         , height = 38
+         , width = 27
+         , height = 30
          )
 
 knitr::include_graphics("submission/Figure_S1.jpg")
@@ -790,29 +766,30 @@ Principal Component Analysis (PCA) of quality traits to correlate with mango fru
 
 ```{r}
 mv <- fisio %>% 
-  select(-rpp) %>% 
+  select(-rpp,-ffmf) %>% 
   group_by(composts, biol) %>% 
-  summarise(across(where(is.numeric), ~ mean(., na.rm = T))) %>%   
+  summarise(across(where(is.numeric), ~ mean(., na.rm = T))) %>%  
   unite("treat", composts:biol, sep = "-") %>% 
   rename(Treat = treat
-         ,PFCC = pcfmf
-         ,FF = ffmf
+         ,FCC = pcfmf
+         ,FF = ffmf_MPa
          ,FPC = cifmf
-         ,SSCF = ssfmf
+         ,SSC = ssfmf
          ,FpH = phfmf
-         ,TAF = atfmf
-         ,FDMP = msfmf
+         ,TA = atfmf
+         ,FDM = msfmf
          ,FPMI = imf) %>% 
-  mutate(Treat = case_when(Treat == "0-0" ~ "T0",
-                           Treat == "0-5" ~ "T1",
-                           Treat == "0-10" ~ "T2",
-                           Treat == "5-0" ~ "T3",
-                           Treat == "5-5" ~ "T4",
-                           Treat == "5-10" ~ "T5",
-                           Treat == "15-0" ~ "T6",
-                           Treat == "15-5" ~ "T7",
-                           Treat == "15-10" ~ "T8")) %>% 
-  column_to_rownames(var = "Treat")
+    column_to_rownames(var = "Treat")
+  # mutate(Treat = case_when(Treat == "0-0" ~ "T0",
+  #                          Treat == "0-5" ~ "T1",
+  #                          Treat == "0-10" ~ "T2",
+  #                          Treat == "5-0" ~ "T3",
+  #                          Treat == "5-5" ~ "T4",
+  #                          Treat == "5-10" ~ "T5",
+  #                          Treat == "15-0" ~ "T6",
+  #                          Treat == "15-5" ~ "T7",
+  #                          Treat == "15-10" ~ "T8")) %>% 
+
 
 pca <- mv %>% 
   PCA(scale.unit = T, graph = F) 
@@ -943,7 +920,10 @@ Demonstrate the effect of organic fertilizers, specifically compost and biol, ap
 ### Fruit firmness at commercial maturity (FFCM)
 
 ```{r}
-trait <- "ffmc"
+consumo <- consumo %>%
+  mutate(ffmc_MPa = ffmc * 0.0980665)
+
+trait <- "ffmc_MPa"
 
 cs <- consumo
 
@@ -987,7 +967,7 @@ p2a <- mc %>%
            , error = "SE"
            , color = T
            , xlab = "Composts"
-           , ylab = "Fruit firmness at commercial maturity (kgf/cm^{2})"
+           , ylab = "Fruit firmness (MPa)"
            , glab = "Biol"
            # , ylimits = c(0, 6, 2)
            , type = "line"
@@ -996,7 +976,7 @@ p2a <- mc %>%
 p2a
 
 mc_2a <- emmeans(model, ~ biol*composts) %>%
-  cld(Letters = letters, reversed = T) %>% 
+  cld(Letters = letters, reversed = T) %>%
   mutate(across(".group", ~ trimws(.)))
 
 p2_a <- mc_2a %>%
@@ -1007,9 +987,9 @@ p2_a <- mc_2a %>%
            , error = "SE"
            , color = T
            , xlab = "Composts"
-           , ylab = "Fruit firmness at commercial maturity (kgf/cm^{2})"
+           , ylab = "Fruit firmness (MPa)"
            , glab = "Biol"
-           , ylimits = c(0, 5, 1)
+           # , ylimits = c(0, 5, 1)
            , type = "bar"
            )
 ```
@@ -1061,7 +1041,7 @@ p2b <- mc %>%
            , error = "SE"
            , color = T
            , xlab = "Composts"
-           , ylab = "Soluble solids content of the fruit at commercial maturity (brix^{o})"
+           , ylab = "Soluble solids content ('°'*Brix)"
            # , ylimits = c(0, 18, 3)
            , type = "line"
            )
@@ -1080,7 +1060,7 @@ p2_b <- mc_2b %>%
            , error = "SE"
            , color = T
            , xlab = "Composts"
-           , ylab = "Soluble solids content of the fruit at commercial maturity (brix^{o})"
+           , ylab = "Soluble solids content ('°'*Brix)"
            , glab = "Biol"
            , ylimits = c(0, 18, 6)
            , type = "bar"
@@ -1134,7 +1114,7 @@ p2c <- mc %>%
            , error = "SE"
            , color = T
            , xlab = "Composts"
-           , ylab = "Titratable acidity of the fruit at commercial maturity ('%')"
+           , ylab = "Titratable acidity ('%')"
            # , ylimits = c(0, 0.8, 0.2)
            , type = "line"
            ) 
@@ -1153,7 +1133,7 @@ p2_c <- mc_2c %>%
            , error = "SE"
            , color = T
            , xlab = "Composts"
-           , ylab = "Titratable acidity of the fruit at commercial maturity ('%')"
+           , ylab = "Titratable acidity ('%')"
            , glab = "Biol"
            , ylimits = c(0, 0.8, 0.2)
            , type = "bar"
@@ -1207,7 +1187,7 @@ p2d <- mc %>%
            , error = "SE"
            , color = T
            , xlab = "Composts"
-           , ylab = "Fruit dehydration at commercial maturity ('%')"
+           , ylab = "Fruit dehydration ('%')"
            , glab = "Biol"
            # , ylimits = c(0, 8, 2)
            , type = "line"
@@ -1227,7 +1207,7 @@ p2_d <- mc_2d %>%
            , error = "SE"
            , color = T
            , xlab = "Composts"
-           , ylab = "Fruit dehydration at commercial maturity ('%')"
+           , ylab = "Fruit dehydration ('%')"
            , glab = "Biol"
            , ylimits = c(0, 8, 2)
            , type = "bar"
@@ -1281,7 +1261,7 @@ p2e <- mc %>%
            , error = "SE"
            , color = T
            , xlab = "Composts"
-           , ylab = "Fruit pH at commercial maturity"
+           , ylab = "Fruit pH"
            # , ylimits = c(0, 6, 2)
            , type = "line"
            )
@@ -1300,7 +1280,7 @@ p2_e <- mc_2e %>%
            , error = "SE"
            , color = T
            , xlab = "Composts"
-           , ylab = "Fruit pH at commercial maturity"
+           , ylab = "Fruit pH"
            , glab = "Biol"
            , ylimits = c(0, 5.5, 1)
            , type = "bar"
@@ -1354,7 +1334,7 @@ p2f <- mc %>%
            , error = "SE"
            , color = T
            , xlab = "Composts"
-           , ylab = "Fruit pulp color at commercial maturity"
+           , ylab = "Fruit pulp color index"
            # , ylimits = c(0, 5, 1)
            , type = "line"
            )
@@ -1373,7 +1353,7 @@ p2_f <- mc_2f %>%
            , error = "SE"
            , color = T
            , xlab = "Composts"
-           , ylab = "Fruit pulp color at commercial maturity"
+           , ylab = "Fruit pulp color index"
            , glab = "Biol"
            , ylimits = c(0, 4.5, 1)
            , type = "bar"
@@ -1415,15 +1395,15 @@ fig <- plot_grid(legend, p2, ncol = 1, align = 'v', rel_heights = c(0.05, 1))
 fig %>% 
   ggsave2(plot = ., "submission/Figure_5.jpg"
          , units = "cm"
-         , width = 35
-         , height = 38
+         , width = 27
+         , height = 30
          )
 
 fig %>% 
   ggsave2(plot = ., "submission/Figure_5.eps"
          , units = "cm"
-         , width = 35
-         , height = 38
+         , width = 27
+         , height = 30
          )
 
 knitr::include_graphics("submission/Figure_5.jpg")
@@ -1464,15 +1444,15 @@ fig <- plot_grid(legend, p2, ncol = 1, align = 'v', rel_heights = c(0.05, 1))
 fig %>% 
   ggsave2(plot = ., "submission/Figure_S2.jpg"
          , units = "cm"
-         , width = 35
-         , height = 38
+         , width = 27
+         , height = 30
          )
 
 fig %>% 
   ggsave2(plot = ., "submission/Figure_S2.eps"
          , units = "cm"
-         , width = 35
-         , height = 38
+         , width = 27
+         , height = 30
          )
 
 knitr::include_graphics("submission/Figure_S2.jpg")
@@ -1484,26 +1464,27 @@ Principal Component Analysis (PCA) of quality characteristics to correlate with 
 
 ```{r}
 mv <- consumo %>% 
+  select(-ffmc) %>% 
   group_by(composts, biol) %>% 
   summarise(across(where(is.numeric), ~ mean(., na.rm = T))) %>%   
   unite("treat", composts:biol, sep = "-") %>% 
   rename(Treat = treat
-         ,FDP = pdfmc
-         ,FF = ffmc
+         ,FD = pdfmc
+         ,FF = ffmc_MPa
          ,FPC = cifmc
-         ,SSCF = ssfmc
+         ,SSC = ssfmc
          ,FpH = phfmc
-         ,TAF = atfmc
+         ,TA = atfmc
          ,FCMI = imf) %>% 
-  mutate(Treat = case_when(Treat == "0-0" ~ "T0",
-                           Treat == "0-5" ~ "T1",
-                           Treat == "0-10" ~ "T2",
-                           Treat == "5-0" ~ "T3",
-                           Treat == "5-5" ~ "T4",
-                           Treat == "5-10" ~ "T5",
-                           Treat == "15-0" ~ "T6",
-                           Treat == "15-5" ~ "T7",
-                           Treat == "15-10" ~ "T8")) %>% 
+  # mutate(Treat = case_when(Treat == "0-0" ~ "T0",
+  #                          Treat == "0-5" ~ "T1",
+  #                          Treat == "0-10" ~ "T2",
+  #                          Treat == "5-0" ~ "T3",
+  #                          Treat == "5-5" ~ "T4",
+  #                          Treat == "5-10" ~ "T5",
+  #                          Treat == "15-0" ~ "T6",
+  #                          Treat == "15-5" ~ "T7",
+  #                          Treat == "15-10" ~ "T8")) %>% 
   column_to_rownames(var = "Treat")
   
 pca <- mv %>% 
