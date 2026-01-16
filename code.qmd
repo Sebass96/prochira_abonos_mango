@@ -1,5 +1,5 @@
 ---
-title: "Impact of organic fertilizers on the quality of mango (Mangifera indica L.) var. 'Kent' during physiological maturity and commercial maturity"
+title: "Impact of organic fertilizers on the quality of mango (_Mangifera indica_ L.) var. 'Kent' during physiological maturity and commercial maturity"
 format:
   html:
     toc: true
@@ -26,6 +26,7 @@ library(FSA)
 library(factoextra)
 library(corrplot)
 library(car)
+library(ggrepel)
 source('https://inkaverse.com/setup.r')
 
 cat("Project: ", getwd(), "\n")
