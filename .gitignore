@@ -1,5 +1,11 @@
-.Rproj.user
+# RStudio
+*.Rproj
+.Rproj.user/
+
+# R session files
 .Rhistory
 .RData
 .Ruserdata
+
+# Otros temporales
 _*
